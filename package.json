@@ -1,0 +1,49 @@
+{
+	"name": "@microflash/rehype-starry-night",
+	"version": "1.0.0",
+	"description": "rehype plugin to highlight codeblocks with Starry Night ",
+	"license": "MIT",
+	"keywords": [
+		"unified",
+		"rehype",
+		"rehype-plugin",
+		"plugin",
+		"markdown",
+		"syntax",
+		"highlighting",
+		"starry-night",
+		"vscode-textmate"
+	],
+	"repository": "https://github.com/Microflash/rehype-starry-night.git",
+	"bugs": "https://github.com/Microflash/rehype-starry-night/issues",
+	"homepage": "https://github.com/Microflash/rehype-starry-night#readme",
+	"author": "Naiyer Asif (https://mflash.dev)",
+	"type": "module",
+	"main": "index.js",
+	"files": [
+		"index.js",
+		"hast-util-starry-night-gutter.js",
+		"hast-util-starry-night-header.js"
+	],
+	"scripts": {
+		"test": "ava"
+	},
+	"dependencies": {
+		"@microflash/fenceparser": "^2.6.2",
+		"@wooorm/starry-night": "^1.4.2",
+		"hast-util-to-string": "^2.0.0",
+		"unist-util-visit": "^4.1.1"
+	},
+	"devDependencies": {
+		"ava": "^5.1.0",
+		"rehype-stringify": "^9.0.3",
+		"remark-parse": "^10.0.1",
+		"remark-rehype": "^10.1.0",
+		"unified": "^10.1.2"
+	},
+	"ava": {
+		"files": [
+			"test/**/*.test.js"
+		]
+	}
+}
