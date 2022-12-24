@@ -12,7 +12,7 @@ import { visit } from "unist-util-visit"
 import { toString } from "hast-util-to-string"
 import fenceparser from "@microflash/fenceparser"
 import starryNightHeader from "./hast-util-starry-night-header.js"
-import starryNightGutter from "./hast-util-starry-night-gutter.js"
+import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js"
 
 const prefix = "language-"
 
@@ -67,12 +67,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 			const languageFragment = language.slice(prefix.length)
 			const languageId = aliases[languageFragment] || languageFragment || "txt"
 			const scope = starryNight.flagToScope(languageId)
+			const code = toString(head)
 
 			/** @type {Array<ElementContent>} */
 			let children
 
 			if (scope) {
-				const fragment = starryNight.highlight(toString(head), scope)
+				const fragment = starryNight.highlight(code, scope)
 				children = fragment.children
 			} else {
 				console.warn(`Grammar not found for ${languageId}; rendering the code without syntax highlighting`)
@@ -96,7 +97,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 								type: "element",
 								tagName: "code",
 								properties: { tabindex: 0 },
-								children: starryNightGutter(children, metadata)
+								children: starryNightGutter(children, code.match(search).length, metadata)
 							}
 						]
 					}

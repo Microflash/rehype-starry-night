@@ -1,29 +1,42 @@
 /**
+ * @typedef {import("hast").Root} Root
  * @typedef {import("hast").RootContent} RootContent
  * @typedef {import("hast").ElementContent} ElementContent
  * @typedef {import("hast").Element} Element
- * @typedef {Object} GutterOptions
+ * @typedef Metadata
  * @property {Array<Number>} [highlight]
  * @property {Array<Number>} [prompt]
  */
 
+export const search = /\r?\n|\r/g
+
 /**
- * @param {Array<RootContent>} children
- * @param {GutterOptions} gutterOptions
- * @returns {Array<RootContent>}
+ * @param {Array<ElementContent>} children
+ * @param {Number} lines
+ * @param {Metadata} metadata
+ * @returns {Array<ElementContent>}
  */
-export default function starryNightGutter(children, { highlight = [], prompt = [] }) {
+export default function starryNightGutter(children, lines, metadata) {
+	const linePadding = lines > 9 ? `${lines}`.length : 1
+	return createLines(children, lines > 1 ? createLine : createOneLine, linePadding, metadata)
+}
+
+/**
+ * @param {Array<ElementContent>} children
+ * @param {Function} createLine
+ * @param {String} linePadding
+ * @param {Metadata} metadata
+ * @returns {Array<ElementContent>}
+ */
+function createLines(children, createLine, linePadding, { highlight = [], prompt = [] }) {
 	/** @type {Array<RootContent>} */
 	const replacement = []
-	const search = /\r?\n|\r/g
 	let index = -1
 	let start = 0
 	let startTextRemainder = ""
 	let lineNumber = 0
-	const numOfChildren = children.length
-	const oneline = numOfChildren === 1
 
-	while (++index < numOfChildren) {
+	while (++index < children.length) {
 		const child = children[index]
 
 		if (child.type === "text") {
@@ -50,8 +63,7 @@ export default function starryNightGutter(children, { highlight = [], prompt = [
 
 				// Add a line, and the eol.
 				lineNumber += 1
-
-				replacement.push(createLine(line, highlight.includes(lineNumber), prompt.includes(lineNumber), oneline ? null : lineNumber), {
+				replacement.push(createLine(line, highlight.includes(lineNumber), prompt.includes(lineNumber), lineNumber, linePadding), {
 					type: "text",
 					value: match[0]
 				})
@@ -77,7 +89,7 @@ export default function starryNightGutter(children, { highlight = [], prompt = [
 
 	if (line.length > 0) {
 		lineNumber += 1
-		replacement.push(createLine(line, lineNumber))
+		replacement.push(createLine(line, highlight.includes(lineNumber), prompt.includes(lineNumber), lineNumber, linePadding))
 	}
 
 	return replacement
@@ -85,26 +97,79 @@ export default function starryNightGutter(children, { highlight = [], prompt = [
 
 /**
  * @param {Array<ElementContent>} children
- * @param {Number} line
  * @param {Boolean} dataHighlighted
  * @param {Boolean} dataPrompt
+ * @param {Number} lineNumber
+ * @param {String} linePadding
  * @returns {Element}
  */
-function createLine(children, dataHighlighted, dataPrompt, line) {
-	let properties = {
-		className: "line",
-		dataHighlighted,
-		dataPrompt
-	}
+function createLine(children, dataHighlighted, dataPrompt, lineNumber, linePadding) {
+	const elements = [
+		{
+			type: "element",
+			tagName: "span",
+			properties: {
+				className: "line-number",
+				ariaHidden: "true"
+			},
+			children: [
+				{
+					type: "text",
+					value: `${lineNumber}`.padStart(linePadding)
+				}
+			]
+		}
+	]
 
-	if (line) {
-		properties["dataLineNumber"] = line
+	if (dataPrompt) {
+		elements.push({
+			type: "element",
+			tagName: "span",
+			properties: {
+				className: "line-prompt",
+				ariaHidden: "true"
+			}
+		})
 	}
 
 	return {
 		type: "element",
 		tagName: "span",
-		properties,
-		children
+		properties: { className: "line", dataHighlighted },
+		children: [
+			...elements,
+			...children
+		]
+	}
+}
+
+/**
+ * @param {Array<ElementContent>} children
+ * @param {Boolean} dataHighlighted
+ * @param {Boolean} dataPrompt
+ * @returns {Element}
+ */
+export function createOneLine(children, dataHighlighted, dataPrompt) {
+	const elements = []
+
+	if (dataPrompt) {
+		elements.push({
+			type: "element",
+			tagName: "span",
+			properties: {
+				className: "line-prompt",
+				ariaHidden: "true"
+			}
+		})
+	}
+
+	return {
+		type: "element",
+		tagName: "span",
+		properties: { className: "line", dataHighlighted },
+		children: [
+			...elements,
+			...children
+		]
 	}
 }

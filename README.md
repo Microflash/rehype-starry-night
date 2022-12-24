@@ -19,7 +19,6 @@
 	- [Example: line numbers for multiline codeblock](#example-line-numbers-for-multiline-codeblock)
 	- [Example: show prompts](#example-show-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
-	- [Example: highlight lines](#example-highlight-lines-1)
 	- [Example: add a caption to a codeblock](#example-add-a-caption-to-a-codeblock)
 	- [Example: configure aliases](#example-configure-aliases)
 - [Related](#related)
@@ -107,12 +106,12 @@ Running that with `node example.js` yields:
   <div class="highlight-header">
     <div class="highlight-language">css</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-line-number="1"><span class="pl-ent">html</span> {</span>
-<span class="line" data-line-number="2">  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
-<span class="line" data-line-number="3">  <span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
-<span class="line" data-line-number="4">  <span class="pl-c">/* allow percentage based heights for the children */</span></span>
-<span class="line" data-line-number="5">  <span class="pl-c1">height</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
-<span class="line" data-line-number="6">}</span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>  <span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span>  <span class="pl-c">/* allow percentage based heights for the children */</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">5</span>  <span class="pl-c1">height</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
+<span class="line"><span class="line-number" aria-hidden="true">6</span>}</span>
 </code></pre>
 </div>
 ```
@@ -165,9 +164,9 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">css</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-line-number="1"><span class="pl-ent">*</span> {</span>
-<span class="line" data-line-number="2">  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
-<span class="line" data-line-number="3">}</span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>}</span>
 </code></pre>
 </div>
 ```
@@ -190,15 +189,13 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">sh</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-prompt data-line-number="1">curl localhost:8080/actuator/health</span>
-<span class="line" data-line-number="2">{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
-<span class="line" data-prompt data-line-number="3">curl localhost:8080/greeter<span class="pl-k">?</span>name=Anya</span>
-<span class="line" data-line-number="4">Hello, Anya<span class="pl-k">!</span></span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/greeter<span class="pl-k">?</span>name=Anya</span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span>Hello, Anya<span class="pl-k">!</span></span>
 </code></pre>
 </div>
 ```
-
-### Example: highlight lines
 
 ### Example: highlight lines
 
@@ -227,19 +224,19 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">sh</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-prompt data-line-number="1">aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
-<span class="line" data-line-number="2">{</span>
-<span class="line" data-line-number="3">  <span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
-<span class="line" data-highlighted data-line-number="4">    {</span>
-<span class="line" data-highlighted data-line-number="5">      <span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
-<span class="line" data-highlighted data-line-number="6">      <span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
-<span class="line" data-highlighted data-line-number="7">    }</span>
-<span class="line" data-line-number="8">  ],</span>
-<span class="line" data-line-number="9">  <span class="pl-s"><span class="pl-pds">"</span>Owner<span class="pl-pds">"</span></span>: {</span>
-<span class="line" data-line-number="10">    <span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>webfile<span class="pl-pds">"</span></span>,</span>
-<span class="line" data-line-number="11">    <span class="pl-s"><span class="pl-pds">"</span>ID<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>bcaf1ffd86f41161ca5fb16fd081034f<span class="pl-pds">"</span></span></span>
-<span class="line" data-line-number="12">  }</span>
-<span class="line" data-line-number="13">}</span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
+<span class="line"><span class="line-number" aria-hidden="true"> 2</span>{</span>
+<span class="line"><span class="line-number" aria-hidden="true"> 3</span>  <span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
+<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 4</span>    {</span>
+<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 5</span>      <span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
+<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 6</span>      <span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
+<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 7</span>    }</span>
+<span class="line"><span class="line-number" aria-hidden="true"> 8</span>  ],</span>
+<span class="line"><span class="line-number" aria-hidden="true"> 9</span>  <span class="pl-s"><span class="pl-pds">"</span>Owner<span class="pl-pds">"</span></span>: {</span>
+<span class="line"><span class="line-number" aria-hidden="true">10</span>    <span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>webfile<span class="pl-pds">"</span></span>,</span>
+<span class="line"><span class="line-number" aria-hidden="true">11</span>    <span class="pl-s"><span class="pl-pds">"</span>ID<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>bcaf1ffd86f41161ca5fb16fd081034f<span class="pl-pds">"</span></span></span>
+<span class="line"><span class="line-number" aria-hidden="true">12</span>  }</span>
+<span class="line"><span class="line-number" aria-hidden="true">13</span>}</span>
 </code></pre>
 </div>
 ```
@@ -266,11 +263,11 @@ The above codeblock will yield:
     <div class="highlight-language">sh</div>
     <div class="highlight-caption">Configuring the AWS account</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-prompt>aws configure</span>
-<span class="line">AWS Access Key ID [None]: gwen</span>
-<span class="line">AWS Secret Access Key [None]: stacy</span>
-<span class="line">Default region name [None]: us-east-1</span>
-<span class="line">Default output format [None]: json</span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>AWS Access Key ID [None]: gwen</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>AWS Secret Access Key [None]: stacy</span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span>Default region name [None]: us-east-1</span>
+<span class="line"><span class="line-number" aria-hidden="true">5</span>Default output format [None]: json</span>
 </code></pre>
 </div>
 ```
@@ -317,9 +314,9 @@ Running that with `node example.js` yields:
   <div class="highlight-header">
     <div class="highlight-language">xjm</div>
   </div>
-<pre><code tabindex="0"><span class="line" data-line-number="1"><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
-<span class="line" data-line-number="2"><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
-<span class="line" data-line-number="3"><span class="pl-smi">features</span> = [ <span class="pl-s"><span class="pl-pds">"</span>io<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>graphics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>compute<span class="pl-pds">"</span></span> ]</span>
+<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-smi">features</span> = [ <span class="pl-s"><span class="pl-pds">"</span>io<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>graphics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>compute<span class="pl-pds">"</span></span> ]</span>
 </code></pre>
 </div>
 ```
