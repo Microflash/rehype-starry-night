@@ -1,0 +1,84 @@
+.highlight {
+	--highlight-background-color: hsl(240, 20%, 2%);
+	--highlight-border-color: hsl(208, 21%, 12%);
+	--highlight-border-radius: 12px;
+	--highlight-font-mono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	--highlight-code-highlight: hsl(208, 19%, 13%);
+	background: var(--highlight-background);
+	border: 1px solid var(--highlight-border-color);
+	border-radius: var(--highlight-border-radius);
+}
+
+.highlight:focus-within {
+	outline-color: var(--highlight-border-color);
+	outline-style: solid;
+	outline-width: 0.25ch;
+	outline-offset: -0.125em;
+}
+
+.highlight-header {
+	display: flex;
+	align-items: center;
+	gap: 1ch;
+	border-block-end: 1px solid var(--highlight-border-color);
+	padding: 1ch;
+	font-size: 0.8em;
+}
+
+.highlight-language {
+	font-family: var(--highlight-font-mono);
+	background-color: var(--highlight-code-highlight);
+	padding-inline: 0.75ch;
+	border-radius: calc(var(--highlight-border-radius) / 1.5);
+}
+
+.highlight pre {
+	background-color: transparent;
+	border: none;
+	overflow-x: auto;
+}
+
+.highlight pre>code {
+	display: grid;
+	padding-inline: 0;
+}
+
+.highlight pre .line {
+	border-inline-start: 2px solid transparent;
+	padding-inline: 1em;
+}
+
+.highlight pre .line:focus:not(:focus-visible),
+.highlight pre .line:hover {
+	background-color: var(--highlight-code-highlight);
+}
+
+.highlight pre .line[data-highlighted] {
+	background-color: var(--highlight-code-highlight);
+	border-inline-start: 2px solid var(--color-prettylights-syntax-comment);
+}
+
+.highlight pre .line[data-highlighted] .line-number {
+	color: var(--color-prettylights-syntax-comment);
+}
+
+.highlight pre .line .line-number {
+	user-select: none;
+	margin-inline-end: 1em;
+	color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
+}
+
+.highlight pre .line .line-prompt::before {
+	margin-inline-end: 1ch;
+	vertical-align: middle;
+	content: "";
+	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' fill-rule='evenodd' clip-rule='evenodd' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.179 5.597C13.491 3.081 5.957 3.057 6.344 8.186c.399 5.287 11.204 1.813 11.566 7.102.369 5.375-8 5.71-11.832 2.666M12.017 2v20'/%3E%3C/svg%3E");
+	mask-repeat: no-repeat;
+	mask-position: top center;
+	mask-size: contain;
+	background-color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
+	display: inline-block;
+	text-decoration: none;
+	width: 1em;
+	height: 1em;
+}

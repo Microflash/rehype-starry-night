@@ -1,6 +1,6 @@
 {
 	"name": "@microflash/rehype-starry-night",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "rehype plugin to highlight codeblocks with Starry Night ",
 	"license": "MIT",
 	"keywords": [
@@ -23,7 +23,8 @@
 	"files": [
 		"index.js",
 		"hast-util-starry-night-gutter.js",
-		"hast-util-starry-night-header.js"
+		"hast-util-starry-night-header.js",
+		"index.css"
 	],
 	"scripts": {
 		"test": "ava"

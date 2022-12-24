@@ -8,6 +8,7 @@
 
 ## Contents
 
+- [Contents](#contents)
 - [What’s this?](#whats-this)
 - [When should I use this?](#when-should-i-use-this)
 - [Install](#install)
@@ -116,6 +117,8 @@ Running that with `node example.js` yields:
 </div>
 ```
 
+![Syntax highlighting with Starry Night](./samples/sample-1.png)
+
 ## API
 
 The default export is `rehypeStarryNight`. The following options are available. All of them are optional.
@@ -127,7 +130,7 @@ The default export is `rehypeStarryNight`. The following options are available. 
 
 Check out the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
 
-Additional styling is required to render codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
+Import [index.css](./index.css) to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
 
 ## Examples
 
@@ -148,6 +151,8 @@ The above codeblock will yield:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting single line codeblock](./samples/sample-2.png)
 
 ### Example: line numbers for multiline codeblock
 
@@ -170,6 +175,10 @@ The above codeblock will yield:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting line numbers for multiline codeblock](./samples/sample-3.png)
+
+Line numbers are automatically padded to ensure that they are aligned properly.
 
 ### Example: show prompts
 
@@ -196,6 +205,10 @@ The above codeblock will yield:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting show prompts](./samples/sample-4.png)
+
+[index.css](./index.css) disables user-selection of prompts to make sure that when a user copies the content of a codeblock, the prompt is not copied.
 
 ### Example: highlight lines
 
@@ -241,6 +254,8 @@ The above codeblock will yield:
 </div>
 ```
 
+![Syntax Highlighting highlight lines](./samples/sample-5.png)
+
 Refer to the documentation of [fenceparser](https://github.com/Microflash/fenceparser) to learn about the additional ways in which you can specify the information about highlighted lines.
 
 ### Example: add a caption to a codeblock
@@ -271,6 +286,8 @@ The above codeblock will yield:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting add a caption to a codeblock](./samples/sample-6.png)
 
 ### Example: configure aliases
 
@@ -320,6 +337,8 @@ Running that with `node example.js` yields:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting configure aliases](./samples/sample-7.png)
 
 ## Related
 
