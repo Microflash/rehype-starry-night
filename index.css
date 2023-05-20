@@ -4,7 +4,7 @@
 	--highlight-border-radius: 12px;
 	--highlight-font-mono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 	--highlight-code-highlight: hsl(208, 19%, 13%);
-	background: var(--highlight-background);
+	background: var(--highlight-background-color);
 	border: 1px solid var(--highlight-border-color);
 	border-radius: var(--highlight-border-radius);
 }
