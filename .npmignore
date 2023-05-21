@@ -1,3 +1,5 @@
 .workspace
 samples
 test
+
+.DS_Store

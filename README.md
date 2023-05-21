@@ -130,7 +130,37 @@ The default export is `rehypeStarryNight`. The following options are available. 
 
 Check out the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
 
-Import [index.css](./index.css) to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
+Import [index.css](./index.css) or use it as a base for your own custom styles to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
+
+#### Supporting Light and Dark themes
+
+There are multiple ways to support light and dark themes. Here's one way to do this; the appropriate theme will get activated based on system preferences.
+
+```css
+:root {
+  /* light theme variables specific to rehype-starry-night plugin */
+  --highlight-background-color: hsl(0, 0%, 100%);
+  --highlight-border-color: hsl(208, 21%, 86%);
+  --highlight-code-highlight: hsl(208, 19%, 82%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* dark theme variables specific to rehype-starry-night plugin */
+    --highlight-background-color: hsl(240, 20%, 2%);
+    --highlight-border-color: hsl(208, 21%, 12%);
+    --highlight-code-highlight: hsl(208, 19%, 13%);
+  }
+}
+
+/* import a Starry Night theme that supports both dark and light themes */
+@import "https://raw.githubusercontent.com/wooorm/starry-night/main/style/both.css";
+
+/* import CSS specific to rehype-starry-night plugin */
+@import "https://raw.githubusercontent.com/Microflash/rehype-starry-night/main/index.css";
+```
+
+> **Warning** URL imports for external styles is not recommended. You should either self-host them or bundle them, or copy-paste the entire CSS in one single file.
 
 ## Examples
 
