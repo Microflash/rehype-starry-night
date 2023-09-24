@@ -1,25 +1,14 @@
-/**
- * @typedef {import("hast").Root} Root
- * @typedef {import("hast").ElementContent} ElementContent
- * @typedef {import("@wooorm/starry-night").Grammar} Grammar
- * @typedef Options Configuration (optional)
- * @property {Array<Grammar>} [grammars] Grammars to support (defaults: `common`)
- * @typedef Metadata
- */
-
 import { createStarryNight, all } from "@wooorm/starry-night"
 import { visit } from "unist-util-visit"
 import { toString } from "hast-util-to-string"
 import fenceparser from "@microflash/fenceparser"
 import starryNightHeader from "./hast-util-starry-night-header.js"
+import starryNightHeaderLanguageExtension from "./hast-util-starry-night-header-language-extension.js"
+import starryNightHeaderCaptionExtension from "./hast-util-starry-night-header-caption-extension.js"
 import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js"
 
 const prefix = "language-"
 
-/**
- * @param {ElementContent} node
- * @returns {Metadata}
- */
 function extractMetadata(node) {
 	let metadata
 
@@ -31,13 +20,8 @@ function extractMetadata(node) {
 	return metadata || {}
 }
 
-/**
- * Plugin to highlight code with `starry-night`.
- *
- * @type {import("unified").Plugin<[Options?], Root>}
- */
 export default function rehypeStarryNight(userOptions = {}) {
-	const { aliases = {}, grammars = all } = userOptions
+	const { aliases = {}, grammars = all, headerExtensions = [ starryNightHeaderLanguageExtension, starryNightHeaderCaptionExtension ] } = userOptions
 	const starryNightPromise = createStarryNight(grammars)
 
 	return async function (tree) {
@@ -69,7 +53,6 @@ export default function rehypeStarryNight(userOptions = {}) {
 			const scope = starryNight.flagToScope(languageId)
 			const code = toString(head)
 
-			/** @type {Array<ElementContent>} */
 			let children
 
 			if (scope) {
@@ -80,6 +63,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 				children = head.children
 			}
 
+			const headerOptions = {
+				id: btoa(Math.random()).replace(/=/g,"").substring(0, 12),
+				language: languageFragment,
+				metadata: metadata,
+				extensions: headerExtensions
+			}
+
 			parent.children.splice(index, 1, {
 				type: "element",
 				tagName: "div",
@@ -87,11 +77,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 					className: ["highlight", "highlight-" + languageId]
 				},
 				children: [
-					starryNightHeader(languageFragment, metadata["caption"]),
+					starryNightHeader(headerOptions),
 					{
 						type: "element",
 						tagName: "pre",
-						properties: {},
+						properties: {
+							id: headerOptions.id
+						},
 						children: [
 							{
 								type: "element",

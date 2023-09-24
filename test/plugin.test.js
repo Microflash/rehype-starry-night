@@ -3,7 +3,8 @@ import { unified } from "unified"
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import rehypeStringify from "rehype-stringify"
-import rehypeStarryNight from "../index.js"
+import * as cheerio from "cheerio"
+import rehypeStarryNight from "../src/index.js"
 import fixtures from "./fixtures.js"
 
 async function process(markdown, options = {}) {
@@ -21,33 +22,8 @@ for (const fixture of fixtures) {
 	const { title, input, output, options = {} } = fixture
 	test(`test '${title}'`, async t => {
 		const result = await process(input, options)
-		t.is(output.replace(/[\n](?=.*[\n])/gm, '\n'), result)
+		const $ = cheerio.load(result, null, false)
+		$("pre").removeAttr("id")
+		t.is(output, $.html())
 	})
 }
-
-
-
-// import test from 'ava'
-// import { remark } from 'remark'
-// import remarkStarryNight from '../index.js'
-// import fixtures from './fixtures.js'
-
-// async function process(markdown) {
-// 	const file = await remark()
-// 		.use(remarkStarryNight, {
-// 			aliases: {
-// 				conf: 'ini'
-// 			}
-// 		})
-// 		.process(markdown)
-	
-// 	return String(file)
-// }
-
-// for (const fixture of fixtures) {
-// 	const { input, output, title } = fixture
-// 	test(`test '${title}'`, async t => {
-// 		const result = await process(input)
-// 		t.is(output.replace(/[\n](?=.*[\n])/gm, '\r\n'), result)
-// 	})
-// }

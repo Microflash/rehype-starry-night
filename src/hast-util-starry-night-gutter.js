@@ -1,35 +1,11 @@
-/**
- * @typedef {import("hast").Root} Root
- * @typedef {import("hast").RootContent} RootContent
- * @typedef {import("hast").ElementContent} ElementContent
- * @typedef {import("hast").Element} Element
- * @typedef Metadata
- * @property {Array<Number>} [highlight]
- * @property {Array<Number>} [prompt]
- */
-
 export const search = /\r?\n|\r/g
 
-/**
- * @param {Array<ElementContent>} children
- * @param {Number} lines
- * @param {Metadata} metadata
- * @returns {Array<ElementContent>}
- */
 export default function starryNightGutter(children, lines, metadata) {
 	const linePadding = lines > 9 ? `${lines}`.length : 1
 	return createLines(children, lines > 1 ? createLine : createOneLine, linePadding, metadata)
 }
 
-/**
- * @param {Array<ElementContent>} children
- * @param {Function} createLine
- * @param {String} linePadding
- * @param {Metadata} metadata
- * @returns {Array<ElementContent>}
- */
 function createLines(children, createLine, linePadding, { highlight = [], prompt = [] }) {
-	/** @type {Array<RootContent>} */
 	const replacement = []
 	let index = -1
 	let start = 0
@@ -45,7 +21,7 @@ function createLines(children, createLine, linePadding, { highlight = [], prompt
 
 			while (match) {
 				// Nodes in this line.
-				const line = /** @type {Array<ElementContent>} */ (children.slice(start, index))
+				const line = (children.slice(start, index))
 
 				// Prepend text from a partial matched earlier text.
 				if (startTextRemainder) {
@@ -80,7 +56,7 @@ function createLines(children, createLine, linePadding, { highlight = [], prompt
 		}
 	}
 
-	const line = /** @type {Array<ElementContent>} */ (children.slice(start))
+	const line = (children.slice(start))
 	// Prepend text from a partial matched earlier text.
 	if (startTextRemainder) {
 		line.unshift({ type: "text", value: startTextRemainder })
@@ -95,14 +71,6 @@ function createLines(children, createLine, linePadding, { highlight = [], prompt
 	return replacement
 }
 
-/**
- * @param {Array<ElementContent>} children
- * @param {Boolean} dataHighlighted
- * @param {Boolean} dataPrompt
- * @param {Number} lineNumber
- * @param {String} linePadding
- * @returns {Element}
- */
 function createLine(children, dataHighlighted, dataPrompt, lineNumber, linePadding) {
 	const elements = [
 		{
@@ -143,12 +111,6 @@ function createLine(children, dataHighlighted, dataPrompt, lineNumber, linePaddi
 	}
 }
 
-/**
- * @param {Array<ElementContent>} children
- * @param {Boolean} dataHighlighted
- * @param {Boolean} dataPrompt
- * @returns {Element}
- */
 export function createOneLine(children, dataHighlighted, dataPrompt) {
 	const elements = []
 

@@ -61,10 +61,10 @@ aws --endpoint-url http://localhost:4566 s3api list-buckets
 output: `<div class="highlight highlight-sh"><div class="highlight-header"><div class="highlight-language">sh</div></div><pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 2</span>{</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 3</span>	<span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 4</span>		{</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 5</span>			<span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 6</span>			<span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 7</span>		}</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true"> 4</span>		{</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true"> 5</span>			<span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true"> 6</span>			<span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true"> 7</span>		}</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 8</span>	],</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 9</span>	<span class="pl-s"><span class="pl-pds">"</span>Owner<span class="pl-pds">"</span></span>: {</span>
 <span class="line"><span class="line-number" aria-hidden="true">10</span>		<span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>webfile<span class="pl-pds">"</span></span>,</span>
@@ -118,6 +118,31 @@ let-env NU_LIB_DIRS = [
 output: `<div class="highlight highlight-nux"><div class="highlight-header"><div class="highlight-language">nux</div></div><pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>let-env NU_LIB_DIRS = [</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>	($nu.config-path | path dirname | path join 'scripts')</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>]</span>
+</code></pre></div>`
+	},
+	{
+		title: "custom header extension",
+		options: { headerExtensions: [
+			(headerOptions, children) => {
+				children.push({
+					type: "element",
+					tagName: "button",
+					properties: { className: ["highlight-copy"] },
+					children: [
+						{
+							type: "text",
+							value: "Copy to clipboard"
+						}
+					]
+				})
+			}
+		]},
+		input: `
+\`\`\`html
+<mark>highlighted</mark>
+\`\`\`
+`,
+output: `<div class="highlight highlight-html"><div class="highlight-header"><button class="highlight-copy">Copy to clipboard</button></div><pre><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
 </code></pre></div>`
 	}
 ]
