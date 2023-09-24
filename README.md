@@ -6,9 +6,6 @@
 
 [rehype](https://github.com/rehypejs/rehype) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night)
 
-## Contents
-
-- [Contents](#contents)
 - [What’s this?](#whats-this)
 - [When should I use this?](#when-should-i-use-this)
 - [Install](#install)
@@ -22,6 +19,7 @@
 	- [Example: highlight lines](#example-highlight-lines)
 	- [Example: add a caption to a codeblock](#example-add-a-caption-to-a-codeblock)
 	- [Example: configure aliases](#example-configure-aliases)
+	- [Example: custom header extension](#example-custom-header-extension)
 - [Related](#related)
 - [License](#license)
 
@@ -44,7 +42,7 @@ The following additonal features are also available:
 
 This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
 
-In Node.js (version 12.20+, 14.14+, or 16.0+), install with [npm](https://docs.npmjs.com/cli/install):
+In Node.js (version 16.0+), install with [npm](https://docs.npmjs.com/cli/install):
 
 ```sh
 npm install @microflash/rehype-starry-night
@@ -107,7 +105,7 @@ Running that with `node example.js` yields:
   <div class="highlight-header">
     <div class="highlight-language">css</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
+<pre id="MC4zMzc4MTYx"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>  <span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>  <span class="pl-c">/* allow percentage based heights for the children */</span></span>
@@ -125,12 +123,15 @@ The default export is `rehypeStarryNight`. The following options are available. 
 
 - `aliases`: an object to alias languages to force syntax highlighting. By default, unknown languages are highlighted as plain text.
 - `grammars`: a list of [Starry Night](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, all grammars provided by Starry Night are used.
+- `headerExtensions`: a list of functions to customize the header. By default, [language-extension](./src/hast-util-starry-night-header-language-extension.js) and [caption-extension](./src/hast-util-starry-night-header-caption-extension.js) are used. A header extension has access to the following arguments.
+  - `headerOptions`: an object with a randomly generated `id` attached to the `pre` element, `metadata` containing the caption, list of highlighted lines, etc., and `language` tag specified on the code
+  - `children`: an array of nodes contained in the header
 
 ### Themes
 
 Check out the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
 
-Import [index.css](./index.css) or use it as a base for your own custom styles to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
+Import [index.css](./src/index.css) or use it as a base for your own custom styles to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
 
 #### Supporting Light and Dark themes
 
@@ -177,7 +178,7 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">sh</div>
   </div>
-<pre><code tabindex="0"><span class="line">docker ps -a</span>
+<pre id="MC40OTg1ODA0"><code tabindex="0"><span class="line">docker ps -a</span>
 </code></pre>
 </div>
 ```
@@ -199,7 +200,7 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">css</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
+<pre id="MC4yODM1ODY3"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>}</span>
 </code></pre>
@@ -228,7 +229,7 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">sh</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
+<pre id="MC4zMDQ2MjUy"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/greeter<span class="pl-k">?</span>name=Anya</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>Hello, Anya<span class="pl-k">!</span></span>
@@ -238,7 +239,7 @@ The above codeblock will yield:
 
 ![Syntax Highlighting show prompts](./samples/sample-4.png)
 
-[index.css](./index.css) disables user-selection of prompts to make sure that when a user copies the content of a codeblock, the prompt is not copied.
+[index.css](./src/index.css) disables user-selection of prompts to make sure that when a user copies the content of a codeblock, the prompt is not copied.
 
 ### Example: highlight lines
 
@@ -267,7 +268,7 @@ The above codeblock will yield:
   <div class="highlight-header">
     <div class="highlight-language">sh</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
+<pre id="MC44MTc0Njk1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 2</span>{</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 3</span>  <span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
 <span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 4</span>    {</span>
@@ -308,7 +309,7 @@ The above codeblock will yield:
     <div class="highlight-language">sh</div>
     <div class="highlight-caption">Configuring the AWS account</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
+<pre id="MC40NTMzMDQx"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>AWS Access Key ID [None]: gwen</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>AWS Secret Access Key [None]: stacy</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>Default region name [None]: us-east-1</span>
@@ -361,7 +362,7 @@ Running that with `node example.js` yields:
   <div class="highlight-header">
     <div class="highlight-language">xjm</div>
   </div>
-<pre><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
+<pre id="MC41Nzk3ODE2"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-smi">features</span> = [ <span class="pl-s"><span class="pl-pds">"</span>io<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>graphics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>compute<span class="pl-pds">"</span></span> ]</span>
 </code></pre>
@@ -369,6 +370,72 @@ Running that with `node example.js` yields:
 ```
 
 ![Syntax Highlighting configure aliases](./samples/sample-7.png)
+
+### Example: custom header extension
+
+Suppose you want to add a copy to clipboard button in the header. You can do so by adding a custom header extension.
+
+Say we have the following file `example.md`:
+
+	```html
+	<mark>highlighted</mark>
+	```
+
+You can pass a custom header extension as follows with `example.js`:
+
+```js
+import { unified } from "unified"
+import remarkParse from "remark-parse"
+import remarkRehype from "remark-rehype"
+import rehypeStringify from "rehype-stringify"
+import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night"
+import rehypeStarryNightHeaderCaptionExtension from "@microflash/rehype-starry-night/header-caption-extension"
+import rehypeStarryNightHeaderLanguageExtension from "@microflash/rehype-starry-night/header-language-extension"
+
+main()
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNight, {
+      headerExtensions: [
+        rehypeStarryNightHeaderLanguageExtension,
+        rehypeStarryNightHeaderCaptionExtension,
+        (headerOptions, children) => {
+          children.push({
+            type: "element",
+            tagName: "button",
+            properties: { className: ["highlight-copy"], for: headerOptions.id },
+            children: [
+              {
+                type: "text",
+                value: "Copy"
+              }
+            ]
+          })
+        }
+      ]
+    })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown)
+
+  console.log(String(file))
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<div class="highlight highlight-html">
+  <div class="highlight-header">
+    <div class="highlight-language">html</div>
+    <button class="highlight-copy" for="MC41MTc4MjIz">Copy</button>
+  </div>
+<pre id="MC41MTc4MjIz"><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
+</code></pre>
+</div>
+```
 
 ## Related
 

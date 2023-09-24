@@ -1,6 +1,6 @@
 {
 	"name": "@microflash/rehype-starry-night",
-	"version": "2.1.1",
+	"version": "3.0.0",
 	"description": "rehype plugin to highlight codeblocks with Starry Night ",
 	"license": "MIT",
 	"keywords": [
@@ -19,28 +19,37 @@
 	"homepage": "https://github.com/Microflash/rehype-starry-night#readme",
 	"author": "Naiyer Asif (https://mflash.dev)",
 	"type": "module",
-	"main": "index.js",
+	"main": "src/index.js",
+	"exports": {
+		".": "./src/index.js",
+		"./css": "./src/index.css",
+		"./header-caption-extension": "./src/hast-util-starry-night-header-caption-extension.js",
+		"./header-language-extension": "./src/hast-util-starry-night-header-language-extension.js"
+	},
 	"files": [
-		"index.js",
-		"hast-util-starry-night-gutter.js",
-		"hast-util-starry-night-header.js",
-		"index.css"
+		"src/index.js",
+		"src/hast-util-starry-night-gutter.js",
+		"src/hast-util-starry-night-header.js",
+		"src/hast-util-starry-night-header-caption-extension.js",
+		"src/hast-util-starry-night-header-language-extension.js",
+		"src/index.css"
 	],
 	"scripts": {
 		"test": "ava"
 	},
 	"dependencies": {
 		"@microflash/fenceparser": "^2.6.2",
-		"@wooorm/starry-night": "^1.4.2",
-		"hast-util-to-string": "^2.0.0",
-		"unist-util-visit": "^4.1.2"
+		"@wooorm/starry-night": "^3.0.0",
+		"hast-util-to-string": "^3.0.0",
+		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
-		"ava": "^5.2.0",
-		"rehype-stringify": "^9.0.3",
-		"remark-parse": "^10.0.2",
-		"remark-rehype": "^10.1.0",
-		"unified": "^10.1.2"
+		"ava": "^5.3.1",
+		"cheerio": "1.0.0-rc.12",
+		"rehype-stringify": "^10.0.0",
+		"remark-parse": "^11.0.0",
+		"remark-rehype": "^11.0.0",
+		"unified": "^11.0.3"
 	},
 	"ava": {
 		"files": [
