@@ -161,7 +161,8 @@ There are multiple ways to support light and dark themes. Here's one way to do t
 @import "https://raw.githubusercontent.com/Microflash/rehype-starry-night/main/index.css";
 ```
 
-> **Warning** URL imports for external styles is not recommended. You should either self-host them or bundle them, or copy-paste the entire CSS in one single file.
+> [!WARNING]
+> URL imports for external styles is not recommended. You should either self-host them, bundle them, or copy-paste the entire CSS in one single file.
 
 ## Examples
 
