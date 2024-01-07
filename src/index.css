@@ -1,25 +1,23 @@
 .highlight {
-	--_highlight-background-color-default: hsl(240, 20%, 2%);
-	--_highlight-border-color-default: hsl(208, 21%, 12%);
-	--_highlight-border-radius-default: 12px;
-	--_highlight-font-mono-default: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-	--_highlight-code-highlight-default: hsl(208, 19%, 13%);
+	--hlBackgroundColor: var(--highlight-background-color, hsl(240, 20%, 2%));
+	--hlBorderThickness: var(--highlight-border-thickness, 1px);
+	--hlBorderColor: var(--highlight-border-color, hsl(208, 21%, 12%));
+	--hlBorderRadius: var(--highlight-border-radius, 12px);
+	--hlFontFamilyMono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	--hlFontFamilyCode: var(--highlight-font-mono, var(--hlFontFamilyMono));
+	--hlCodeHighlight: var(--highlight-code-highlight, hsl(208, 19%, 13%));
+	--hlLineNumberColor: var(--highlight-color-line-number, var(--color-prettylights-syntax-sublimelinter-gutter-mark));
+	--hlLineNumberColorHighlighted: var(--highlight-color-line-number-highlighted, var(--color-prettylights-syntax-comment));
 
-	--_highlight-background-color: var(--highlight-background-color, var(--_highlight-background-color-default));
-	--_highlight-border-color: var(--highlight-border-color, var(--_highlight-border-color-default));
-	--_highlight-border-radius: var(--highlight-border-radius, var(--_highlight-border-radius-default));
-	--_highlight-font-mono: var(--highlight-font-mono, var(--_highlight-font-mono-default));
-	--_highlight-code-highlight: var(--highlight-code-highlight, var(--_highlight-code-highlight-default));
-
-	background: var(--_highlight-background-color);
-	border: 1px solid var(--_highlight-border-color);
-	border-radius: var(--_highlight-border-radius);
+	background-color: var(--hlBackgroundColor);
+	border: var(--hlBorderThickness) solid var(--hlBorderColor);
+	border-radius: var(--hlBorderRadius);
 }
 
 .highlight:focus-within {
-	outline-color: var(--_highlight-border-color);
+	outline-color: var(--hlBorderColor);
 	outline-style: solid;
-	outline-width: 0.25ch;
+	outline-width: var(--hlBorderThickness);
 	outline-offset: -0.125em;
 }
 
@@ -27,16 +25,16 @@
 	display: flex;
 	align-items: center;
 	gap: 1ch;
-	border-block-end: 1px solid var(--_highlight-border-color);
-	padding: 1ch;
-	font-size: 0.8em;
+	border-block-end: 1px solid var(--hlBorderColor);
+	padding: 0.75ch;
+	font-size: 0.75em;
 }
 
 .highlight-language {
-	font-family: var(--_highlight-font-mono);
-	background-color: var(--_highlight-code-highlight);
-	padding-inline: 0.75ch;
-	border-radius: calc(var(--_highlight-border-radius) / 1.5);
+	font-family: var(--hlFontFamilyCode);
+	background-color: var(--hlCodeHighlight);
+	padding: 0.75ch 1ch;
+	border-radius: calc(var(--hlBorderRadius) / 1.5);
 }
 
 .highlight pre {
@@ -47,45 +45,69 @@
 
 .highlight pre>code {
 	display: grid;
-	padding-inline: 0;
+	padding: 1em 0;
+	cursor: auto;
+	touch-action: auto;
 }
 
 .highlight pre .line {
-	border-inline-start: 2px solid transparent;
-	padding-inline: 1em;
+	border-left: 2px solid transparent;
+	padding-left: 1ch;
+	padding-right: 1ch;
 }
 
 .highlight pre .line:focus:not(:focus-visible),
 .highlight pre .line:hover {
-	background-color: var(--_highlight-code-highlight);
+	background-color: var(--hlCodeHighlight);
 }
 
-.highlight pre .line[data-highlighted] {
-	background-color: var(--_highlight-code-highlight);
-	border-inline-start: 2px solid var(--color-prettylights-syntax-comment);
-}
-
-.highlight pre .line[data-highlighted] .line-number {
-	color: var(--color-prettylights-syntax-comment);
+.highlight pre .line:focus:not(:focus-visible) .line-number,
+.highlight pre .line:hover .line-number {
+	color: var(--hlLineNumberColorHighlighted);
 }
 
 .highlight pre .line .line-number {
 	user-select: none;
-	margin-inline-end: 1em;
-	color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
+	margin-right: 1em;
+	text-align: right;
+	color: var(--hlLineNumberColor);
+}
+
+.highlight pre .line[data-highlighted] {
+	background-color: var(--hlCodeHighlight);
+	border-left-color: var(--hlLineNumberColorHighlighted);
+}
+
+.highlight pre .line[data-highlighted] .line-number {
+	color: var(--hlLineNumberColorHighlighted);
 }
 
 .highlight pre .line .line-prompt::before {
-	margin-inline-end: 1ch;
+	margin-right: 1ch;
 	vertical-align: middle;
 	content: "";
 	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' fill-rule='evenodd' clip-rule='evenodd' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.179 5.597C13.491 3.081 5.957 3.057 6.344 8.186c.399 5.287 11.204 1.813 11.566 7.102.369 5.375-8 5.71-11.832 2.666M12.017 2v20'/%3E%3C/svg%3E");
 	mask-repeat: no-repeat;
 	mask-position: top center;
 	mask-size: contain;
-	background-color: var(--color-prettylights-syntax-sublimelinter-gutter-mark);
+	background-color: currentColor;
+	color: var(--hlLineNumberColor);
 	display: inline-block;
 	text-decoration: none;
+	user-select: none;
 	width: 1em;
 	height: 1em;
+	min-width: 1em;
+	min-height: 1em;
+}
+
+code[data-code-lang] {
+	--hlBackgroundColorInline: var(--highlight-background-color-inline, hsl(208, 21%, 14%));
+
+	font-family: var(--highlight-font-mono);
+	background-color: var(--hlBackgroundColorInline);
+	padding-left: 0.5ch;
+	padding-right: 0.5ch;
+	font-size: 0.95em;
+	border-radius: 0.5ch;
 }

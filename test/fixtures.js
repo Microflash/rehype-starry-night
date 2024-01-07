@@ -144,5 +144,11 @@ output: `<div class="highlight highlight-nux"><div class="highlight-header"><div
 `,
 output: `<div class="highlight highlight-html"><div class="highlight-header"><button class="highlight-copy">Copy to clipboard</button></div><pre><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
 </code></pre></div>`
+	},
+	{
+		title: "inline code",
+		input: `You can print to console like this: :code[console.log("Hello, world!");]{syntax=js}. This prints \`Hello, world!\``,
+		output: `<p>You can print to console like this: <code data-code-lang="js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. This prints <code>Hello, world!</code></p>`,
+		inline: true
 	}
 ]

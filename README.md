@@ -10,6 +10,7 @@
 - [When should I use this?](#when-should-i-use-this)
 - [Install](#install)
 - [Use](#use)
+	- [Support for inline `code` elements](#support-for-inline-code-elements)
 - [API](#api)
 	- [Themes](#themes)
 - [Examples](#examples)
@@ -37,6 +38,7 @@ The following additonal features are also available:
 - line highlights
 - support for prompt
 - captions and language information
+- highlighting inline `code` elements (through a custom directive)
 
 ## Install
 
@@ -51,14 +53,14 @@ npm install @microflash/rehype-starry-night
 In Deno, with [esm.sh](https://esm.sh/):
 
 ```js
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night"
+import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
 ```
 
 In browsers, with [esm.sh](https://esm.sh/):
 
 ```html
 <script type="module">
-  import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night?bundle"
+  import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night?bundle";
 </script>
 ```
 
@@ -78,13 +80,13 @@ Say we have the following file `example.md`:
 And our module `example.js` looks as follows:
 
 ```js
-import { unified } from "unified"
-import remarkParse from "remark-parse"
-import remarkRehype from "remark-rehype"
-import rehypeStringify from "rehype-stringify"
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night"
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
 
-main()
+main();
 
 async function main() {
   const file = await unified()
@@ -92,9 +94,9 @@ async function main() {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeStarryNight)
     .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(markdown)
+    .process(markdown);
 
-  console.log(String(file))
+  console.log(String(file));
 }
 ```
 
@@ -117,13 +119,58 @@ Running that with `node example.js` yields:
 
 ![Syntax highlighting with Starry Night](./samples/sample-1.png)
 
+### Support for inline `code` elements
+
+To highlight inline `code` elements, you can import [`rehype-starry-night-inline`](./src/rehype-starry-night-inline.js) plugin. This plugin relies on a custom directive which requires importing [`remark-directive`](https://github.com/remarkjs/remark-directive) and [`remark-code-directive`](./src/remark-code-directive.js).
+
+Say we have the following file `example.md`:
+
+```md
+To print a greeting, use :code[console.log("Hello, world!");]{syntax=js}. When executed, it prints `Hello, world!`.
+```
+
+And our module `example.js` looks as follows:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkDirective from "remark-directive";
+import remarkCodeDirective from "https://esm.sh/@microflash/rehype-starry-night/remark-code-directive";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNightInline from "https://esm.sh/@microflash/rehype-starry-night/rehype-starry-night-inline";
+
+main();
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkDirective)
+    .use(remarkCodeDirective)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNightInline)
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<p>To print a greeting, use <code data-code-lang="js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. When executed, it prints <code>Hello, world!</code>.</p>
+```
+
+![Highlighting inline code element](./samples/sample-2.png)
+
 ## API
 
 The default export is `rehypeStarryNight`. The following options are available. All of them are optional.
 
-- `aliases`: an object to alias languages to force syntax highlighting. By default, unknown languages are highlighted as plain text.
-- `grammars`: a list of [Starry Night](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, all grammars provided by Starry Night are used.
-- `headerExtensions`: a list of functions to customize the header. By default, [language-extension](./src/hast-util-starry-night-header-language-extension.js) and [caption-extension](./src/hast-util-starry-night-header-caption-extension.js) are used. A header extension has access to the following arguments.
+- `aliases`: an object to alias languages to force syntax highlighting. By default, unknown languages are highlighted as plain text. Applicable to both `rehype-starry-night` and `rehype-starry-night-inline`.
+- `grammars`: a list of [Starry Night](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, all grammars provided by Starry Night are used. Applicable to both `rehype-starry-night` and `rehype-starry-night-inline`.
+- `headerExtensions`: a list of functions to customize the header. Applicable to only `rehype-starry-night`. By default, [language-extension](./src/hast-util-starry-night-header-language-extension.js) and [caption-extension](./src/hast-util-starry-night-header-caption-extension.js) are used. A header extension has access to the following arguments.
   - `headerOptions`: an object with a randomly generated `id` attached to the `pre` element, `metadata` containing the caption, list of highlighted lines, etc., and `language` tag specified on the code
   - `children`: an array of nodes contained in the header
 
@@ -184,7 +231,7 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting single line codeblock](./samples/sample-2.png)
+![Syntax Highlighting single line codeblock](./samples/sample-3.png)
 
 ### Example: line numbers for multiline codeblock
 
@@ -208,7 +255,7 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting line numbers for multiline codeblock](./samples/sample-3.png)
+![Syntax Highlighting line numbers for multiline codeblock](./samples/sample-4.png)
 
 Line numbers are automatically padded to ensure that they are aligned properly.
 
@@ -238,7 +285,7 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting show prompts](./samples/sample-4.png)
+![Syntax Highlighting show prompts](./samples/sample-5.png)
 
 [index.css](./src/index.css) disables user-selection of prompts to make sure that when a user copies the content of a codeblock, the prompt is not copied.
 
@@ -286,7 +333,7 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting highlight lines](./samples/sample-5.png)
+![Syntax Highlighting highlight lines](./samples/sample-6.png)
 
 Refer to the documentation of [fenceparser](https://github.com/Microflash/fenceparser) to learn about the additional ways in which you can specify the information about highlighted lines.
 
@@ -319,7 +366,7 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting add a caption to a codeblock](./samples/sample-6.png)
+![Syntax Highlighting add a caption to a codeblock](./samples/sample-7.png)
 
 ### Example: configure aliases
 
@@ -336,11 +383,11 @@ Say we have the following file `example.md`:
 You can alias `xjm` to `toml` as follows with `example.js`:
 
 ```js
-import { unified } from "unified"
-import remarkParse from "remark-parse"
-import remarkRehype from "remark-rehype"
-import rehypeStringify from "rehype-stringify"
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night"
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
 
 main()
 
@@ -350,9 +397,9 @@ async function main() {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeStarryNight, { aliases: { xjm: "toml" } })
     .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(markdown)
+    .process(markdown);
 
-  console.log(String(file))
+  console.log(String(file));
 }
 ```
 
@@ -370,7 +417,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Syntax Highlighting configure aliases](./samples/sample-7.png)
+![Syntax Highlighting configure aliases](./samples/sample-8.png)
 
 ### Example: custom header extension
 
@@ -385,13 +432,13 @@ Say we have the following file `example.md`:
 You can pass a custom header extension as follows with `example.js`:
 
 ```js
-import { unified } from "unified"
-import remarkParse from "remark-parse"
-import remarkRehype from "remark-rehype"
-import rehypeStringify from "rehype-stringify"
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night"
-import rehypeStarryNightHeaderCaptionExtension from "@microflash/rehype-starry-night/header-caption-extension"
-import rehypeStarryNightHeaderLanguageExtension from "@microflash/rehype-starry-night/header-language-extension"
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
+import rehypeStarryNightHeaderCaptionExtension from "@microflash/rehype-starry-night/header-caption-extension";
+import rehypeStarryNightHeaderLanguageExtension from "@microflash/rehype-starry-night/header-language-extension";
 
 main()
 
@@ -419,9 +466,9 @@ async function main() {
       ]
     })
     .use(rehypeStringify, { allowDangerousHtml: true })
-    .process(markdown)
+    .process(markdown);
 
-  console.log(String(file))
+  console.log(String(file));
 }
 ```
 
@@ -437,6 +484,8 @@ Running that with `node example.js` yields:
 </code></pre>
 </div>
 ```
+
+![Syntax Highlighting with custom header extension](./samples/sample-9.png)
 
 ## Related
 
