@@ -44,6 +44,7 @@
 	"dependencies": {
 		"@microflash/fenceparser": "^3.0.0",
 		"@wooorm/starry-night": "^3.3.0",
+		"defu": "^6.1.4",
 		"hast-util-to-string": "^3.0.0",
 		"hastscript": "^9.0.0",
 		"unist-util-visit": "^5.0.0"
