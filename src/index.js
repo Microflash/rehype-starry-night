@@ -1,12 +1,13 @@
 import { createStarryNight, all } from "@wooorm/starry-night";
 import { visit } from "unist-util-visit";
 import { toString } from "hast-util-to-string";
-import fenceparser from "@microflash/fenceparser";
+import FenceParser from "@microflash/fenceparser";
 import starryNightHeader from "./hast-util-starry-night-header.js";
 import starryNightHeaderLanguageExtension from "./hast-util-starry-night-header-language-extension.js";
 import starryNightHeaderCaptionExtension from "./hast-util-starry-night-header-caption-extension.js";
 import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js";
 
+const fenceparser = new FenceParser();
 const prefix = "language-";
 
 function extractMetadata(node) {
@@ -14,7 +15,7 @@ function extractMetadata(node) {
 
 	try {
 		const { meta } = node.data || {};
-		metadata = fenceparser(meta).metadata;
+		metadata = fenceparser.parse(meta);
 	} catch (e) { }
 
 	return metadata || {};
