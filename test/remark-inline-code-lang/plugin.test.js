@@ -22,6 +22,13 @@ const scenarios = [
 	{
 		title: "multiple annotated code elements",
 		input: "Launch the container with `sh> docker compose up -d` and run `sh> curl https://localhost:8080`"
+	},
+	{
+		title: "code element with custom marker",
+		input: "To prune a remote called origin, run `git$ git remote prune origin`",
+		options: {
+			marker: "$ "
+		}
 	}
 ];
 const scenario = scenarios.map(s => s.title);
@@ -42,8 +49,8 @@ const pluginDirectory = "remark-inline-code-lang";
 const snapshotsDirectory = "snapshots";
 
 it.each(scenario)(`Test: %s`, async (rule) => {
-	const { input } = scenarios.find(s => s.title === rule);
-	const result = await parse(input);
+	const { input, options = {} } = scenarios.find(s => s.title === rule);
+	const result = await parse(input, options);
 	const snapshot = path.resolve(
 		currentDirectory,
 		testDirectory,
