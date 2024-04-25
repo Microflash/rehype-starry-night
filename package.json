@@ -39,7 +39,7 @@
 		"src/rehype-starry-night-inline.js"
 	],
 	"scripts": {
-		"test": "ava"
+		"test": "vitest plugin"
 	},
 	"dependencies": {
 		"@microflash/fenceparser": "^3.0.0",
@@ -50,18 +50,12 @@
 		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
-		"ava": "^6.1.2",
-		"cheerio": "1.0.0-rc.12",
 		"rehype-stringify": "^10.0.0",
 		"remark-directive": "^3.0.0",
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.0",
-		"unified": "^11.0.4"
+		"unified": "^11.0.4",
+		"vitest": "^1.5.2"
 	},
-	"packageManager": "pnpm@9.0.6",
-	"ava": {
-		"files": [
-			"test/**/*.test.js"
-		]
-	}
+	"packageManager": "pnpm@9.0.6"
 }
