@@ -42,7 +42,7 @@ output: `<div class="highlight highlight-sh"><div class="highlight-header"><div 
 	{
 		title: "highlight lines",
 		input: `
-\`\`\`sh {4-7} prompt{1}
+\`\`\`sh {4..7} prompt{1}
 aws --endpoint-url http://localhost:4566 s3api list-buckets
 {
 	"Buckets": [

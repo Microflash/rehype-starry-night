@@ -4,6 +4,7 @@ on:
   push:
     branches: 
       - main
+      - v4
 
 jobs:
   regression:
@@ -11,15 +12,13 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+        uses: pnpm/action-setup@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
