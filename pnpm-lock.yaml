@@ -14,6 +14,9 @@ importers:
       '@wooorm/starry-night':
         specifier: ^3.3.0
         version: 3.3.0
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
       hast-util-to-string:
         specifier: ^3.0.0
         version: 3.0.0
