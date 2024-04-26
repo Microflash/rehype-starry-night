@@ -25,8 +25,8 @@
 		"./css": "./src/index.css",
 		"./header-caption-extension": "./src/hast-util-starry-night-header-caption-extension.js",
 		"./header-language-extension": "./src/hast-util-starry-night-header-language-extension.js",
-		"./remark-code-directive": "./src/remark-code-directive.js",
-		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline.js"
+		"./remark-inline-code-lang": "./src/remark-inline-code-lang/index.js",
+		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js"
 	},
 	"files": [
 		"src/index.js",
@@ -35,8 +35,8 @@
 		"src/hast-util-starry-night-header-caption-extension.js",
 		"src/hast-util-starry-night-header-language-extension.js",
 		"src/index.css",
-		"src/remark-code-directive.js",
-		"src/rehype-starry-night-inline.js"
+		"src/remark-inline-code-lang/index.js",
+		"src/rehype-starry-night-inline/index.js"
 	],
 	"scripts": {
 		"test": "vitest plugin"
