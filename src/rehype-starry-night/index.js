@@ -1,3 +1,4 @@
+import defu from "defu";
 import { createStarryNight, all } from "@wooorm/starry-night";
 import { visit } from "unist-util-visit";
 import { toString } from "hast-util-to-string";
@@ -9,6 +10,9 @@ import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js";
 
 const fenceparser = new FenceParser();
 const prefix = "language-";
+const defaults = {
+	classNamePrefix: "hl"
+};
 
 function extractMetadata(node) {
 	let metadata;
@@ -22,7 +26,15 @@ function extractMetadata(node) {
 }
 
 export default function rehypeStarryNight(userOptions = {}) {
-	const { aliases = {}, grammars = all, headerExtensions = [ starryNightHeaderLanguageExtension, starryNightHeaderCaptionExtension ] } = userOptions;
+	const {
+		aliases = {},
+		grammars = all,
+		headerExtensions = [
+			starryNightHeaderLanguageExtension,
+			starryNightHeaderCaptionExtension
+		],
+		classNamePrefix
+	} = defu(userOptions, defaults);
 	const starryNightPromise = createStarryNight(grammars);
 
 	return async function (tree) {
@@ -68,14 +80,15 @@ export default function rehypeStarryNight(userOptions = {}) {
 				id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
 				language: languageFragment,
 				metadata: metadata,
-				extensions: headerExtensions
+				extensions: headerExtensions,
+				classNamePrefix
 			};
 
 			parent.children.splice(index, 1, {
 				type: "element",
 				tagName: "div",
 				properties: {
-					className: ["highlight", "highlight-" + languageId]
+					className: [classNamePrefix, `${classNamePrefix}-${languageId}`]
 				},
 				children: [
 					starryNightHeader(headerOptions),

@@ -101,7 +101,7 @@
 	min-height: 1em;
 }
 
-code[data-code-lang] {
+code.hl-inline {
 	--hlBackgroundColorInline: var(--highlight-background-color-inline, hsl(208, 21%, 14%));
 
 	font-family: var(--highlight-font-mono);
