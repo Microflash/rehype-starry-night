@@ -19,22 +19,22 @@
 	"homepage": "https://github.com/Microflash/rehype-starry-night#readme",
 	"author": "Naiyer Asif (https://www.naiyerasif.com)",
 	"type": "module",
-	"main": "src/index.js",
+	"main": "src/rehype-starry-night/index.js",
 	"exports": {
-		".": "./src/index.js",
-		"./css": "./src/index.css",
-		"./header-caption-extension": "./src/hast-util-starry-night-header-caption-extension.js",
-		"./header-language-extension": "./src/hast-util-starry-night-header-language-extension.js",
+		".": "./src/rehype-starry-night/index.js",
+		"./header-caption-extension": "./src/rehype-starry-night/hast-util-starry-night-header-caption-extension.js",
+		"./header-language-extension": "./src/rehype-starry-night/hast-util-starry-night-header-language-extension.js",
 		"./remark-inline-code-lang": "./src/remark-inline-code-lang/index.js",
-		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js"
+		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js",
+		"./css": "./src/index.css"
 	},
 	"files": [
-		"src/index.js",
-		"src/hast-util-starry-night-gutter.js",
-		"src/hast-util-starry-night-header.js",
-		"src/hast-util-starry-night-header-caption-extension.js",
-		"src/hast-util-starry-night-header-language-extension.js",
 		"src/index.css",
+		"src/rehype-starry-night/index.js",
+		"src/rehype-starry-night/hast-util-starry-night-gutter.js",
+		"src/rehype-starry-night/hast-util-starry-night-header.js",
+		"src/rehype-starry-night/hast-util-starry-night-header-caption-extension.js",
+		"src/rehype-starry-night/hast-util-starry-night-header-language-extension.js",
 		"src/remark-inline-code-lang/index.js",
 		"src/rehype-starry-night-inline/index.js"
 	],
@@ -50,6 +50,7 @@
 		"unist-util-visit": "^5.0.0"
 	},
 	"devDependencies": {
+		"cheerio": "1.0.0-rc.12",
 		"rehype-stringify": "^10.0.0",
 		"remark-directive": "^3.0.0",
 		"remark-parse": "^11.0.0",
