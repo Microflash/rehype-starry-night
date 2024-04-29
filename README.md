@@ -615,9 +615,8 @@ Running that with `node example.js` yields:
 ## Related
 
 - [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight) &mdash; highlight code with [highlight.js](https://github.com/isagalaev/highlight.js) (through [lowlight](https://github.com/wooorm/lowlight))
-- [`rehype-prism`](https://github.com/mapbox/rehype-prism) &mdash; highlight code with [Prism](http://prismjs.com) (via [refractor](https://github.com/wooorm/refractor))
 - [`rehype-prism-plus`](https://github.com/timlrx/rehype-prism-plus) &mdash; highlight code with [Prism](http://prismjs.com) (via [refractor](https://github.com/wooorm/refractor)) with additional line highlighting and line numbers functionalities
-- [`rehype-shiki`](https://github.com/rsclarke/rehype-shiki) &mdash; highlight code with [shiki](https://github.com/octref/shiki)
+- [`@shikijs/rehype`](https://github.com/shikijs/shiki/tree/main/packages/rehype) &mdash; highlight code with [shiki](https://shiki.style)
 
 ## License
 
