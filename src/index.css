@@ -1,27 +1,27 @@
-.highlight {
-	--hlBackgroundColor: var(--highlight-background-color, hsl(240, 20%, 2%));
-	--hlBorderThickness: var(--highlight-border-thickness, 1px);
-	--hlBorderColor: var(--highlight-border-color, hsl(208, 21%, 12%));
-	--hlBorderRadius: var(--highlight-border-radius, 12px);
+.hl {
+	--hlBackgroundColor: var(--hl-background-color, hsl(240, 20%, 2%));
+	--hlBorderThickness: var(--hl-border-thickness, 1px);
+	--hlBorderColor: var(--hl-border-color, hsl(208, 21%, 12%));
+	--hlBorderRadius: var(--hl-border-radius, 12px);
 	--hlFontFamilyMono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-	--hlFontFamilyCode: var(--highlight-font-mono, var(--hlFontFamilyMono));
-	--hlCodeHighlight: var(--highlight-code-highlight, hsl(208, 19%, 13%));
-	--hlLineNumberColor: var(--highlight-color-line-number, var(--color-prettylights-syntax-sublimelinter-gutter-mark));
-	--hlLineNumberColorHighlighted: var(--highlight-color-line-number-highlighted, var(--color-prettylights-syntax-comment));
+	--hlFontFamilyCode: var(--hl-font-mono, var(--hlFontFamilyMono));
+	--hlCodeHighlight: var(--hl-code-highlight, hsl(208, 19%, 13%));
+	--hlLineNumberColor: var(--hl-color-line-number, var(--color-prettylights-syntax-sublimelinter-gutter-mark));
+	--hlLineNumberColorHighlighted: var(--hl-color-line-number-highlighted, var(--color-prettylights-syntax-comment));
 
 	background-color: var(--hlBackgroundColor);
 	border: var(--hlBorderThickness) solid var(--hlBorderColor);
 	border-radius: var(--hlBorderRadius);
 }
 
-.highlight:focus-within {
+.hl:focus-within {
 	outline-color: var(--hlBorderColor);
 	outline-style: solid;
 	outline-width: var(--hlBorderThickness);
 	outline-offset: -0.125em;
 }
 
-.highlight-header {
+.hl-header {
 	display: flex;
 	align-items: center;
 	gap: 1ch;
@@ -30,59 +30,59 @@
 	font-size: 0.75em;
 }
 
-.highlight-language {
+.hl-language {
 	font-family: var(--hlFontFamilyCode);
 	background-color: var(--hlCodeHighlight);
 	padding: 0.75ch 1ch;
 	border-radius: calc(var(--hlBorderRadius) / 1.5);
 }
 
-.highlight pre {
+.hl pre {
 	background-color: transparent;
 	border: none;
 	overflow-x: auto;
 }
 
-.highlight pre>code {
+.hl pre>code {
 	display: grid;
 	padding: 1em 0;
 	cursor: auto;
 	touch-action: auto;
 }
 
-.highlight pre .line {
+.hl pre .line {
 	border-left: 2px solid transparent;
 	padding-left: 1ch;
 	padding-right: 1ch;
 }
 
-.highlight pre .line:focus:not(:focus-visible),
-.highlight pre .line:hover {
+.hl pre .line:focus:not(:focus-visible),
+.hl pre .line:hover {
 	background-color: var(--hlCodeHighlight);
 }
 
-.highlight pre .line:focus:not(:focus-visible) .line-number,
-.highlight pre .line:hover .line-number {
+.hl pre .line:focus:not(:focus-visible) .line-number,
+.hl pre .line:hover .line-number {
 	color: var(--hlLineNumberColorHighlighted);
 }
 
-.highlight pre .line .line-number {
+.hl pre .line .line-number {
 	user-select: none;
 	margin-right: 1em;
 	text-align: right;
 	color: var(--hlLineNumberColor);
 }
 
-.highlight pre .line[data-highlighted] {
+.hl pre .line[data-highlighted] {
 	background-color: var(--hlCodeHighlight);
 	border-left-color: var(--hlLineNumberColorHighlighted);
 }
 
-.highlight pre .line[data-highlighted] .line-number {
+.hl pre .line[data-highlighted] .line-number {
 	color: var(--hlLineNumberColorHighlighted);
 }
 
-.highlight pre .line .line-prompt::before {
+.hl pre .line .line-prompt::before {
 	margin-right: 1ch;
 	vertical-align: middle;
 	content: "";
@@ -102,9 +102,9 @@
 }
 
 code.hl-inline {
-	--hlBackgroundColorInline: var(--highlight-background-color-inline, hsl(208, 21%, 14%));
+	--hlBackgroundColorInline: var(--hl-background-color-inline, hsl(208, 21%, 14%));
 
-	font-family: var(--highlight-font-mono);
+	font-family: var(--hl-font-mono);
 	background-color: var(--hlBackgroundColorInline);
 	padding-left: 0.5ch;
 	padding-right: 0.5ch;

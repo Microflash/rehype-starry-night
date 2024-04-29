@@ -18,15 +18,17 @@
 	- [Example: line numbers for multiline codeblock](#example-line-numbers-for-multiline-codeblock)
 	- [Example: show prompts](#example-show-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
-	- [Example: add a caption to a codeblock](#example-add-a-caption-to-a-codeblock)
-	- [Example: configure aliases](#example-configure-aliases)
+	- [Example: codeblock with a caption](#example-codeblock-with-a-caption)
+	- [Example: aliases](#example-aliases)
 	- [Example: custom header extension](#example-custom-header-extension)
+	- [Example: custom classname prefix](#example-custom-classname-prefix)
+	- [Example: custom marker](#example-custom-marker)
 - [Related](#related)
 - [License](#license)
 
 ## What’s this?
 
-This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night) in a markdown document. This results into syntax highlighting like what GitHub uses to highlight code.
+This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night) in a markdown document. The syntax highlighting mimics what GitHub's syntax highlighting color schemes.
 
 ## When should I use this?
 
@@ -38,7 +40,7 @@ The following additonal features are also available:
 - line highlights
 - support for prompt
 - captions and language information
-- highlighting inline `code` elements (through a custom directive)
+- highlighting inline `code` elements
 
 ## Install
 
@@ -84,7 +86,7 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
 
 main();
 
@@ -103,11 +105,11 @@ async function main() {
 Running that with `node example.js` yields:
 
 ```html
-<div class="highlight highlight-css">
-  <div class="highlight-header">
-    <div class="highlight-language">css</div>
+<div class="hl hl-css">
+  <div class="hl-header">
+    <div class="hl-language">css</div>
   </div>
-<pre id="MC4zMzc4MTYx"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
+<pre id="MC45OTExNTEw"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>  <span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>  <span class="pl-c">/* allow percentage based heights for the children */</span></span>
@@ -121,12 +123,12 @@ Running that with `node example.js` yields:
 
 ### Support for inline `code` elements
 
-To highlight inline `code` elements, you can import [`rehype-starry-night-inline`](./src/rehype-starry-night-inline.js) plugin. This plugin relies on a custom directive which requires importing [`remark-directive`](https://github.com/remarkjs/remark-directive) and [`remark-code-directive`](./src/remark-code-directive.js).
+To highlight inline `code` elements, import [`rehype-starry-night-inline`](./src/rehype-starry-night-inline/index.js) plugin. This plugin relies on the language information injected by the [`remark-inline-code-lang`](./src/remark-inline-code-lang/index.js) plugin.
 
 Say we have the following file `example.md`:
 
 ```md
-To print a greeting, use :code[console.log("Hello, world!");]{syntax=js}. When executed, it prints `Hello, world!`.
+To print a greeting, use `js> console.log("Hello, world!");`. When executed, it prints `Hello, world!`.
 ```
 
 And our module `example.js` looks as follows:
@@ -134,19 +136,17 @@ And our module `example.js` looks as follows:
 ```js
 import { unified } from "unified";
 import remarkParse from "remark-parse";
-import remarkDirective from "remark-directive";
-import remarkCodeDirective from "https://esm.sh/@microflash/rehype-starry-night/remark-code-directive";
+import remarkInlineCodeLang from "@microflash/rehype-starry-night/remark-inline-code-lang";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-import rehypeStarryNightInline from "https://esm.sh/@microflash/rehype-starry-night/rehype-starry-night-inline";
+import rehypeStarryNightInline from "@microflash/rehype-starry-night/rehype-starry-night-inline";
 
 main();
 
 async function main() {
   const file = await unified()
     .use(remarkParse)
-    .use(remarkDirective)
-    .use(remarkCodeDirective)
+    .use(remarkInlineCodeLang)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeStarryNightInline)
     .use(rehypeStringify, { allowDangerousHtml: true })
@@ -159,7 +159,7 @@ async function main() {
 Running that with `node example.js` yields:
 
 ```html
-<p>To print a greeting, use <code data-code-lang="js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. When executed, it prints <code>Hello, world!</code>.</p>
+<p>To print a greeting, use <code class="hl-inline hl-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. When executed, it prints <code>Hello, world!</code>.</p>
 ```
 
 ![Highlighting inline code element](./samples/sample-2.png)
@@ -170,9 +170,11 @@ The default export is `rehypeStarryNight`. The following options are available. 
 
 - `aliases`: an object to alias languages to force syntax highlighting. By default, unknown languages are highlighted as plain text. Applicable to both `rehype-starry-night` and `rehype-starry-night-inline`.
 - `grammars`: a list of [Starry Night](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, all grammars provided by Starry Night are used. Applicable to both `rehype-starry-night` and `rehype-starry-night-inline`.
-- `headerExtensions`: a list of functions to customize the header. Applicable to only `rehype-starry-night`. By default, [language-extension](./src/hast-util-starry-night-header-language-extension.js) and [caption-extension](./src/hast-util-starry-night-header-caption-extension.js) are used. A header extension has access to the following arguments.
-  - `headerOptions`: an object with a randomly generated `id` attached to the `pre` element, `metadata` containing the caption, list of highlighted lines, etc., and `language` tag specified on the code
+- `classNamePrefix` (default: `hl`): a prefix for the classNames for different elements of HTML generated by `rehype-starry-night` and `rehype-starry-night-inline`.
+- `headerExtensions`: a list of functions to customize the header. Applicable to only `rehype-starry-night`. By default, [language-extension](./src/rehype-starry-night/hast-util-starry-night-header-language-extension.js) and [caption-extension](./src/rehype-starry-night/hast-util-starry-night-header-caption-extension.js) are used. A header extension has access to the following arguments.
+  - `headerOptions`: an object with a randomly generated `id` attached to the `pre` element, `metadata` containing the caption, list of highlighted lines, etc., the `language` tag specified on the code, and the `classNamePrefix`
   - `children`: an array of nodes contained in the header
+- `marker` (default: `> `): the marker for inline `code` element before which the language information is specified. Applicable to `remark-inline-code-lang`.
 
 ### Themes
 
@@ -187,17 +189,17 @@ There are multiple ways to support light and dark themes. Here's one way to do t
 ```css
 :root {
   /* light theme variables specific to rehype-starry-night plugin */
-  --highlight-background-color: hsl(0, 0%, 100%);
-  --highlight-border-color: hsl(208, 21%, 86%);
-  --highlight-code-highlight: hsl(208, 19%, 82%);
+  --hl-background-color: hsl(0, 0%, 100%);
+  --hl-border-color: hsl(208, 21%, 86%);
+  --hl-code-highlight: hsl(208, 19%, 82%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     /* dark theme variables specific to rehype-starry-night plugin */
-    --highlight-background-color: hsl(240, 20%, 2%);
-    --highlight-border-color: hsl(208, 21%, 12%);
-    --highlight-code-highlight: hsl(208, 19%, 13%);
+    --hl-background-color: hsl(240, 20%, 2%);
+    --hl-border-color: hsl(208, 21%, 12%);
+    --hl-code-highlight: hsl(208, 19%, 13%);
   }
 }
 
@@ -205,7 +207,7 @@ There are multiple ways to support light and dark themes. Here's one way to do t
 @import "https://raw.githubusercontent.com/wooorm/starry-night/main/style/both.css";
 
 /* import CSS specific to rehype-starry-night plugin */
-@import "https://raw.githubusercontent.com/Microflash/rehype-starry-night/main/index.css";
+@import "https://raw.githubusercontent.com/Microflash/rehype-starry-night/main/src/index.css";
 ```
 
 > [!WARNING]
@@ -222,11 +224,11 @@ There are multiple ways to support light and dark themes. Here's one way to do t
 The above codeblock will yield:
 
 ```html
-<div class="highlight highlight-sh">
-  <div class="highlight-header">
-    <div class="highlight-language">sh</div>
+<div class="hl hl-sh">
+  <div class="hl-header">
+    <div class="hl-language">sh</div>
   </div>
-<pre id="MC40OTg1ODA0"><code tabindex="0"><span class="line">docker ps -a</span>
+<pre id="MC4zNzExNzQw"><code tabindex="0"><span class="line">docker ps -a</span>
 </code></pre>
 </div>
 ```
@@ -244,11 +246,11 @@ The above codeblock will yield:
 The above codeblock will yield:
 
 ```html
-<div class="highlight highlight-css">
-  <div class="highlight-header">
-    <div class="highlight-language">css</div>
+<div class="hl hl-css">
+  <div class="hl-header">
+    <div class="hl-language">css</div>
   </div>
-<pre id="MC4yODM1ODY3"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
+<pre id="MC4wMTQ1Nzg4"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>}</span>
 </code></pre>
@@ -273,11 +275,11 @@ Sometimes you may want to show a prompt while displaying a command-line instruct
 The above codeblock will yield:
 
 ```html
-<div class="highlight highlight-sh">
-  <div class="highlight-header">
-    <div class="highlight-language">sh</div>
+<div class="hl hl-sh">
+  <div class="hl-header">
+    <div class="hl-language">sh</div>
   </div>
-<pre id="MC4zMDQ2MjUy"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
+<pre id="MC44MTg4MTA0"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/greeter<span class="pl-k">?</span>name=Anya</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>Hello, Anya<span class="pl-k">!</span></span>
@@ -293,7 +295,7 @@ The above codeblock will yield:
 
 You can highlight multiple lines by specifying the line numbers (or even, range of line numbers) between curly braces in the codeblock metadata.
 
-	```sh {4-7} prompt{1}
+	```sh {4..7} prompt{1}
 	aws --endpoint-url http://localhost:4566 s3api list-buckets
 	{
 	  "Buckets": [
@@ -312,11 +314,11 @@ You can highlight multiple lines by specifying the line numbers (or even, range 
 The above codeblock will yield:
 
 ```html
-<div class="highlight highlight-sh">
-  <div class="highlight-header">
-    <div class="highlight-language">sh</div>
+<div class="hl hl-sh">
+  <div class="hl-header">
+    <div class="hl-language">sh</div>
   </div>
-<pre id="MC44MTc0Njk1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
+<pre id="MC44MTc0NjQ5"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 2</span>{</span>
 <span class="line"><span class="line-number" aria-hidden="true"> 3</span>  <span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
 <span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 4</span>    {</span>
@@ -337,7 +339,7 @@ The above codeblock will yield:
 
 Refer to the documentation of [fenceparser](https://github.com/Microflash/fenceparser) to learn about the additional ways in which you can specify the information about highlighted lines.
 
-### Example: add a caption to a codeblock
+### Example: codeblock with a caption
 
 Captions are useful to describe the context of a piece of code.
 
@@ -352,12 +354,12 @@ Captions are useful to describe the context of a piece of code.
 The above codeblock will yield:
 
 ```html
-<div class="highlight highlight-sh">
-  <div class="highlight-header">
-    <div class="highlight-language">sh</div>
-    <div class="highlight-caption">Configuring the AWS account</div>
+<div class="hl hl-sh">
+  <div class="hl-header">
+    <div class="hl-language">sh</div>
+    <div class="hl-caption">Configuring the AWS account</div>
   </div>
-<pre id="MC40NTMzMDQx"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
+<pre id="MC45ODEyODAy"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>AWS Access Key ID [None]: gwen</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>AWS Secret Access Key [None]: stacy</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>Default region name [None]: us-east-1</span>
@@ -368,9 +370,9 @@ The above codeblock will yield:
 
 ![Syntax Highlighting add a caption to a codeblock](./samples/sample-7.png)
 
-### Example: configure aliases
+### Example: aliases
 
-Although Starry Night [supports](https://github.com/wooorm/starry-night#languages=) a huge number of languages, it is not all encompassing. In such cases, you can configure aliases to force syntax highlighting a codeblock containing code in a language not yet supported by Starry Night.
+Although Starry Night [supports](https://github.com/wooorm/starry-night#languages=) a large number of languages, it is not all encompassing. In such cases, you can configure aliases to force the syntax highlighting on a codeblock containing code in a language not yet supported by Starry Night.
 
 Say we have the following file `example.md`:
 
@@ -406,11 +408,11 @@ async function main() {
 Running that with `node example.js` yields:
 
 ```html
-<div class="highlight highlight-toml">
-  <div class="highlight-header">
-    <div class="highlight-language">xjm</div>
+<div class="hl hl-toml">
+  <div class="hl-header">
+    <div class="hl-language">xjm</div>
   </div>
-<pre id="MC41Nzk3ODE2"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
+<pre id="MC40OTE3NjA4"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-smi">features</span> = [ <span class="pl-s"><span class="pl-pds">"</span>io<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>graphics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>compute<span class="pl-pds">"</span></span> ]</span>
 </code></pre>
@@ -436,7 +438,7 @@ import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-import rehypeStarryNight from "https://esm.sh/@microflash/rehype-starry-night";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
 import rehypeStarryNightHeaderCaptionExtension from "@microflash/rehype-starry-night/header-caption-extension";
 import rehypeStarryNightHeaderLanguageExtension from "@microflash/rehype-starry-night/header-language-extension";
 
@@ -454,7 +456,7 @@ async function main() {
           children.push({
             type: "element",
             tagName: "button",
-            properties: { className: ["highlight-copy"], for: headerOptions.id },
+            properties: { className: [`${headerOptions.classNamePrefix}-copy`], for: headerOptions.id },
             children: [
               {
                 type: "text",
@@ -475,17 +477,140 @@ async function main() {
 Running that with `node example.js` yields:
 
 ```html
-<div class="highlight highlight-html">
-  <div class="highlight-header">
-    <div class="highlight-language">html</div>
-    <button class="highlight-copy" for="MC41MTc4MjIz">Copy</button>
+<div class="hl hl-html">
+  <div class="hl-header">
+    <div class="hl-language">html</div>
+    <button class="hl-copy" for="MC40MTUyMDQ4">Copy</button>
   </div>
-<pre id="MC41MTc4MjIz"><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
+<pre id="MC40MTUyMDQ4"><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
 </code></pre>
 </div>
 ```
 
 ![Syntax Highlighting with custom header extension](./samples/sample-9.png)
+
+### Example: custom classname prefix
+
+You can attach your own prefix on the classNames of HTML elements generated by the `rehype-starry-night` and `rehype-starry-night-inline` plugins.
+
+Say we have the following file `example.md`:
+
+	```java
+	System.out.println("Hello, world!");
+	```
+
+You can customize the className prefix as follows with `example.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+
+main()
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNight, { classNamePrefix: "syntax" })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<div class="syntax syntax-java">
+  <div class="syntax-header">
+    <div class="syntax-language">java</div>
+  </div>
+<pre id="MC42NjM4OTE0"><code tabindex="0"><span class="line"><span class="pl-smi">System</span><span class="pl-k">.</span>out<span class="pl-k">.</span>println(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</span>
+</code></pre>
+</div>
+```
+
+Similarly for inline `code` element, say we have the following file `example.md`:
+
+```md
+To remove the whitespace around a string, try `java> str.strip()`.
+```
+
+You can customize the className prefix as follows with `example.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkInlineCodeLang from "@microflash/rehype-starry-night/remark-inline-code-lang";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNightInline from "@microflash/rehype-starry-night/rehype-starry-night-inline";
+
+main();
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkInlineCodeLang)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNightInline, { classNamePrefix: "syntax" })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<p>To remove the whitespace around a string, try <code class="syntax-inline syntax-java">str<span class="pl-k">.</span>strip()</code>.</p>
+```
+
+### Example: custom marker
+
+You can configure a custom marker for inline `code` element to inject the language information. For example, say you want to annotate your inline `code` element with `: ` instead of the default `> ` marker, as shown in the following file `example.md`:
+
+```md
+To specify the language direction, use `html: <span dir="rtl">مرحبا</span>`.
+```
+
+You can customize the marker as follows with `example.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkInlineCodeLang from "@microflash/rehype-starry-night/remark-inline-code-lang";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNightInline from "@microflash/rehype-starry-night/rehype-starry-night-inline";
+
+main();
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkInlineCodeLang, { marker: ": " })
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNightInline)
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<p>To specify the language direction, use <code class="hl-inline hl-html">&lt;<span class="pl-ent">span</span> <span class="pl-e">dir</span>=<span class="pl-s"><span class="pl-pds">"</span>rtl<span class="pl-pds">"</span></span>&gt;مرحبا&lt;/<span class="pl-ent">span</span>&gt;</code>.</p>
+```
+
+![Syntax Highlighting through language information using custom marker](./samples/sample-10.png)
 
 ## Related
 
