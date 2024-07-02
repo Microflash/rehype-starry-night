@@ -10,6 +10,7 @@ import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js";
 
 const fenceparser = new FenceParser();
 const prefix = "language-";
+const plaintextClassName = [`${prefix}txt`];
 const defaults = {
 	classNamePrefix: "hl"
 };
@@ -41,41 +42,29 @@ export default function rehypeStarryNight(userOptions = {}) {
 		const starryNight = await starryNightPromise;
 
 		visit(tree, "element", (node, index, parent) => {
-			if (!parent || index === null || node.tagName !== "pre") {
-				return;
-			}
+			if (!parent || index === null || node.tagName !== "pre") return;
 
-			const head = node.children[0];
+			const [ head ] = node.children;
 
-			if (!head || head.type !== "element" || head.tagName !== "code" || !head.properties) {
-				return;
-			}
+			if (!head || head.type !== "element" || head.tagName !== "code" || !head.properties) return;
 
-			const classes = head.properties.className;
-
-			if (!Array.isArray(classes)) return;
-
-			const language = classes.find((d) => typeof d === "string" && d.startsWith(prefix));
-
-			if (typeof language !== "string") return;
-
-			const metadata = extractMetadata(head);
-
-			const languageFragment = language.slice(prefix.length);
-			const languageId = aliases[languageFragment] || languageFragment || "txt";
-			const scope = starryNight.flagToScope(languageId);
+			const classes = head.properties.className || plaintextClassName;
+			const languageClass = classes.find(d => typeof d === "string" && d.startsWith(prefix));
+			const languageFragment = languageClass.slice(prefix.length);
+			const languageId = aliases[languageFragment] || languageFragment;
 			const code = toString(head);
+			const scope = starryNight.flagToScope(languageId);
 
 			let children;
-
 			if (scope) {
 				const fragment = starryNight.highlight(code, scope);
 				children = fragment.children;
 			} else {
-				console.warn(`Grammar not found for ${languageId}; rendering the code without syntax highlighting`);
+				console.warn(`Skipping syntax highlighting for unknown language: ${languageId}`);
 				children = head.children;
 			}
 
+			const metadata = extractMetadata(head);
 			const headerOptions = {
 				id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
 				language: languageFragment,
