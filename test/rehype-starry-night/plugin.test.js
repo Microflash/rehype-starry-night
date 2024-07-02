@@ -14,6 +14,14 @@ const scenarios = [
 		input: "Divided we fall.",
 	},
 	{
+		title: "codeblock without language",
+		input: `
+\`\`\`
+echo "foo" > bar.txt
+\`\`\`
+`,
+	},
+	{
 		title: "single line codeblock",
 		input: `
 \`\`\`sh
