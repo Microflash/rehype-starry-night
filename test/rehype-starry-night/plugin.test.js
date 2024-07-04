@@ -6,6 +6,7 @@ import rehypeStringify from "rehype-stringify";
 import { expect, it } from "vitest";
 import * as cheerio from "cheerio";
 import { common } from "@wooorm/starry-night";
+import { h } from "hastscript";
 import rehypeStarryNight from "../../src/rehype-starry-night/index.js";
 
 const scenarios = [
@@ -71,9 +72,9 @@ aws --endpoint-url http://localhost:4566 s3api list-buckets
 `,
 	},
 	{
-		title: "codefence with a caption",
+		title: "codefence with a title",
 		input: `
-\`\`\`sh caption='Configuring the AWS account' prompt{1}
+\`\`\`sh title='Configuring the AWS account' prompt{1}
 aws configure
 AWS Access Key ID [None]: gwen
 AWS Secret Access Key [None]: stacy
@@ -105,21 +106,18 @@ let-env NU_LIB_DIRS = [
 	},
 	{
 		title: "custom header extension",
-		options: { headerExtensions: [
-			(headerOptions, children) => {
-				children.push({
-					type: "element",
-					tagName: "button",
-					properties: { className: [`${headerOptions.classNamePrefix}-copy`] },
-					children: [
-						{
-							type: "text",
-							value: "Copy to clipboard"
-						}
-					]
-				})
-			}
-		]},
+		options: {
+			plugins: [
+				{
+					type: "header",
+					plugin: (globalOptions, nodes) => {
+						nodes.push(
+							h(`button.${globalOptions.classNamePrefix}-copy`, "Copy to clipboard")
+						);
+					}
+				}
+			]
+		},
 		input: `
 \`\`\`html
 <mark>highlighted</mark>

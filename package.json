@@ -22,8 +22,8 @@
 	"main": "src/rehype-starry-night/index.js",
 	"exports": {
 		".": "./src/rehype-starry-night/index.js",
-		"./header-caption-extension": "./src/rehype-starry-night/hast-util-starry-night-header-caption-extension.js",
-		"./header-language-extension": "./src/rehype-starry-night/hast-util-starry-night-header-language-extension.js",
+		"./plugins/header-language-plugin": "./src/rehype-starry-night/plugins/header-language-plugin.js",
+		"./plugins/header-title-extension": "./src/rehype-starry-night/plugins/header-title-plugin.js",
 		"./remark-inline-code-lang": "./src/remark-inline-code-lang/index.js",
 		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js",
 		"./css": "./src/index.css"
@@ -32,9 +32,8 @@
 		"src/index.css",
 		"src/rehype-starry-night/index.js",
 		"src/rehype-starry-night/hast-util-starry-night-gutter.js",
-		"src/rehype-starry-night/hast-util-starry-night-header.js",
-		"src/rehype-starry-night/hast-util-starry-night-header-caption-extension.js",
-		"src/rehype-starry-night/hast-util-starry-night-header-language-extension.js",
+		"src/rehype-starry-night/plugins/header-title-plugin.js",
+		"src/rehype-starry-night/plugins/header-language-plugin.js",
 		"src/remark-inline-code-lang/index.js",
 		"src/rehype-starry-night-inline/index.js"
 	],
