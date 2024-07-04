@@ -3,9 +3,9 @@ import { createStarryNight, all } from "@wooorm/starry-night";
 import { visit } from "unist-util-visit";
 import { toString } from "hast-util-to-string";
 import FenceParser from "@microflash/fenceparser";
-import starryNightHeader from "./hast-util-starry-night-header.js";
-import starryNightHeaderLanguageExtension from "./hast-util-starry-night-header-language-extension.js";
-import starryNightHeaderCaptionExtension from "./hast-util-starry-night-header-caption-extension.js";
+import { h } from "hastscript";
+import headerLanguagePlugin from "./plugins/header-language-plugin.js";
+import headerTitlePlugin from "./plugins/header-title-plugin.js";
 import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js";
 
 const fenceparser = new FenceParser();
@@ -26,13 +26,23 @@ function extractMetadata(node) {
 	return metadata || {};
 }
 
+function globalOptions(node, language, classNamePrefix) {
+	const metadata = extractMetadata(node);
+	return {
+		id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
+		metadata,
+		language,
+		classNamePrefix
+	}
+}
+
 export default function rehypeStarryNight(userOptions = {}) {
 	const {
 		aliases = {},
 		grammars = all,
-		headerExtensions = [
-			starryNightHeaderLanguageExtension,
-			starryNightHeaderCaptionExtension
+		plugins = [
+			headerLanguagePlugin,
+			headerTitlePlugin
 		],
 		classNamePrefix
 	} = defu(userOptions, defaults);
@@ -64,40 +74,39 @@ export default function rehypeStarryNight(userOptions = {}) {
 				children = head.children;
 			}
 
-			const metadata = extractMetadata(head);
-			const headerOptions = {
+			const globalOptions = {
 				id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
+				metadata: extractMetadata(head),
 				language: languageFragment,
-				metadata: metadata,
-				extensions: headerExtensions,
 				classNamePrefix
-			};
+			}
 
-			parent.children.splice(index, 1, {
-				type: "element",
-				tagName: "div",
-				properties: {
-					className: [classNamePrefix, `${classNamePrefix}-${languageId}`]
-				},
-				children: [
-					starryNightHeader(headerOptions),
-					{
-						type: "element",
-						tagName: "pre",
-						properties: {
-							id: headerOptions.id
-						},
-						children: [
-							{
-								type: "element",
-								tagName: "code",
-								properties: { tabindex: 0 },
-								children: starryNightGutter(children, code.match(search).length, metadata)
-							}
-						]
-					}
+			const codeParent = h(`div.${classNamePrefix}.${classNamePrefix}-${languageId}`);
+
+			const headerPlugins = plugins.filter(plugin => plugin.type === "header");
+			if (headerPlugins) {
+				const headerNodes = [];
+				headerPlugins.forEach(plugin => plugin.plugin(globalOptions, headerNodes));
+				const header = h(`div.${classNamePrefix}-header`, headerNodes);
+				codeParent.children = [
+					header,
+					...codeParent.children || []
 				]
-			});
+			}
+
+			codeParent.children.push(
+				h(`pre#${globalOptions.id}`,
+					h("code", { tabindex: 0 }, 
+						starryNightGutter(
+							children, 
+							code.match(search).length, 
+							globalOptions.metadata
+						)
+					)
+				)
+			);
+
+			parent.children.splice(index, 1, codeParent);
 		});
 	};
 }
