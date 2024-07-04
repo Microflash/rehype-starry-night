@@ -60,7 +60,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 				const fragment = starryNight.highlight(code, scope);
 				children = fragment.children;
 			} else {
-				console.warn(`Skipping syntax highlighting for unknown language: ${languageId}`);
+				console.warn(`[rehype-starry-night]: Skipping syntax highlighting for code in unknown language '${languageId}'`);
 				children = head.children;
 			}
 
