@@ -105,7 +105,7 @@ let-env NU_LIB_DIRS = [
 `,
 	},
 	{
-		title: "custom header extension",
+		title: "custom header plugin",
 		options: {
 			plugins: [
 				{
@@ -121,6 +121,17 @@ let-env NU_LIB_DIRS = [
 		input: `
 \`\`\`html
 <mark>highlighted</mark>
+\`\`\`
+`,
+	},
+	{
+		title: "codeblock with no plugin",
+		options: {
+			plugins: false
+		},
+		input: `
+\`\`\`sh
+zip function.zip index.mjs
 \`\`\`
 `,
 	},
