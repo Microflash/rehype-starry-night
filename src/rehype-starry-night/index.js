@@ -81,7 +81,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 				];
 			}
 
-			const lines = lineByLineNumber(children);
+			const lines = linesByLineNumber(children);
 			const lineNumberGutterWidth = `${lines.size}`.length;
 			const linePlugins = plugins.filter(plugin => plugin.type === "line");
 			if (linePlugins) {
@@ -123,7 +123,7 @@ function extractMetadata(node) {
 	return metadata || {};
 }
 
-function lineByLineNumber(nodes) {
+function linesByLineNumber(nodes) {
 	let index = -1;
 	let start = 0;
 	let lineNumber = 0;
