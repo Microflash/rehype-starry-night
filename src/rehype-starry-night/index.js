@@ -10,11 +10,11 @@ import lineMarkPlugin from "./plugins/line-mark-plugin.js";
 import linePromptPlugin from "./plugins/line-prompt-plugin.js";
 import lineInsPlugin from "./plugins/line-ins-plugin.js";
 import lineDelPlugin from "./plugins/line-del-plugin.js";
-import starryNightGutter, { search } from "./hast-util-starry-night-gutter.js";
 
 const fenceparser = new FenceParser();
 const prefix = "language-";
 const plaintextClassName = [`${prefix}txt`];
+const search = /\r?\n|\r/g;
 const defaults = {
 	classNamePrefix: "hl"
 };
@@ -103,15 +103,24 @@ export default function rehypeStarryNight(userOptions = {}) {
 				preProps["data-pre-wrap"] = "";
 			}
 
+			// prepare codeblock nodes
+			const preChildren = [];
+			for (const [lineNumber, line] of lines) {
+				const { "data-line-number": dataLineNumber, ...lineProps } = line.properties;
+				const lineNodes = dataLineNumber ?
+					[
+						h("span.line-number", { "aria-hidden": "true" }, `${lineNumber}`),
+						...line.children
+					] : line.children;
+				preChildren.push(h("span.line", { ...lineProps }, lineNodes));
+				if (line.eol) {
+					preChildren.push(line.eol);
+				}
+			}
+
 			codeParent.children.push(
 				h(`pre#${globalOptions.id}`, preProps,
-					h("code", { tabindex: 0 },
-						starryNightGutter(
-							children, 
-							code.match(search).length, 
-							globalOptions.metadata
-						)
-					)
+					h("code", { tabindex: 0 }, preChildren)
 				)
 			);
 
