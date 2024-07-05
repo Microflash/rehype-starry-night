@@ -166,18 +166,22 @@ function linesByLineNumber(nodes) {
 
 				// add a line, and the eol
 				lineNumber += 1;
-				start = index + 1;
-				textStart = match.index + match[0].length;
-				match = search.exec(node.value);
 				lines.set(
 					lineNumber,
 					{
 						children: line,
 						properties: {
 							"data-line-number": lineNumber
+						},
+						eol: {
+							type: "text",
+							value: match[0]
 						}
 					}
 				);
+				start = index + 1;
+				textStart = match.index + match[0].length;
+				match = search.exec(node.value);
 			}
 
 			// if we matched, make sure to not drop the text after the last line ending
