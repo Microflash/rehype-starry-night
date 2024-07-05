@@ -1,3 +1,5 @@
+import { h } from "hastscript";
+
 function pluginOptions(globalOptions) {
 	return globalOptions?.metadata?.prompt || [];
 }
@@ -8,7 +10,10 @@ function plugin(globalOptions, lines) {
 		prompt.forEach(lineNumber => {
 			if (lines.has(lineNumber)) {
 				const line = lines.get(lineNumber);
-				line.properties["data-line-prompt"] = "";
+				line.children = [
+					h("span.line-prompt", { "aria-hidden": true }),
+					...line.children
+				];
 			}
 		})
 	}
