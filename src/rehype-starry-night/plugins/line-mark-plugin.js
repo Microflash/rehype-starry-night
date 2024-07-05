@@ -8,7 +8,7 @@ function plugin(globalOptions, lines) {
 		mark.forEach(lineNumber => {
 			if (lines.has(lineNumber)) {
 				const line = lines.get(lineNumber);
-				line.properties["data-line-marked"] = "";
+				line.properties["data-highlighted"] = "";
 			}
 		})
 	}
