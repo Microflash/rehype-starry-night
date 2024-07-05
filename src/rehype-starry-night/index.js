@@ -82,13 +82,14 @@ export default function rehypeStarryNight(userOptions = {}) {
 			}
 
 			const lines = lineByLineNumber(children);
+			const lineNumberGutterWidth = `${lines.size}`.length;
 			const linePlugins = plugins.filter(plugin => plugin.type === "line");
 			if (linePlugins) {
 				linePlugins.forEach(plugin => plugin.plugin(globalOptions, lines));
 			}
 
 			const preProps = {
-				style: `--hl-line-number-gutter-width: ${lines.size};`
+				style: `--hl-line-number-gutter-width: ${lineNumberGutterWidth}`
 			};
 			const { wrap = "" } = globalOptions?.metadata;
 			if (wrap.trim() === "true") {
