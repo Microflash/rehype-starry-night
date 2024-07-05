@@ -70,6 +70,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			const codeParent = h(`div.${classNamePrefix}.${classNamePrefix}-${languageId}`);
 
+			// apply header plugins
 			const headerPlugins = plugins.filter(plugin => plugin.type === "header");
 			if (headerPlugins) {
 				const headerNodes = [];
@@ -81,6 +82,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 				];
 			}
 
+			// apply line plugins
 			const lines = linesByLineNumber(children);
 			const lineNumberGutterWidth = `${lines.size}`.length;
 			const linePlugins = plugins.filter(plugin => plugin.type === "line");
@@ -100,6 +102,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 			if (wrap.trim() === "true") {
 				preProps["data-pre-wrap"] = "";
 			}
+
 			codeParent.children.push(
 				h(`pre#${globalOptions.id}`, preProps,
 					h("code", { tabindex: 0 },
