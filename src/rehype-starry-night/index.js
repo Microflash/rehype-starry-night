@@ -18,19 +18,20 @@ const search = /\r?\n|\r/g;
 const defaults = {
 	classNamePrefix: "hl"
 };
+const defaultPluginPack = [
+	headerLanguagePlugin,
+	headerTitlePlugin,
+	lineMarkPlugin,
+	linePromptPlugin,
+	lineInsPlugin,
+	lineDelPlugin
+];
 
 export default function rehypeStarryNight(userOptions = {}) {
 	const {
 		aliases = {},
 		grammars = all,
-		plugins = [
-			headerLanguagePlugin,
-			headerTitlePlugin,
-			lineMarkPlugin,
-			linePromptPlugin,
-			lineInsPlugin,
-			lineDelPlugin
-		],
+		plugins = defaultPluginPack,
 		classNamePrefix
 	} = defu(userOptions, defaults);
 	const starryNightPromise = createStarryNight(grammars);
@@ -71,23 +72,27 @@ export default function rehypeStarryNight(userOptions = {}) {
 			const codeParent = h(`div.${classNamePrefix}.${classNamePrefix}-${languageId}`);
 
 			// apply header plugins
-			const headerPlugins = plugins.filter(plugin => plugin.type === "header");
-			if (headerPlugins) {
-				const headerNodes = [];
-				headerPlugins.forEach(plugin => plugin.plugin(globalOptions, headerNodes));
-				const header = h(`div.${classNamePrefix}-header`, headerNodes);
-				codeParent.children = [
-					header,
-					...codeParent.children || []
-				];
+			if (plugins) {
+				const headerPlugins = plugins.filter(p => p.type === "header");
+				if (headerPlugins) {
+					const headerNodes = [];
+					headerPlugins.forEach(p => p.plugin(globalOptions, headerNodes));
+					const header = h(`div.${classNamePrefix}-header`, headerNodes);
+					codeParent.children = [
+						header,
+						...codeParent.children || []
+					];
+				}
 			}
 
 			// apply line plugins
 			const lines = linesByLineNumber(children);
 			const lineNumberGutterWidth = `${lines.size}`.length;
-			const linePlugins = plugins.filter(plugin => plugin.type === "line");
-			if (linePlugins) {
-				linePlugins.forEach(plugin => plugin.plugin(globalOptions, lines));
+			if (plugins) {
+				const linePlugins = plugins.filter(p => p.type === "line");
+				if (linePlugins) {
+					linePlugins.forEach(p => p.plugin(globalOptions, lines));
+				}
 			}
 
 			const preProps = {};
