@@ -11,7 +11,7 @@ function plugin(globalOptions, lines) {
 			if (lines.has(lineNumber)) {
 				const line = lines.get(lineNumber);
 				line.children = [
-					h("span.line-prompt", { "aria-hidden": true }),
+					h("span.line-prompt", { "aria-hidden": "true" }),
 					...line.children
 				];
 			}
