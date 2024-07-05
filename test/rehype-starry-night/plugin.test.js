@@ -151,6 +151,14 @@ console.warn('cease now!')
 \`\`\`
 `
 	},
+	{
+		title: "wrapped codeblock",
+		input: `
+\`\`\`sh wrap="true"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+\`\`\`
+`
+	},
 ];
 const scenario = scenarios.map(s => s.title);
 

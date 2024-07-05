@@ -94,8 +94,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 				]
 			}
 
+			const preProps = {};
+			const { wrap = "" } = globalOptions?.metadata;
+			if (wrap.trim() === "true") {
+				preProps["data-pre-wrap"] = "";
+			}
 			codeParent.children.push(
-				h(`pre#${globalOptions.id}`,
+				h(`pre#${globalOptions.id}`, preProps,
 					h("code", { tabindex: 0 }, 
 						starryNightGutter(
 							children, 
