@@ -88,9 +88,14 @@ export default function rehypeStarryNight(userOptions = {}) {
 				linePlugins.forEach(plugin => plugin.plugin(globalOptions, lines));
 			}
 
-			const preProps = {
-				style: `--hl-line-number-gutter-width: ${lineNumberGutterWidth}`
-			};
+			const preProps = {};
+
+			// add line number gutter width for codeblock with multiple lines
+			if (lines.size > 1) {
+				preProps["style"] = `--hl-line-number-gutter-width: ${lineNumberGutterWidth}`;
+			}
+
+			// add `data-pre-wrap` property to indicate if the codeblock should be wrapped
 			const { wrap = "" } = globalOptions?.metadata;
 			if (wrap.trim() === "true") {
 				preProps["data-pre-wrap"] = "";
@@ -129,7 +134,7 @@ function linesByLineNumber(nodes) {
 	let lineNumber = 0;
 	let startTextRemainder = "";
 
-	const lineNodesByLineNumber = new Map();
+	const lines = new Map();
 
 	while (++index < nodes.length) {
 		const node = nodes[index];
@@ -161,7 +166,7 @@ function linesByLineNumber(nodes) {
 				start = index + 1;
 				textStart = match.index + match[0].length;
 				match = search.exec(node.value);
-				lineNodesByLineNumber.set(
+				lines.set(
 					lineNumber,
 					{
 						children: line,
@@ -188,7 +193,7 @@ function linesByLineNumber(nodes) {
 
 	if (line.length > 0) {
 		lineNumber += 1;
-		lineNodesByLineNumber.set(
+		lines.set(
 			lineNumber,
 			{
 				children: line,
@@ -199,5 +204,9 @@ function linesByLineNumber(nodes) {
 		);
 	}
 
-	return lineNodesByLineNumber;
+	if (lines.size === 1) {
+		delete lines.get(1).properties["data-line-number"];
+	}
+
+	return lines;
 }
