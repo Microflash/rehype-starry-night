@@ -26,16 +26,6 @@ function extractMetadata(node) {
 	return metadata || {};
 }
 
-function globalOptions(node, language, classNamePrefix) {
-	const metadata = extractMetadata(node);
-	return {
-		id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
-		metadata,
-		language,
-		classNamePrefix
-	}
-}
-
 export default function rehypeStarryNight(userOptions = {}) {
 	const {
 		aliases = {},
