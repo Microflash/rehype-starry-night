@@ -98,6 +98,14 @@ Hello, Anya!
 `,
 	},
 	{
+		title: "codeblock with wrapped lines",
+		input: `
+\`\`\`sh wrap="true"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+\`\`\`
+`
+	},
+	{
 		title: "codeblock rendered without plugins",
 		options: {
 			plugins: false
