@@ -14,4 +14,12 @@ echo "foo" > bar.txt
 \`\`\`
 `
 	},
+	{
+		title: "codeblock with single line",
+		input: `
+\`\`\`sh
+docker ps -a
+\`\`\`
+`
+	},
 ];
