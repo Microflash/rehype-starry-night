@@ -28,18 +28,20 @@
 
 ## What’s this?
 
-This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night) in a markdown document. The syntax highlighting mimics what GitHub's syntax highlighting color schemes.
+This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night) in a markdown document. It mimics GitHub's syntax highlighting.
 
 ## When should I use this?
 
-This project is useful if you want to use the syntax highlighting powered by VS Code syntax highlighter engine, and themes similar to GitHub. It is also useful if you want to build your own syntax highlighting themes based on [CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties).
+This project is useful if you want to use the syntax highlighting powered by VS Code's syntax highlighter engine, and themes similar to GitHub. It is also useful if you want to build your own syntax highlighting themes based on [CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties).
 
-The following additonal features are also available:
+The following additonal features are also available out of box:
 
 - line numbers
 - line highlights
-- support for prompt
-- captions and language information
+- annotations for added and removed lines
+- conditionally wrapping lines
+- prompt character
+- title and language information
 - highlighting inline `code` elements
 
 ## Install
