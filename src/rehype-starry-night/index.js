@@ -111,6 +111,10 @@ export default function rehypeStarryNight(userOptions = {}) {
 				preProps["style"] = `--hl-line-number-gutter-factor: ${lineNumberGutterFactor}`;
 			}
 
+			if (globalOptions.lineMarkerGutterFactor) {
+				preProps["style"] += `; --hl-line-marker-gutter-factor: ${globalOptions.lineMarkerGutterFactor}`;
+			}
+
 			// add `data-pre-wrap` property to indicate if the codeblock should be wrapped
 			const { wrap = "" } = globalOptions?.metadata;
 			if (wrap.trim() === "true") {
