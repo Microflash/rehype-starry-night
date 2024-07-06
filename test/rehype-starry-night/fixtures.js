@@ -15,6 +15,16 @@ echo "foo" > bar.txt
 `
 	},
 	{
+		title: "codeblock with unknown language",
+		input: `
+\`\`\`nux
+let-env NU_LIB_DIRS = [
+	($nu.config-path | path dirname | path join 'scripts')
+]
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock with single line",
 		input: `
 \`\`\`sh
