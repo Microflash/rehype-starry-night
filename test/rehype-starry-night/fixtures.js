@@ -138,6 +138,17 @@ let paths = [
 `,
 	},
 	{
+		title: "codeblock with removed lines",
+		input: `
+\`\`\`sql del{1}
+drop table users;
+# ERROR:  cannot drop table users because other objects depend on it
+# DETAIL:  constraint orders_user_id_fkey on table orders depends on table users
+# HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock rendered without plugins",
 		options: {
 			plugins: false
