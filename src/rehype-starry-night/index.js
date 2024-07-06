@@ -13,7 +13,6 @@ import lineDelPlugin from "./plugins/line-del-plugin.js";
 
 const fenceparser = new FenceParser();
 const prefix = "language-";
-const plaintextClassName = [`${prefix}txt`];
 const search = /\r?\n|\r/g;
 const defaults = {
 	classNamePrefix: "hl"
@@ -46,10 +45,18 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			if (!head || head.type !== "element" || head.tagName !== "code" || !head.properties) return;
 
-			const classes = head.properties.className || plaintextClassName;
-			const languageClass = classes.find(d => typeof d === "string" && d.startsWith(prefix));
-			const languageFragment = languageClass.slice(prefix.length);
-			const languageId = aliases[languageFragment] || languageFragment;
+			const classes = head.properties.className;
+
+			let languageFragment;
+			let languageId;
+			if (classes) {
+				const languageClass = classes.find(d => typeof d === "string" && d.startsWith(prefix));
+				languageFragment = languageClass.slice(prefix.length);
+				languageId = aliases[languageFragment] || languageFragment;
+			} else {
+				languageId = "txt";
+			}
+
 			const code = toString(head);
 			const scope = starryNight.flagToScope(languageId);
 
@@ -77,11 +84,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 				if (headerPlugins) {
 					const headerNodes = [];
 					headerPlugins.forEach(p => p.plugin(globalOptions, headerNodes));
-					const header = h(`div.${classNamePrefix}-header`, headerNodes);
-					codeParent.children = [
-						header,
-						...codeParent.children || []
-					];
+					if (headerNodes.length > 0) {
+						const header = h(`div.${classNamePrefix}-header`, headerNodes);
+						codeParent.children = [
+							header,
+							...codeParent.children || []
+						];
+					}
 				}
 			}
 

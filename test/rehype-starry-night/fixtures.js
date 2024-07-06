@@ -6,4 +6,12 @@ export default [
 		title: "no codeblock",
 		input: "Divided we fall.",
 	},
+	{
+		title: "codeblock without language info",
+		input: `
+\`\`\`
+echo "foo" > bar.txt
+\`\`\`
+`
+	},
 ];
