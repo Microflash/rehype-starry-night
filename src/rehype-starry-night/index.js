@@ -96,7 +96,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			// apply line plugins
 			const lines = linesByLineNumber(children);
-			const lineNumberGutterWidth = `${lines.size}`.length;
+			const lineNumberGutterFactor = `${lines.size}`.length;
 			if (plugins) {
 				const linePlugins = plugins.filter(p => p.type === "line");
 				if (linePlugins) {
@@ -108,7 +108,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			// add line number gutter width for codeblock with multiple lines
 			if (lines.size > 1) {
-				preProps["style"] = `--hl-line-number-gutter-width: ${lineNumberGutterWidth}`;
+				preProps["style"] = `--hl-line-number-gutter-factor: ${lineNumberGutterFactor}`;
 			}
 
 			// add `data-pre-wrap` property to indicate if the codeblock should be wrapped
