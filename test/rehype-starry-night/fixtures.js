@@ -98,4 +98,15 @@ zip function.zip index.mjs
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock with language in common grammars",
+		options: {
+			grammars: common
+		},
+		input: `
+\`\`\`js
+console.warn('cease now!')
+\`\`\`
+`
+	},
 ];
