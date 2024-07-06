@@ -120,4 +120,15 @@ x -> y
 \`\`\`
 `
 	},
+	{
+		title: "codeblock rendered with custom classname prefix",
+		options: {
+			classNamePrefix: "highlight"
+		},
+		input: `
+\`\`\`java
+System.out.println("Hello, world!");
+\`\`\`
+`,
+	},
 ];
