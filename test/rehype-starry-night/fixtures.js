@@ -25,6 +25,21 @@ let-env NU_LIB_DIRS = [
 `,
 	},
 	{
+		title: "codeblock with aliased language",
+		options: {
+			aliases: {
+				xjm: "toml"
+			}
+		},
+		input: `
+\`\`\`xjm
+language = "en"
+customization = false
+features = [ "io", "graphics", "compute" ]
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock with single line",
 		input: `
 \`\`\`sh
