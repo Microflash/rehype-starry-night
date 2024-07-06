@@ -126,6 +126,18 @@ aws --endpoint-url http://localhost:4566 s3api list-buckets
 `,
 	},
 	{
+		title: "codeblock with added lines",
+		input: `
+\`\`\`nu ins{1,4}
+$env.PNPM_HOME = "~/Library/pnpm"
+let paths = [
+	"/opt/homebrew/bin",
+	$env.PNPM_HOME
+]
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock rendered without plugins",
 		options: {
 			plugins: false
