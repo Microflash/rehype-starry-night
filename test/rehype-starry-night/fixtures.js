@@ -106,6 +106,26 @@ Hello, Anya!
 `
 	},
 	{
+		title: "codeblock with highlighted lines",
+		input: `
+\`\`\`sh {4..7} prompt{1}
+aws --endpoint-url http://localhost:4566 s3api list-buckets
+{
+	"Buckets": [
+		{
+			"Name": "my-bucket",
+			"CreationDate": "2022-07-12T13:44:44+00:00"
+		}
+	],
+	"Owner": {
+		"DisplayName": "webfile",
+		"ID": "bcaf1ffd86f41161ca5fb16fd081034f"
+	}
+}
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock rendered without plugins",
 		options: {
 			plugins: false
