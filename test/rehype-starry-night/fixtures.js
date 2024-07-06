@@ -40,4 +40,15 @@ brew autoremove --dry-run
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock with multiple prompts",
+		input: `
+\`\`\`sh prompt{1,3}
+curl localhost:8080/actuator/health
+{"status":"UP"}
+curl localhost:8080/greeter?name=Anya
+Hello, Anya!
+\`\`\`
+`,
+	},
 ];
