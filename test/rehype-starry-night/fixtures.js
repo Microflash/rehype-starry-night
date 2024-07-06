@@ -109,4 +109,15 @@ console.warn('cease now!')
 \`\`\`
 `
 	},
+	{
+		title: "codeblock with language not in common grammars",
+		options: {
+			grammars: common
+		},
+		input: `
+\`\`\`d2
+x -> y
+\`\`\`
+`
+	},
 ];
