@@ -154,4 +154,18 @@ System.out.println("Hello, world!");
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock rendered using default and custom plugins",
+		options: {
+			plugins: [
+				...defaultPluginPack,
+				headerClipboardCopyBtnPlugin
+			]
+		},
+		input: `
+\`\`\`zsh
+defaults write com.apple.finder AppleShowAllFiles YES
+\`\`\`
+`,
+	},
 ];
