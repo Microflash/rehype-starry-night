@@ -10,7 +10,8 @@ function plugin(globalOptions, lines) {
 				const line = lines.get(lineNumber);
 				line.properties["data-line-removed"] = "";
 			}
-		})
+		});
+		globalOptions["lineMarkerGutterFactor"] = 1;
 	}
 }
 
