@@ -87,4 +87,15 @@ Hello, Anya!
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock rendered without plugins",
+		options: {
+			plugins: false
+		},
+		input: `
+\`\`\`sh
+zip function.zip index.mjs
+\`\`\`
+`,
+	},
 ];
