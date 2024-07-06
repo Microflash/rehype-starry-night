@@ -33,6 +33,17 @@ docker ps -a
 `,
 	},
 	{
+		title: "codeblock with title",
+		input: `
+\`\`\`zsh title="Switching off homebrew telemetry"
+# turns off homebrew telemetry
+export HOMEBREW_NO_ANALYTICS=1
+# turns off homebrew auto-update
+export HOMEBREW_NO_AUTO_UPDATE=1
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock with single prompt",
 		input: `
 \`\`\`sh prompt{1}
