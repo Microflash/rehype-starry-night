@@ -32,4 +32,12 @@ docker ps -a
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock with single prompt",
+		input: `
+\`\`\`sh prompt{1}
+brew autoremove --dry-run
+\`\`\`
+`,
+	},
 ];
