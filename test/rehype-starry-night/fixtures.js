@@ -22,4 +22,14 @@ docker ps -a
 \`\`\`
 `
 	},
+	{
+		title: "codeblock with multiple lines",
+		input: `
+\`\`\`css
+* {
+  display: revert;
+}
+\`\`\`
+`,
+	},
 ];
