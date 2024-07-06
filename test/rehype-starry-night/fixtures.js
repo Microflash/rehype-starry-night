@@ -131,4 +131,24 @@ System.out.println("Hello, world!");
 \`\`\`
 `,
 	},
+	{
+		title: "codeblock rendered using custom header plugin",
+		options: {
+			plugins: [
+				{
+					type: "header",
+					plugin: (globalOptions, nodes) => {
+						nodes.push(
+							h(`button.${globalOptions.classNamePrefix}-copy`, "Copy to clipboard")
+						);
+					}
+				}
+			]
+		},
+		input: `
+\`\`\`html
+<mark>highlighted</mark>
+\`\`\`
+`,
+	},
 ];
