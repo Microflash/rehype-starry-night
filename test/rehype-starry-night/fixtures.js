@@ -1,5 +1,15 @@
 import { common } from "@wooorm/starry-night";
 import { h } from "hastscript";
+import { defaultPluginPack } from "../../src/rehype-starry-night";
+
+const headerClipboardCopyBtnPlugin = {
+	type: "header",
+	plugin: (globalOptions, nodes) => {
+		nodes.push(
+			h(`button.${globalOptions.classNamePrefix}-copy`, "Copy to clipboard")
+		);
+	}
+};
 
 export default [
 	{
@@ -135,14 +145,7 @@ System.out.println("Hello, world!");
 		title: "codeblock rendered using custom header plugin",
 		options: {
 			plugins: [
-				{
-					type: "header",
-					plugin: (globalOptions, nodes) => {
-						nodes.push(
-							h(`button.${globalOptions.classNamePrefix}-copy`, "Copy to clipboard")
-						);
-					}
-				}
+				headerClipboardCopyBtnPlugin
 			]
 		},
 		input: `

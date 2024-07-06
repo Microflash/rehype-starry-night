@@ -17,7 +17,7 @@ const search = /\r?\n|\r/g;
 const defaults = {
 	classNamePrefix: "hl"
 };
-const defaultPluginPack = [
+export const defaultPluginPack = [
 	headerLanguagePlugin,
 	headerTitlePlugin,
 	lineMarkPlugin,
