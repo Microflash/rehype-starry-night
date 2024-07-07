@@ -26,7 +26,8 @@
 	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
 	- [Example: Codeblock with aliased language](#example-codeblock-with-aliased-language)
-	- [Example: custom header extension](#example-custom-header-extension)
+	- [Example: Codeblock rendered using custom header plugin](#example-codeblock-rendered-using-custom-header-plugin)
+	- [Example: Codeblock rendered using default and custom plugins](#example-codeblock-rendered-using-default-and-custom-plugins)
 	- [Example: custom classname prefix](#example-custom-classname-prefix)
 	- [Example: custom marker](#example-custom-marker)
 - [Related](#related)
@@ -562,9 +563,9 @@ Running that with `node example.js` yields:
 
 ![Syntax Highlighting configure aliases](./samples/sample-10.png)
 
-### Example: custom header extension
+### Example: Codeblock rendered using custom header plugin
 
-Suppose you want to add a copy to clipboard button in the header. You can do so by adding a custom header extension.
+Suppose you want to add a copy to clipboard button in the header. You can do so by adding a custom header plugin.
 
 Say we have the following file `example.md`:
 
@@ -572,7 +573,7 @@ Say we have the following file `example.md`:
 	<mark>highlighted</mark>
 	```
 
-You can pass a custom header extension as follows with `example.js`:
+You can pass a custom header plugin as follows with `example.js`:
 
 ```js
 import { unified } from "unified";
@@ -580,8 +581,6 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeStarryNight from "@microflash/rehype-starry-night";
-import rehypeStarryNightHeaderCaptionExtension from "@microflash/rehype-starry-night/header-caption-extension";
-import rehypeStarryNightHeaderLanguageExtension from "@microflash/rehype-starry-night/header-language-extension";
 
 main()
 
@@ -590,21 +589,22 @@ async function main() {
     .use(remarkParse)
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeStarryNight, {
-      headerExtensions: [
-        rehypeStarryNightHeaderLanguageExtension,
-        rehypeStarryNightHeaderCaptionExtension,
-        (headerOptions, children) => {
-          children.push({
-            type: "element",
-            tagName: "button",
-            properties: { className: [`${headerOptions.classNamePrefix}-copy`], for: headerOptions.id },
-            children: [
-              {
-                type: "text",
-                value: "Copy"
-              }
-            ]
-          })
+      plugins: [
+        {
+          type: "header",
+          plugin: (globalOptions, nodes) => {
+            nodes.push({
+              type: "element",
+              tagName: "button",
+              properties: {
+                className: [`${globalOptions.classNamePrefix}-copy`],
+                style: "margin-left: auto"
+              },
+              children: [
+                { type: "text", value: "Copy to clipboard" }
+              ]
+            });
+          }
         }
       ]
     })
@@ -620,15 +620,87 @@ Running that with `node example.js` yields:
 ```html
 <div class="hl hl-html">
   <div class="hl-header">
-    <div class="hl-language">html</div>
-    <button class="hl-copy" for="MC40MTUyMDQ4">Copy</button>
+    <button class="hl-copy" style="margin-left: auto">Copy to clipboard</button>
   </div>
-<pre id="MC40MTUyMDQ4"><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
+<pre id="MC44MjkyNjY4"><code tabindex="0"><span class="line">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;</span>
 </code></pre>
 </div>
 ```
 
-![Syntax Highlighting with custom header extension](./samples/sample-9.png)
+![Codeblock rendered using custom header plugin](./samples/sample-11.png)
+
+### Example: Codeblock rendered using default and custom plugins
+
+You can also use the default plugins alongside your custom plugins.
+
+Say we have the following file `example.md`:
+
+	```rust title="hello.rs"
+	fn main() {
+	  println!("Hello, world!");
+	}
+	```
+
+You can pass a custom plugin alongwith default plugins as follows with `example.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight, { defaultPluginPack } from "@microflash/rehype-starry-night";
+
+main()
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNight, {
+      plugins: [
+        ...defaultPluginPack,
+        {
+          type: "header",
+          plugin: (globalOptions, nodes) => {
+            nodes.push({
+              type: "element",
+              tagName: "button",
+              properties: {
+                className: [`${globalOptions.classNamePrefix}-copy`],
+                style: "margin-left: auto"
+              },
+              children: [
+                { type: "text", value: "Copy to clipboard" }
+              ]
+            });
+          }
+        }
+      ]
+    })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<div class="hl hl-rust">
+  <div class="hl-header">
+    <div class="hl-language">rust</div>
+    <div class="hl-title">hello.rs</div>
+    <button class="hl-copy" style="margin-left: auto">Copy to clipboard</button>
+  </div>
+<pre id="MC41ODEyMDY2" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-k">fn</span> <span class="pl-en">main</span>() {</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>	<span class="pl-en">println!</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>}</span>
+</code></pre>
+</div>
+```
+
+![Codeblock rendered using default and custom plugins](./samples/sample-12.png)
 
 ### Example: custom classname prefix
 
