@@ -218,6 +218,24 @@ export default {
 - [`lineInsPlugin`](./src/rehype-starry-night/plugins/line-ins-plugin.js) - used to annotate an added line
 - [`lineDelPlugin`](./src/rehype-starry-night/plugins/line-del-plugin.js) - used to annotate a removed line
 
+You can import these plugins individually.
+
+```js
+import headerLanguagePlugin from "@microflash/rehype-starry-night/plugins/header-language-plugin";
+import headerTitlePlugin from "@microflash/rehype-starry-night/plugins/header-title-plugin";
+import linePromptPlugin from "@microflash/rehype-starry-night/plugins/line-prompt-plugin";
+import lineOutputPlugin from "@microflash/rehype-starry-night/plugins/line-output-plugin";
+import lineMarkPlugin from "@microflash/rehype-starry-night/plugins/line-mark-plugin";
+import lineInsPlugin from "@microflash/rehype-starry-night/plugins/line-ins-plugin";
+import lineDelPlugin from "@microflash/rehype-starry-night/plugins/line-del-plugin";
+```
+
+Alternatively, you can import them all at once.
+
+```js
+import { defaultPluginPack } from "@microflash/rehype-starry-night";
+```
+
 ### API for `rehype-starry-night-inline`
 
 The following options are available for the `rehype-starry-night-inline` plugin. All of them are optional.
