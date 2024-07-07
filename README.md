@@ -25,6 +25,7 @@
 	- [Example: Codeblock with wrapped lines](#example-codeblock-with-wrapped-lines)
 	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
+	- [Example: Codeblock with unknown language](#example-codeblock-with-unknown-language)
 	- [Example: Codeblock with aliased language](#example-codeblock-with-aliased-language)
 	- [Example: Codeblock rendered using custom header plugin](#example-codeblock-rendered-using-custom-header-plugin)
 	- [Example: Codeblock rendered using default and custom plugins](#example-codeblock-rendered-using-default-and-custom-plugins)
@@ -509,9 +510,35 @@ The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` e
 
 See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for `ins` and `del` properties.
 
+### Example: Codeblock with unknown language
+
+If a language is not [supported](https://github.com/wooorm/starry-night?tab=readme-ov-file#languages) by Starry Night, it will be rendered as plain text.
+
+	```nux
+	let-env NU_LIB_DIRS = [
+	  ($nu.config-path | path dirname | path join 'scripts')
+	]
+	```
+
+The above codeblock gets rendered as:
+
+```html
+<div class="hl hl-nux">
+  <div class="hl-header">
+    <div class="hl-language">nux</div>
+  </div>
+<pre id="MC42MzYyNTcw" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>let-env NU_LIB_DIRS = [</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>	($nu.config-path | path dirname | path join 'scripts')</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>]</span>
+</code></pre>
+</div>
+```
+
+![Codeblock with unknown language](./samples/sample-14.png)
+
 ### Example: Codeblock with aliased language
 
-Although Starry Night [supports](https://github.com/wooorm/starry-night?tab=readme-ov-file#languages) a large number of languages, it is not all encompassing. In such cases, you can configure aliases to force the syntax highlighting on a codeblock containing code in a language not yet supported by Starry Night.
+To prevent a codeblock with an unsupported language to be rendered as plain text, you can force the syntax highlighting with aliases.
 
 Say we have the following file `example.md`:
 
