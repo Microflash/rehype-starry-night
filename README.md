@@ -130,7 +130,7 @@ To highlight inline `code` elements, import [`rehype-starry-night-inline`](./src
 Say we have the following file `example.md`:
 
 ```md
-To print a greeting, use `js> console.log("Hello, world!");`. When executed, it prints `Hello, world!`.
+To print a greeting, use `js> console.log("Hello, world!");`. This code prints `Hello, world!` on the console window.
 ```
 
 And our module `example.js` looks as follows:
@@ -161,7 +161,7 @@ async function main() {
 Running that with `node example.js` yields:
 
 ```html
-<p>To print a greeting, use <code class="hl-inline hl-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. When executed, it prints <code>Hello, world!</code>.</p>
+<p>To print a greeting, use <code class="hl-inline hl-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. This code prints <code>Hello, world!</code> on the console window.</p>
 ```
 
 ![Highlighting inline code element](./samples/sample-2.png)
