@@ -19,7 +19,7 @@
 	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
 	- [Example: Codeblock with single line](#example-codeblock-with-single-line)
-	- [Example: line numbers for multiline codeblock](#example-line-numbers-for-multiline-codeblock)
+	- [Example: Codeblock with multiple lines](#example-codeblock-with-multiple-lines)
 	- [Example: show prompts](#example-show-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
 	- [Example: codeblock with a caption](#example-codeblock-with-a-caption)
@@ -236,6 +236,7 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 :root {
   /* light theme variables specific to rehype-starry-night plugin */
   --hl-background-color: hsl(220, 23%, 97%);
+  --hl-background-color-inline: var(--hl-background-color);
   --hl-border-color: hsl(215, 15%, 85%);
   --hl-outline-color: hsl(215, 15%, 70%, 0.5);
   --hl-line-highlight-background-color: hsl(220, 23%, 92%);
@@ -293,7 +294,9 @@ The above codeblock gets rendered as:
 
 ![Syntax Highlighting codeblock with single line](./samples/sample-3.png)
 
-### Example: line numbers for multiline codeblock
+The plugin does not add line numbers when the codeblock contains a single line.
+
+### Example: Codeblock with multiple lines
 
 	```css
 	* {
@@ -301,23 +304,23 @@ The above codeblock gets rendered as:
 	}
 	```
 
-The above codeblock will yield:
+The above codeblock gets rendered as:
 
 ```html
 <div class="hl hl-css">
   <div class="hl-header">
     <div class="hl-language">css</div>
   </div>
-<pre id="MC4wMTQ1Nzg4"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
+<pre id="MC4xNzU3MDU0" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>}</span>
 </code></pre>
 </div>
 ```
 
-![Syntax Highlighting line numbers for multiline codeblock](./samples/sample-4.png)
+![Syntax Highlighting codeblock with multiple lines](./samples/sample-4.png)
 
-Line numbers are automatically padded to ensure that they are aligned properly.
+The plugin attaches `--hl-line-number-gutter-factor` CSS property on the `pre` element when the codeblock contains multiple lines. You can use this property to pad the line numbers and align them. See [`index.css`](./src/index.css#L73).
 
 ### Example: show prompts
 
