@@ -31,10 +31,12 @@
 		"./plugins/line-output-plugin": "./src/rehype-starry-night/plugins/line-output-plugin.js",
 		"./remark-inline-code-lang": "./src/remark-inline-code-lang/index.js",
 		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js",
-		"./css": "./src/index.css"
+		"./css": "./src/index.css",
+		"./props": "./src/props.css"
 	},
 	"files": [
 		"src/index.css",
+		"src/props.css",
 		"src/rehype-starry-night/index.js",
 		"src/rehype-starry-night/plugins/header-title-plugin.js",
 		"src/rehype-starry-night/plugins/header-language-plugin.js",
