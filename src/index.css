@@ -136,6 +136,10 @@
 	min-height: var(--hlLinePromptSize);
 }
 
+.hl .line[data-unselectable] {
+	user-select: none;
+}
+
 .hl .line:focus:not(:focus-visible),
 .hl .line:hover {
 	--hlLineNumberColor: var(--color-prettylights-syntax-comment);
