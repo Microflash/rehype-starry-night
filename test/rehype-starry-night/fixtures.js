@@ -149,6 +149,18 @@ drop table users;
 `,
 	},
 	{
+		title: "codeblock with command and output",
+		input: `
+\`\`\`sql prompt{1} output{2..5}
+Apache Maven 3.9.8
+Maven home: ~/maven/3.9.8/libexec
+Java version: 22.0.1, vendor: Azul Systems, Inc., runtime: ~/zulu-22.jdk/Contents/Home
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "14.5", arch: "aarch64", family: "mac"
+\`\`\`
+`,
+	},
+	{
 		title: "codeblock rendered without plugins",
 		options: {
 			plugins: false

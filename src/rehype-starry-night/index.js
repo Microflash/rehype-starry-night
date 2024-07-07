@@ -8,6 +8,7 @@ import headerLanguagePlugin from "./plugins/header-language-plugin.js";
 import headerTitlePlugin from "./plugins/header-title-plugin.js";
 import lineMarkPlugin from "./plugins/line-mark-plugin.js";
 import linePromptPlugin from "./plugins/line-prompt-plugin.js";
+import lineOutputPlugin from "./plugins/line-output-plugin.js";
 import lineInsPlugin from "./plugins/line-ins-plugin.js";
 import lineDelPlugin from "./plugins/line-del-plugin.js";
 
@@ -22,6 +23,7 @@ export const defaultPluginPack = [
 	headerTitlePlugin,
 	lineMarkPlugin,
 	linePromptPlugin,
+	lineOutputPlugin,
 	lineInsPlugin,
 	lineDelPlugin
 ];
