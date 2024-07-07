@@ -9,6 +9,7 @@ function plugin(globalOptions, lines) {
 			if (lines.has(lineNumber)) {
 				const line = lines.get(lineNumber);
 				line.properties["data-line-output"] = "";
+				line.properties["data-unselectable"] = "";
 			}
 		});
 	}
