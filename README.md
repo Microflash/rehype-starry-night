@@ -23,8 +23,7 @@
 	- [Example: Codeblock with title](#example-codeblock-with-title)
 	- [Example: Codeblock with prompts](#example-codeblock-with-prompts)
 	- [Example: Codeblock with wrapped lines](#example-codeblock-with-wrapped-lines)
-	- [Example: highlight lines](#example-highlight-lines)
-	- [Example: codeblock with a caption](#example-codeblock-with-a-caption)
+	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: aliases](#example-aliases)
 	- [Example: custom header extension](#example-custom-header-extension)
 	- [Example: custom classname prefix](#example-custom-classname-prefix)
@@ -413,9 +412,9 @@ The above codeblock gets rendered as:
 
 When you set `wrap="true"`, the plugin attaches a `[data-pre-wrap]` attribute on the `pre` element. You can use CSS to set `white-space: pre-wrap` on the `code` element to enable wrapping. See [`index.css`](./src/index.css#L68).
 
-### Example: highlight lines
+### Example: Codeblock with highlighted lines
 
-You can highlight multiple lines by specifying the line numbers (or even, range of line numbers) between curly braces in the codeblock metadata.
+You can highlight lines by specifying the line numbers (or even, range of line numbers) between curly braces in the codeblock metadata.
 
 	```sh {4..7} prompt{1}
 	aws --endpoint-url http://localhost:4566 s3api list-buckets
@@ -433,64 +432,33 @@ You can highlight multiple lines by specifying the line numbers (or even, range 
 	}
 	```
 
-The above codeblock will yield:
+The above codeblock gets rendered as:
 
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
     <div class="hl-language">sh</div>
   </div>
-<pre id="MC44MTc0NjQ5"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true"> 1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
-<span class="line"><span class="line-number" aria-hidden="true"> 2</span>{</span>
-<span class="line"><span class="line-number" aria-hidden="true"> 3</span>  <span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 4</span>    {</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 5</span>      <span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 6</span>      <span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
-<span class="line" data-highlighted><span class="line-number" aria-hidden="true"> 7</span>    }</span>
-<span class="line"><span class="line-number" aria-hidden="true"> 8</span>  ],</span>
-<span class="line"><span class="line-number" aria-hidden="true"> 9</span>  <span class="pl-s"><span class="pl-pds">"</span>Owner<span class="pl-pds">"</span></span>: {</span>
-<span class="line"><span class="line-number" aria-hidden="true">10</span>    <span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>webfile<span class="pl-pds">"</span></span>,</span>
-<span class="line"><span class="line-number" aria-hidden="true">11</span>    <span class="pl-s"><span class="pl-pds">"</span>ID<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>bcaf1ffd86f41161ca5fb16fd081034f<span class="pl-pds">"</span></span></span>
-<span class="line"><span class="line-number" aria-hidden="true">12</span>  }</span>
+<pre id="MC4wNTg1MTA5" style="--hl-line-number-gutter-factor: 2"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>{</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>	<span class="pl-s"><span class="pl-pds">"</span>Buckets<span class="pl-pds">"</span></span>: [</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true">4</span>		{</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true">5</span>			<span class="pl-s"><span class="pl-pds">"</span>Name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>my-bucket<span class="pl-pds">"</span></span>,</span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true">6</span>			<span class="pl-s"><span class="pl-pds">"</span>CreationDate<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>2022-07-12T13:44:44+00:00<span class="pl-pds">"</span></span></span>
+<span class="line" data-highlighted=""><span class="line-number" aria-hidden="true">7</span>		}</span>
+<span class="line"><span class="line-number" aria-hidden="true">8</span>	],</span>
+<span class="line"><span class="line-number" aria-hidden="true">9</span>	<span class="pl-s"><span class="pl-pds">"</span>Owner<span class="pl-pds">"</span></span>: {</span>
+<span class="line"><span class="line-number" aria-hidden="true">10</span>		<span class="pl-s"><span class="pl-pds">"</span>DisplayName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>webfile<span class="pl-pds">"</span></span>,</span>
+<span class="line"><span class="line-number" aria-hidden="true">11</span>		<span class="pl-s"><span class="pl-pds">"</span>ID<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>bcaf1ffd86f41161ca5fb16fd081034f<span class="pl-pds">"</span></span></span>
+<span class="line"><span class="line-number" aria-hidden="true">12</span>	}</span>
 <span class="line"><span class="line-number" aria-hidden="true">13</span>}</span>
 </code></pre>
 </div>
 ```
 
-![Syntax Highlighting highlight lines](./samples/sample-6.png)
+![Codeblock with highlighted lines](./samples/sample-8.png)
 
-Refer to the documentation of [fenceparser](https://github.com/Microflash/fenceparser) to learn about the additional ways in which you can specify the information about highlighted lines.
-
-### Example: codeblock with a caption
-
-Captions are useful to describe the context of a piece of code.
-
-	```sh caption='Configuring the AWS account' prompt{1}
-	aws configure
-	AWS Access Key ID [None]: gwen
-	AWS Secret Access Key [None]: stacy
-	Default region name [None]: us-east-1
-	Default output format [None]: json
-	```
-
-The above codeblock will yield:
-
-```html
-<div class="hl hl-sh">
-  <div class="hl-header">
-    <div class="hl-language">sh</div>
-    <div class="hl-caption">Configuring the AWS account</div>
-  </div>
-<pre id="MC45ODEyODAy"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws configure</span>
-<span class="line"><span class="line-number" aria-hidden="true">2</span>AWS Access Key ID [None]: gwen</span>
-<span class="line"><span class="line-number" aria-hidden="true">3</span>AWS Secret Access Key [None]: stacy</span>
-<span class="line"><span class="line-number" aria-hidden="true">4</span>Default region name [None]: us-east-1</span>
-<span class="line"><span class="line-number" aria-hidden="true">5</span>Default output format [None]: json</span>
-</code></pre>
-</div>
-```
-
-![Syntax Highlighting add a caption to a codeblock](./samples/sample-7.png)
+See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for highlighted lines.
 
 ### Example: aliases
 
