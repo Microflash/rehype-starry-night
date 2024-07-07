@@ -31,7 +31,7 @@
 	- [Example: Codeblock rendered using default and custom plugins](#example-codeblock-rendered-using-default-and-custom-plugins)
 	- [Example: Codeblock rendered without plugins](#example-codeblock-rendered-without-plugins)
 	- [Example: Using custom classname prefix](#example-using-custom-classname-prefix)
-	- [Example: custom marker](#example-custom-marker)
+	- [Example: Using custom marker for inline code](#example-using-custom-marker-for-inline-code)
 - [Related](#related)
 - [License](#license)
 
@@ -868,7 +868,7 @@ Running that with `node example.js` yields:
 <p>To remove the whitespace around a string, try <code class="highlight-inline highlight-java">str<span class="pl-k">.</span>strip()</code>.</p>
 ```
 
-### Example: custom marker
+### Example: Using custom marker for inline code
 
 You can configure a custom marker for inline `code` element to inject the language information. For example, say you want to annotate your inline `code` element with `: ` instead of the default `> ` marker, as shown in the following file `example.md`:
 
@@ -891,7 +891,9 @@ main();
 async function main() {
   const file = await unified()
     .use(remarkParse)
-    .use(remarkInlineCodeLang, { marker: ": " })
+    .use(remarkInlineCodeLang, {
+      marker: ": "
+    })
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeStarryNightInline)
     .use(rehypeStringify, { allowDangerousHtml: true })
@@ -907,7 +909,7 @@ Running that with `node example.js` yields:
 <p>To specify the language direction, use <code class="hl-inline hl-html">&lt;<span class="pl-ent">span</span> <span class="pl-e">dir</span>=<span class="pl-s"><span class="pl-pds">"</span>rtl<span class="pl-pds">"</span></span>&gt;مرحبا&lt;/<span class="pl-ent">span</span>&gt;</code>.</p>
 ```
 
-![Syntax Highlighting through language information using custom marker](./samples/sample-10.png)
+![Syntax Highlighting inline code using custom marker](./samples/sample-15.png)
 
 ## Related
 
