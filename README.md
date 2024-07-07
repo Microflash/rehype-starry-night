@@ -132,7 +132,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Syntax highlighting with Rehype Starry Night](./samples/sample-1.png)
+![Syntax highlighting with Rehype Starry Night](./samples/general-usage.png)
 
 ### Support for inline `code` elements
 
@@ -175,7 +175,7 @@ Running that with `node example.js` yields:
 <p>To print a greeting, use <code class="hl-inline hl-js"><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);</code>. This code prints <code>Hello, world!</code> on the console window.</p>
 ```
 
-![Highlighting inline code element](./samples/sample-2.png)
+![Highlighting inline code element](./samples/inline-code.png)
 
 ## API
 
@@ -318,7 +318,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Syntax Highlighting codeblock with single line](./samples/sample-3.png)
+![Syntax Highlighting codeblock with single line](./samples/codeblock-with-single-line.png)
 
 The plugin does not add line numbers when the codeblock contains a single line.
 
@@ -344,7 +344,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Syntax Highlighting codeblock with multiple lines](./samples/sample-4.png)
+![Syntax Highlighting codeblock with multiple lines](./samples/codeblock-with-multiple-lines.png)
 
 The plugin attaches `--hl-line-number-gutter-factor` CSS property on the `pre` element when the codeblock contains multiple lines. You can use this property to pad the line numbers and align them. See [`index.css`](./src/index.css#L73).
 
@@ -373,7 +373,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock with title](./samples/sample-5.png)
+![Codeblock with title](./samples/codeblock-with-title.png)
 
 ### Example: Codeblock with prompts
 
@@ -401,7 +401,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock with prompts](./samples/sample-6.png)
+![Codeblock with prompts](./samples/codeblock-with-prompts.png)
 
 You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L170).
 
@@ -465,7 +465,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Syntax Highlighting codeblock with wrapped lines](./samples/sample-7.png)
+![Syntax Highlighting codeblock with wrapped lines](./samples/codeblock-with-wrapped-lines.png)
 
 When you set `wrap="true"`, the plugin attaches a `[data-pre-wrap]` attribute on the `pre` element. You can use CSS to set `white-space: pre-wrap` on the `code` element to enable wrapping. See [`index.css`](./src/index.css#L68).
 
@@ -513,7 +513,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock with highlighted lines](./samples/sample-8.png)
+![Codeblock with highlighted lines](./samples/codeblock-with-highlighted-lines.png)
 
 See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for highlighted lines.
 
@@ -557,7 +557,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock with added and removed lines](./samples/sample-9.png)
+![Codeblock with added and removed lines](./samples/codeblock-with-diffed-lines.png)
 
 The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` element when you specify the codeblock line addition or removal annotations. You can use this property to pad the line numbers and align the icons. See [`index.css#L94`](./src/index.css#L94) and [`index.css#L120`](./src/index.css#L120).
 
@@ -587,7 +587,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock with unknown language](./samples/sample-14.png)
+![Codeblock with unknown language](./samples/codeblock-with-unknown-language.png)
 
 ### Example: Codeblock with aliased language
 
@@ -642,7 +642,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Syntax Highlighting configure aliases](./samples/sample-10.png)
+![Codeblock with aliased language](./samples/codeblock-with-aliased-language.png)
 
 ### Example: Codeblock rendered using custom plugin
 
@@ -708,7 +708,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Codeblock rendered using custom header plugin](./samples/sample-11.png)
+![Codeblock rendered using custom header plugin](./samples/codeblock-rendered-using-custom-plugin.png)
 
 ### Example: Codeblock rendered using default and custom plugins
 
@@ -781,7 +781,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Codeblock rendered using default and custom plugins](./samples/sample-12.png)
+![Codeblock rendered using default and custom plugins](./samples/codeblock-rendered-using-default-and-custom-plugins.png)
 
 ### Example: Codeblock rendered without plugins
 
@@ -833,7 +833,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Codeblock rendered without plugins](./samples/sample-13.png)
+![Codeblock rendered without plugins](./samples/codeblock-rendered-without-plugins.png)
 
 ### Example: Using custom classname prefix
 
@@ -987,7 +987,7 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-![Codeblock without language info](./samples/sample-15.png)
+![Codeblock without language info](./samples/codeblock-without-language-info.png)
 
 Similarly for inline `code` element without language information:
 
@@ -1001,7 +1001,7 @@ It gets rendered as:
 <p><code>gleam new</code> command will generate a new Gleam project.</p>
 ```
 
-![Inline code without language info](./samples/sample-16.png)
+![Inline code without language info](./samples/inline-code-without-language-info.png)
 
 ## Related
 
