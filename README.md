@@ -22,6 +22,7 @@
 	- [Example: Codeblock with multiple lines](#example-codeblock-with-multiple-lines)
 	- [Example: Codeblock with title](#example-codeblock-with-title)
 	- [Example: Codeblock with prompts](#example-codeblock-with-prompts)
+	- [Example: Codeblock with command and its output](#example-codeblock-with-command-and-its-output)
 	- [Example: Codeblock with wrapped lines](#example-codeblock-with-wrapped-lines)
 	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
@@ -383,7 +384,39 @@ The above codeblock gets rendered as:
 
 ![Codeblock with prompts](./samples/sample-6.png)
 
-You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L166).
+You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L170).
+
+### Example: Codeblock with command and its output
+
+Sometime you may want to display a command and its output, but you want people to just copy the command and not the output. You can mark unselectable lines with `output` property.
+
+	```sh prompt{1} output{2..6}
+	mvn -version
+	Apache Maven 3.9.8
+	Maven home: ~/maven/3.9.8/libexec
+	Java version: 22.0.1, vendor: Azul Systems, Inc., runtime: ~/zulu-22.jdk/Contents/Home
+	Default locale: en_US, platform encoding: UTF-8
+	OS name: "mac os x", version: "14.5", arch: "aarch64", family: "mac"
+	```
+
+The above codeblock gets rendered as:
+
+```html
+<div class="hl hl-sh">
+  <div class="hl-header">
+    <div class="hl-language">sh</div>
+  </div>
+<pre id="MC45NTIyNzEx" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>mvn -version</span>
+<span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">2</span>Apache Maven 3.9.8</span>
+<span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">3</span>Maven home: <span class="pl-k">~</span>/maven/3.9.8/libexec</span>
+<span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">4</span>Java version: 22.0.1, vendor: Azul Systems, Inc., runtime: <span class="pl-k">~</span>/zulu-22.jdk/Contents/Home</span>
+<span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">5</span>Default locale: en_US, platform encoding: UTF-8</span>
+<span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">6</span>OS name: <span class="pl-s"><span class="pl-pds">"</span>mac os x<span class="pl-pds">"</span></span>, version: <span class="pl-s"><span class="pl-pds">"</span>14.5<span class="pl-pds">"</span></span>, arch: <span class="pl-s"><span class="pl-pds">"</span>aarch64<span class="pl-pds">"</span></span>, family: <span class="pl-s"><span class="pl-pds">"</span>mac<span class="pl-pds">"</span></span></span>
+</code></pre>
+</div>
+```
+
+The plugin marks the output lines with `[data-unselectable]` attribute. You can set `user-select: none` for such elements using CSS. See [`index.css`](./src/index.css#L139).
 
 ### Example: Codeblock with wrapped lines
 
