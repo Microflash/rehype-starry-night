@@ -28,6 +28,7 @@
 	- [Example: Codeblock with aliased language](#example-codeblock-with-aliased-language)
 	- [Example: Codeblock rendered using custom header plugin](#example-codeblock-rendered-using-custom-header-plugin)
 	- [Example: Codeblock rendered using default and custom plugins](#example-codeblock-rendered-using-default-and-custom-plugins)
+	- [Example: Codeblock rendered without plugins](#example-codeblock-rendered-without-plugins)
 	- [Example: custom classname prefix](#example-custom-classname-prefix)
 	- [Example: custom marker](#example-custom-marker)
 - [Related](#related)
@@ -701,6 +702,58 @@ Running that with `node example.js` yields:
 ```
 
 ![Codeblock rendered using default and custom plugins](./samples/sample-12.png)
+
+### Example: Codeblock rendered without plugins
+
+If you want to disable all plugins, you can do so by setting `plugins: false` while configuring `remark`.
+
+Say we have the following file `example.md`:
+
+	```yml
+	- name: Job summary
+	  run: |
+	    echo "# Deployment result" >> $GITHUB_STEP_SUMMARY
+	    echo "**Preview URL** = $PREVIEW_URL" >> $GITHUB_STEP_SUMMARY
+	```
+
+You can disable the plugins as follows with `example.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+
+main()
+
+async function main() {
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeStarryNight, {
+      plugins: false
+    })
+    .use(rehypeStringify, { allowDangerousHtml: true })
+    .process(markdown);
+
+  console.log(String(file));
+}
+```
+
+Running that with `node example.js` yields:
+
+```html
+<div class="hl hl-yml">
+<pre id="MC40MTIxNzg1" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>- <span class="pl-ent">name</span>: <span class="pl-s">Job summary</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-ent">run</span>: <span class="pl-s">|</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-s">    echo "# Deployment result" &gt;&gt; $GITHUB_STEP_SUMMARY</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span><span class="pl-s">    echo "**Preview URL** = $PREVIEW_URL" &gt;&gt; $GITHUB_STEP_SUMMARY</span></span>
+</code></pre>
+</div>
+```
+
+![Codeblock rendered without plugins](./samples/sample-13.png)
 
 ### Example: custom classname prefix
 
