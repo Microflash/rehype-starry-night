@@ -25,7 +25,7 @@
 	- [Example: Codeblock with wrapped lines](#example-codeblock-with-wrapped-lines)
 	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
-	- [Example: aliases](#example-aliases)
+	- [Example: Codeblock with aliased language](#example-codeblock-with-aliased-language)
 	- [Example: custom header extension](#example-custom-header-extension)
 	- [Example: custom classname prefix](#example-custom-classname-prefix)
 	- [Example: custom marker](#example-custom-marker)
@@ -507,9 +507,9 @@ The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` e
 
 See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for `ins` and `del` properties.
 
-### Example: aliases
+### Example: Codeblock with aliased language
 
-Although Starry Night [supports](https://github.com/wooorm/starry-night#languages=) a large number of languages, it is not all encompassing. In such cases, you can configure aliases to force the syntax highlighting on a codeblock containing code in a language not yet supported by Starry Night.
+Although Starry Night [supports](https://github.com/wooorm/starry-night?tab=readme-ov-file#languages) a large number of languages, it is not all encompassing. In such cases, you can configure aliases to force the syntax highlighting on a codeblock containing code in a language not yet supported by Starry Night.
 
 Say we have the following file `example.md`:
 
@@ -534,7 +534,11 @@ async function main() {
   const file = await unified()
     .use(remarkParse)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeStarryNight, { aliases: { xjm: "toml" } })
+    .use(rehypeStarryNight, {
+      aliases: {
+        xjm: "toml"
+      }
+    })
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(markdown);
 
@@ -549,14 +553,14 @@ Running that with `node example.js` yields:
   <div class="hl-header">
     <div class="hl-language">xjm</div>
   </div>
-<pre id="MC40OTE3NjA4"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
+<pre id="MC40NDMwMTAw" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-smi">features</span> = [ <span class="pl-s"><span class="pl-pds">"</span>io<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>graphics<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>compute<span class="pl-pds">"</span></span> ]</span>
 </code></pre>
 </div>
 ```
 
-![Syntax Highlighting configure aliases](./samples/sample-8.png)
+![Syntax Highlighting configure aliases](./samples/sample-10.png)
 
 ### Example: custom header extension
 
