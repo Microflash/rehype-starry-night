@@ -28,6 +28,7 @@
 		"./plugins/line-ins-plugin": "./src/rehype-starry-night/plugins/line-ins-plugin.js",
 		"./plugins/line-mark-plugin": "./src/rehype-starry-night/plugins/line-mark-plugin.js",
 		"./plugins/line-prompt-plugin": "./src/rehype-starry-night/plugins/line-prompt-plugin.js",
+		"./plugins/line-output-plugin": "./src/rehype-starry-night/plugins/line-output-plugin.js",
 		"./remark-inline-code-lang": "./src/remark-inline-code-lang/index.js",
 		"./rehype-starry-night-inline": "./src/rehype-starry-night-inline/index.js",
 		"./css": "./src/index.css"
@@ -41,6 +42,7 @@
 		"src/rehype-starry-night/plugins/line-ins-plugin.js",
 		"src/rehype-starry-night/plugins/line-mark-plugin.js",
 		"src/rehype-starry-night/plugins/line-prompt-plugin.js",
+		"src/rehype-starry-night/plugins/line-output-plugin.js",
 		"src/remark-inline-code-lang/index.js",
 		"src/rehype-starry-night-inline/index.js"
 	],
