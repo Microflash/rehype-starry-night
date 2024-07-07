@@ -5,7 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- ## [5.0.0] - 2024-07-07 -->
+## [5.0.0] - 2024-07-07
+
+### Added
+
+- Annotate added and removed lines
+- Conditionally wrap lines
+- Annotate lines as command-line output
+- Plugin API to enhance header and lines
+- Option to disable or override default plugins
+- Imports for default plugins
+- CSS properties to control more theming for diffs, prompt, and outline
+- Graceful fallback behavior when language info is unavailable
+
+### Changed
+
+- **Breaking** Rename `caption` property to `title` for codeblock titles
+- **Breaking** Rename `--hl-code-highlight` to `--hl-line-highlight-background-color`
+
+### Removed
+
+- JavaScript based line-number padding; it is now CSS-based
+- **Breaking** Header extensions in favor of new title and language plugins
+
 ## [4.1.0] - 2024-06-10
 
 ### Patched
@@ -107,7 +129,7 @@ Syntax highlight plugin with support for following additional features
 - support for prompt
 - captions and language information
 
-<!-- [5.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v4.1.0...v5.0.0 -->
+[5.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/Microflash/rehype-starry-night/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v3.6.0...v4.0.0
 [3.6.0]: https://github.com/Microflash/rehype-starry-night/compare/v3.5.0...v3.6.0
