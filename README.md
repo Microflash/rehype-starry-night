@@ -21,7 +21,7 @@
 	- [Example: Codeblock with single line](#example-codeblock-with-single-line)
 	- [Example: Codeblock with multiple lines](#example-codeblock-with-multiple-lines)
 	- [Example: Codeblock with title](#example-codeblock-with-title)
-	- [Example: show prompts](#example-show-prompts)
+	- [Example: Codeblock with prompts](#example-codeblock-with-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
 	- [Example: codeblock with a caption](#example-codeblock-with-a-caption)
 	- [Example: aliases](#example-aliases)
@@ -350,9 +350,9 @@ The above codeblock gets rendered as:
 
 ![Codeblock with title](./samples/sample-5.png)
 
-### Example: show prompts
+### Example: Codeblock with prompts
 
-Sometimes you may want to show a prompt while displaying a command-line instruction. Prompts on multiple lines can be specified as follows.
+Sometimes you may want to show a prompt character while displaying a command-line instruction. `rehype-starry-night` supports this out of box.
 
 	```sh prompt{1,3}
 	curl localhost:8080/actuator/health
@@ -361,14 +361,14 @@ Sometimes you may want to show a prompt while displaying a command-line instruct
 	Hello, Anya!
 	```
 
-The above codeblock will yield:
+The above codeblock gets rendered as:
 
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
     <div class="hl-language">sh</div>
   </div>
-<pre id="MC44MTg4MTA0"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
+<pre id="MC43MTQzMTQx" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/greeter<span class="pl-k">?</span>name=Anya</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>Hello, Anya<span class="pl-k">!</span></span>
@@ -376,9 +376,9 @@ The above codeblock will yield:
 </div>
 ```
 
-![Syntax Highlighting show prompts](./samples/sample-5.png)
+![Codeblock with prompts](./samples/sample-6.png)
 
-[index.css](./src/index.css) disables user-selection of prompts to make sure that when a user copies the content of a codeblock, the prompt is not copied.
+You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L166).
 
 ### Example: highlight lines
 
