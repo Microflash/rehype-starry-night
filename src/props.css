@@ -1,5 +1,6 @@
 :root {
 	--hl-background-color: hsl(220, 23%, 97%);
+	--hl-background-color-inline: var(--hl-background-color);
 	--hl-border-color: hsl(215, 15%, 85%);
 	--hl-outline-color: hsl(215, 15%, 70%, 0.5);
 	--hl-line-highlight-background-color: hsl(220, 23%, 92%);
