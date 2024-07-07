@@ -111,7 +111,7 @@ Running that with `node example.js` yields:
   <div class="hl-header">
     <div class="hl-language">css</div>
   </div>
-<pre id="MC45OTExNTEw"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
+<pre id="MC4wNTYxMTQ4" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span>  <span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;</span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span>  <span class="pl-c">/* allow percentage based heights for the children */</span></span>
@@ -121,7 +121,7 @@ Running that with `node example.js` yields:
 </div>
 ```
 
-![Syntax highlighting with Starry Night](./samples/sample-1.png)
+![Syntax highlighting with Rehype Starry Night](./samples/sample-1.png)
 
 ### Support for inline `code` elements
 
