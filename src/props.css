@@ -1,0 +1,29 @@
+:root {
+	--hl-background-color: hsl(220, 23%, 97%);
+	--hl-border-color: hsl(215, 15%, 85%);
+	--hl-outline-color: hsl(215, 15%, 70%, 0.5);
+	--hl-line-highlight-background-color: hsl(220, 23%, 92%);
+	--hl-line-added-background-color: hsla(103, 96%, 73%, 0.5);
+	--hl-line-removed-background-color: hsla(4, 75%, 83%, 0.5);
+	--hl-line-active-background-color: hsl(220, 23%, 89%);
+	--hl-line-number-added-color: hsl(106, 59%, 27%);
+	--hl-line-number-removed-color: hsl(355, 67%, 41%);
+
+	/* add Starry Night CSS properties for light theme here */
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--hl-background-color: hsl(216, 18%, 11%);
+		--hl-border-color: hsl(215, 11%, 22%);
+		--hl-outline-color: hsl(215, 11%, 37%, 0.5);
+		--hl-line-highlight-background-color: hsl(218, 14%, 17%);
+		--hl-line-added-background-color: hsla(105, 62%, 20%, 0.5);
+		--hl-line-removed-background-color: hsla(356, 69%, 31%, 0.5);
+		--hl-line-active-background-color: hsl(218, 14%, 20%);
+		--hl-line-number-added-color: hsl(105, 51%, 51%);
+		--hl-line-number-removed-color: hsl(3, 77%, 74%);
+
+		/* add Starry Night CSS properties for dark theme here */
+	}
+}
