@@ -27,11 +27,12 @@
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
 	- [Example: Codeblock with unknown language](#example-codeblock-with-unknown-language)
 	- [Example: Codeblock with aliased language](#example-codeblock-with-aliased-language)
-	- [Example: Codeblock rendered using custom header plugin](#example-codeblock-rendered-using-custom-header-plugin)
+	- [Example: Codeblock rendered using custom plugin](#example-codeblock-rendered-using-custom-plugin)
 	- [Example: Codeblock rendered using default and custom plugins](#example-codeblock-rendered-using-default-and-custom-plugins)
 	- [Example: Codeblock rendered without plugins](#example-codeblock-rendered-without-plugins)
 	- [Example: Using custom classname prefix](#example-using-custom-classname-prefix)
 	- [Example: Using custom marker for inline code](#example-using-custom-marker-for-inline-code)
+	- [Example: Code without language info](#example-code-without-language-info)
 - [Related](#related)
 - [License](#license)
 
@@ -506,7 +507,7 @@ The above codeblock gets rendered as:
 
 ![Codeblock with added and removed lines](./samples/sample-9.png)
 
-The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` element when the codeblock line addition or removal annotations. You can use this property to pad the line numbers and align the icons. See [`index.css#L94`](./src/index.css#L94) and [`index.css#L120`](./src/index.css#L120).
+The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` element when you specify the codeblock line addition or removal annotations. You can use this property to pad the line numbers and align the icons. See [`index.css#L94`](./src/index.css#L94) and [`index.css#L120`](./src/index.css#L120).
 
 See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for `ins` and `del` properties.
 
@@ -591,7 +592,7 @@ Running that with `node example.js` yields:
 
 ![Syntax Highlighting configure aliases](./samples/sample-10.png)
 
-### Example: Codeblock rendered using custom header plugin
+### Example: Codeblock rendered using custom plugin
 
 Suppose you want to add a copy to clipboard button in the header. You can do so by adding a custom header plugin.
 
@@ -732,7 +733,7 @@ Running that with `node example.js` yields:
 
 ### Example: Codeblock rendered without plugins
 
-If you want to disable all plugins, you can do so by setting `plugins: false` while configuring `remark`.
+If you want to disable all plugins, you can do so by setting `plugins: false` while configuring `rehype-starry-night`.
 
 Say we have the following file `example.md`:
 
@@ -909,10 +910,50 @@ Running that with `node example.js` yields:
 <p>To specify the language direction, use <code class="hl-inline hl-html">&lt;<span class="pl-ent">span</span> <span class="pl-e">dir</span>=<span class="pl-s"><span class="pl-pds">"</span>rtl<span class="pl-pds">"</span></span>&gt;مرحبا&lt;/<span class="pl-ent">span</span>&gt;</code>.</p>
 ```
 
-![Syntax Highlighting inline code using custom marker](./samples/sample-15.png)
+### Example: Code without language info
+
+If you don't provide the language info in the codeblock, `rehype-starry-night` will render it as plain text without header.
+
+	```
+	import gleam/io
+
+	pub fn main() {
+	  io.println("hello, friend!")
+	}
+	```
+
+The above codeblock gets rendered as:
+
+```html
+<div class="hl hl-txt">
+<pre id="MC44MzU2OTkz" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>import gleam/io</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>pub fn main() {</span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span>  io.println("hello, friend!")</span>
+<span class="line"><span class="line-number" aria-hidden="true">5</span>}</span>
+</code></pre>
+</div>
+```
+
+![Codeblock without language info](./samples/sample-15.png)
+
+Similarly for inline `code` element without language information:
+
+```md
+`gleam new` command will generate a new Gleam project.
+```
+
+It gets rendered as:
+
+```html
+<p><code>gleam new</code> command will generate a new Gleam project.</p>
+```
+
+![Inline code without language info](./samples/sample-16.png)
 
 ## Related
 
+- [`rehype-starry-night`](https://github.com/rehypejs/rehype-starry-night) &mdash; alternative plugin to apply syntax highlighting to code with `starry-night`
 - [`rehype-highlight`](https://github.com/rehypejs/rehype-highlight) &mdash; highlight code with [highlight.js](https://github.com/isagalaev/highlight.js) (through [lowlight](https://github.com/wooorm/lowlight))
 - [`rehype-prism-plus`](https://github.com/timlrx/rehype-prism-plus) &mdash; highlight code with [Prism](http://prismjs.com) (via [refractor](https://github.com/wooorm/refractor)) with additional line highlighting and line numbers functionalities
 - [`@shikijs/rehype`](https://github.com/shikijs/shiki/tree/main/packages/rehype) &mdash; highlight code with [shiki](https://shiki.style)
