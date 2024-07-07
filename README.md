@@ -20,6 +20,7 @@
 - [Examples](#examples)
 	- [Example: Codeblock with single line](#example-codeblock-with-single-line)
 	- [Example: Codeblock with multiple lines](#example-codeblock-with-multiple-lines)
+	- [Example: Codeblock with title](#example-codeblock-with-title)
 	- [Example: show prompts](#example-show-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
 	- [Example: codeblock with a caption](#example-codeblock-with-a-caption)
@@ -321,6 +322,33 @@ The above codeblock gets rendered as:
 ![Syntax Highlighting codeblock with multiple lines](./samples/sample-4.png)
 
 The plugin attaches `--hl-line-number-gutter-factor` CSS property on the `pre` element when the codeblock contains multiple lines. You can use this property to pad the line numbers and align them. See [`index.css`](./src/index.css#L73).
+
+### Example: Codeblock with title
+
+	```zsh title="Switching off homebrew telemetry"
+	# turns off homebrew telemetry
+	export HOMEBREW_NO_ANALYTICS=1
+	# turns off homebrew auto-update
+	export HOMEBREW_NO_AUTO_UPDATE=1
+	```
+
+The above codeblock gets rendered as:
+
+```html
+<div class="hl hl-zsh">
+  <div class="hl-header">
+    <div class="hl-language">zsh</div>
+    <div class="hl-title">Switching off homebrew telemetry</div>
+  </div>
+<pre id="MC4xOTE1OTM1" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-c"># turns off homebrew telemetry</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-k">export</span> HOMEBREW_NO_ANALYTICS=1</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span><span class="pl-c"># turns off homebrew auto-update</span></span>
+<span class="line"><span class="line-number" aria-hidden="true">4</span><span class="pl-k">export</span> HOMEBREW_NO_AUTO_UPDATE=1</span>
+</code></pre>
+</div>
+```
+
+![Codeblock with title](./samples/sample-5.png)
 
 ### Example: show prompts
 
