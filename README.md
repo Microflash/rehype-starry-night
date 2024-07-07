@@ -18,7 +18,7 @@
 - [Theming](#theming)
 	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
-	- [Example: single line codeblock](#example-single-line-codeblock)
+	- [Example: Codeblock with single line](#example-codeblock-with-single-line)
 	- [Example: line numbers for multiline codeblock](#example-line-numbers-for-multiline-codeblock)
 	- [Example: show prompts](#example-show-prompts)
 	- [Example: highlight lines](#example-highlight-lines)
@@ -273,25 +273,25 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 
 ## Examples
 
-### Example: single line codeblock
+### Example: Codeblock with single line
 
 	```sh
 	docker ps -a
 	```
 
-The above codeblock will yield:
+The above codeblock gets rendered as:
 
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
     <div class="hl-language">sh</div>
   </div>
-<pre id="MC4zNzExNzQw"><code tabindex="0"><span class="line">docker ps -a</span>
+<pre id="MC4wNjE2ODk0"><code tabindex="0"><span class="line">docker ps -a</span>
 </code></pre>
 </div>
 ```
 
-![Syntax Highlighting single line codeblock](./samples/sample-3.png)
+![Syntax Highlighting codeblock with single line](./samples/sample-3.png)
 
 ### Example: line numbers for multiline codeblock
 
