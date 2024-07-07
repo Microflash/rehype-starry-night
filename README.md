@@ -15,7 +15,8 @@
 	- [Plugin API for `rehype-starry-night`](#plugin-api-for-rehype-starry-night)
 	- [API for `rehype-starry-night-inline`](#api-for-rehype-starry-night-inline)
 	- [API for `remark-inline-code-lang`](#api-for-remark-inline-code-lang)
-	- [Themes](#themes)
+- [Theming](#theming)
+	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
 	- [Example: single line codeblock](#example-single-line-codeblock)
 	- [Example: line numbers for multiline codeblock](#example-line-numbers-for-multiline-codeblock)
@@ -223,30 +224,40 @@ The following options are available for the `remark-inline-code-lang` plugin. Al
 
 - `marker` (type: `string`, default: `> `) - the marker for inline `code` element before which the language information is specified.
 
-### Themes
+## Theming
 
-Check out the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
+Import [`props.css`](./src/props.css) and [`index.css`](./src/index.css) files in your project, or use them as a base for your own custom theme. For different color schemes for syntax highlighting, check the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
 
-Import [index.css](./src/index.css) or use it as a base for your own custom styles to style codeblock headers (containing language and captions) and gutters (providing line number, highlighting and prompt).
+### Supporting Light and Dark themes
 
-#### Supporting Light and Dark themes
-
-There are multiple ways to support light and dark themes. Here's one way to do this; the appropriate theme will get activated based on system preferences.
+Here's one way to support light and dark themes; the appropriate theme will get activated based on system preferences.
 
 ```css
 :root {
   /* light theme variables specific to rehype-starry-night plugin */
-  --hl-background-color: hsl(0, 0%, 100%);
-  --hl-border-color: hsl(208, 21%, 86%);
-  --hl-code-highlight: hsl(208, 19%, 82%);
+  --hl-background-color: hsl(220, 23%, 97%);
+  --hl-border-color: hsl(215, 15%, 85%);
+  --hl-outline-color: hsl(215, 15%, 70%, 0.5);
+  --hl-line-highlight-background-color: hsl(220, 23%, 92%);
+  --hl-line-added-background-color: hsla(103, 96%, 73%, 0.5);
+  --hl-line-removed-background-color: hsla(4, 75%, 83%, 0.5);
+  --hl-line-active-background-color: hsl(220, 23%, 89%);
+  --hl-line-number-added-color: hsl(106, 59%, 27%);
+  --hl-line-number-removed-color: hsl(355, 67%, 41%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     /* dark theme variables specific to rehype-starry-night plugin */
-    --hl-background-color: hsl(240, 20%, 2%);
-    --hl-border-color: hsl(208, 21%, 12%);
-    --hl-code-highlight: hsl(208, 19%, 13%);
+    --hl-background-color: hsl(216, 18%, 11%);
+    --hl-border-color: hsl(215, 11%, 22%);
+    --hl-outline-color: hsl(215, 11%, 37%, 0.5);
+    --hl-line-highlight-background-color: hsl(218, 14%, 17%);
+    --hl-line-added-background-color: hsla(105, 62%, 20%, 0.5);
+    --hl-line-removed-background-color: hsla(356, 69%, 31%, 0.5);
+    --hl-line-active-background-color: hsl(218, 14%, 20%);
+    --hl-line-number-added-color: hsl(105, 51%, 51%);
+    --hl-line-number-removed-color: hsl(3, 77%, 74%);
   }
 }
 
