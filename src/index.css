@@ -62,11 +62,7 @@
 	padding: var(--hlLineGap) 0;
 	cursor: auto;
 	touch-action: auto;
-	white-space: var(--hl-code-white-space, pre);
-}
-
-.hl pre[data-pre-wrap]>code {
-	--hl-code-white-space: pre-wrap;
+	white-space: pre;
 }
 
 .hl .line {
@@ -76,6 +72,10 @@
 	padding-left: var(--hlLinePaddingLeft);
 	padding-right: 1ch;
 	background-color: var(--hlLineBgColor);
+}
+
+.hl .line[data-line-wrapped] {
+	white-space: pre-wrap;
 }
 
 .hl .line[data-highlighted] {

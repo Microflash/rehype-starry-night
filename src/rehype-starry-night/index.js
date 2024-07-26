@@ -11,6 +11,7 @@ import linePromptPlugin from "./plugins/line-prompt-plugin.js";
 import lineOutputPlugin from "./plugins/line-output-plugin.js";
 import lineInsPlugin from "./plugins/line-ins-plugin.js";
 import lineDelPlugin from "./plugins/line-del-plugin.js";
+import lineWrapPlugin from "./plugins/line-wrap-plugin.js";
 
 const fenceparser = new FenceParser();
 const prefix = "language-";
@@ -25,7 +26,8 @@ export const defaultPluginPack = [
 	linePromptPlugin,
 	lineOutputPlugin,
 	lineInsPlugin,
-	lineDelPlugin
+	lineDelPlugin,
+	lineWrapPlugin
 ];
 
 export default function rehypeStarryNight(userOptions = {}) {
@@ -98,7 +100,6 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			// apply line plugins
 			const lines = linesByLineNumber(children);
-			const lineNumberGutterFactor = `${lines.size}`.length;
 			if (plugins) {
 				const linePlugins = plugins.filter(p => p.type === "line");
 				if (linePlugins) {
@@ -109,18 +110,13 @@ export default function rehypeStarryNight(userOptions = {}) {
 			const preProps = {};
 
 			// add line number gutter width for codeblock with multiple lines
+			const lineNumberGutterFactor = `${lines.size}`.length;
 			if (lines.size > 1) {
 				preProps["style"] = `--hl-line-number-gutter-factor: ${lineNumberGutterFactor}`;
 			}
 
 			if (globalOptions.lineMarkerGutterFactor) {
 				preProps["style"] += `; --hl-line-marker-gutter-factor: ${globalOptions.lineMarkerGutterFactor}`;
-			}
-
-			// add `data-pre-wrap` property to indicate if the codeblock should be wrapped
-			const { wrap = "" } = globalOptions?.metadata;
-			if (wrap.trim() === "true") {
-				preProps["data-pre-wrap"] = "";
 			}
 
 			// prepare codeblock nodes

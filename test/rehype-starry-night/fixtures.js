@@ -100,8 +100,16 @@ Hello, Anya!
 	{
 		title: "codeblock with wrapped lines",
 		input: `
-\`\`\`sh wrap="true"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+\`\`\`rust wrap{4..8}
+use std::fs::read_to_string;
+
+fn read_lines(filename: &str) -> Vec<String> {
+    read_to_string(filename) 
+        .unwrap()  // panic on possible file-reading errors
+        .lines()  // split the string into an iterator of string slices
+        .map(String::from)  // make each slice into a string
+        .collect()  // gather them together into a vector
+}
 \`\`\`
 `
 	},
