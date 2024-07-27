@@ -98,7 +98,6 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			// apply line plugins
 			const lines = linesByLineNumber(children);
-			const lineNumberGutterFactor = `${lines.size}`.length;
 			if (plugins) {
 				const linePlugins = plugins.filter(p => p.type === "line");
 				if (linePlugins) {
@@ -109,6 +108,7 @@ export default function rehypeStarryNight(userOptions = {}) {
 			const preProps = {};
 
 			// add line number gutter width for codeblock with multiple lines
+			const lineNumberGutterFactor = `${lines.size}`.length;
 			if (lines.size > 1) {
 				preProps["style"] = `--hl-line-number-gutter-factor: ${lineNumberGutterFactor}`;
 			}

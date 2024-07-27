@@ -62,11 +62,11 @@
 	padding: var(--hlLineGap) 0;
 	cursor: auto;
 	touch-action: auto;
-	white-space: var(--hl-code-white-space, pre);
+	white-space: var(--hlCodeWhiteSpace, pre);
 }
 
 .hl pre[data-pre-wrap]>code {
-	--hl-code-white-space: pre-wrap;
+	--hlCodeWhiteSpace: pre-wrap;
 }
 
 .hl .line {

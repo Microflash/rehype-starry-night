@@ -14,7 +14,7 @@ const headerClipboardCopyBtnPlugin = {
 export default [
 	{
 		title: "no codeblock",
-		input: "Divided we fall.",
+		input: "Time moves slowly, but passes quickly.",
 	},
 	{
 		title: "codeblock without language info",
@@ -27,10 +27,12 @@ echo "foo" > bar.txt
 	{
 		title: "codeblock with unknown language",
 		input: `
-\`\`\`nux
-let-env NU_LIB_DIRS = [
-	($nu.config-path | path dirname | path join 'scripts')
-]
+\`\`\`vale
+import stdlib.*;
+
+exported func main() {
+	println("Hello world!");
+}
 \`\`\`
 `,
 	},
@@ -38,14 +40,14 @@ let-env NU_LIB_DIRS = [
 		title: "codeblock with aliased language",
 		options: {
 			aliases: {
-				xjm: "toml"
+				psql: "sql"
 			}
 		},
 		input: `
-\`\`\`xjm
-language = "en"
-customization = false
-features = [ "io", "graphics", "compute" ]
+\`\`\`psql
+select *
+from books
+where (published_year, available) = (2024, TRUE);
 \`\`\`
 `,
 	},
@@ -62,7 +64,7 @@ docker ps -a
 		input: `
 \`\`\`css
 * {
-  display: revert;
+  all: unset;
 }
 \`\`\`
 `,
@@ -151,7 +153,8 @@ drop table users;
 	{
 		title: "codeblock with command and output",
 		input: `
-\`\`\`sql prompt{1} output{2..5}
+\`\`\`sql prompt{1} output{2..6}
+mvn -version
 Apache Maven 3.9.8
 Maven home: ~/maven/3.9.8/libexec
 Java version: 22.0.1, vendor: Azul Systems, Inc., runtime: ~/zulu-22.jdk/Contents/Home
