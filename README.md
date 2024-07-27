@@ -50,7 +50,7 @@ The following additonal features are also available out of box:
 - line numbers
 - line highlights
 - annotations for added and removed lines
-- conditionally wrapping lines
+- wrapping lines
 - prompt character
 - title and language information
 - highlighting inline `code` elements
@@ -217,6 +217,7 @@ export default {
 - [`lineMarkPlugin`](./src/rehype-starry-night/plugins/line-mark-plugin.js) - used to highlight a line
 - [`lineInsPlugin`](./src/rehype-starry-night/plugins/line-ins-plugin.js) - used to annotate an added line
 - [`lineDelPlugin`](./src/rehype-starry-night/plugins/line-del-plugin.js) - used to annotate a removed line
+- [`lineWrapPlugin`](./src/rehype-starry-night/plugins/line-wrap-plugin.js) - used to soft wrap a line
 
 You can import these plugins individually.
 
@@ -228,6 +229,7 @@ import lineOutputPlugin from "@microflash/rehype-starry-night/plugins/line-outpu
 import lineMarkPlugin from "@microflash/rehype-starry-night/plugins/line-mark-plugin";
 import lineInsPlugin from "@microflash/rehype-starry-night/plugins/line-ins-plugin";
 import lineDelPlugin from "@microflash/rehype-starry-night/plugins/line-del-plugin";
+import lineWrapPlugin from "@microflash/rehype-starry-night/plugins/line-wrap-plugin";
 ```
 
 Alternatively, you can import them all at once.
@@ -346,7 +348,7 @@ The above codeblock gets rendered as:
 
 ![Syntax Highlighting codeblock with multiple lines](./samples/codeblock-with-multiple-lines.png)
 
-The plugin attaches `--hl-line-number-gutter-factor` CSS property on the `pre` element when the codeblock contains multiple lines. You can use this property to pad the line numbers and align them. See [`index.css`](./src/index.css#L73).
+The plugin attaches `--hl-line-number-gutter-factor` CSS property on the `pre` element when the codeblock contains multiple lines. You can use this property to pad the line numbers and align them. See [`index.css`](./src/index.css#L120).
 
 ### Example: Codeblock with title
 
@@ -403,7 +405,7 @@ The above codeblock gets rendered as:
 
 ![Codeblock with prompts](./samples/codeblock-with-prompts.png)
 
-You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L170).
+You should disable the selection of prompt character so that when people copy the command, the prompt is not copied. See [`index.css`](./src/index.css#L168).
 
 ### Example: Codeblock with command and its output
 
@@ -435,13 +437,13 @@ The above codeblock gets rendered as:
 </div>
 ```
 
-The plugin marks the output lines with `[data-unselectable]` attribute. You can set `user-select: none` for such elements using CSS. See [`index.css`](./src/index.css#L139).
+The plugin marks the output lines with `[data-unselectable]` attribute. You can set `user-select: none` for such elements using CSS. See [`index.css`](./src/index.css#L138).
 
 ### Example: Codeblock with wrapped lines
 
-Sometimes you may want to avoid scrolling a long line containing important information at the very end. In such cases, you can wrap the codeblock with `wrap="true"` property.
+Sometimes you may want to avoid scrolling a long line containing important information at the very end. In such cases, you can wrap the codeblock with `wrap` property.
 
-	```sh wrap="true"
+	```sh wrap{1}
 	# download the formula for node@20.5.1
 	curl -o node.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/442f9cc511ce6dfe75b96b2c83749d90dde914d2/Formula/n/node.rb
 
@@ -456,8 +458,8 @@ The above codeblock gets rendered as:
   <div class="hl-header">
     <div class="hl-language">sh</div>
   </div>
-<pre id="MC41OTIxMDEz" style="--hl-line-number-gutter-factor: 1" data-pre-wrap=""><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-c"># download the formula for node@20.5.1</span></span>
-<span class="line"><span class="line-number" aria-hidden="true">2</span>curl -o node.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/442f9cc511ce6dfe75b96b2c83749d90dde914d2/Formula/n/node.rb</span>
+<pre id="MC43OTk3MzY4" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-c"># download the formula for node@20.5.1</span></span>
+<span class="line" data-line-wrapped=""><span class="line-number" aria-hidden="true">2</span>curl -o node.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/442f9cc511ce6dfe75b96b2c83749d90dde914d2/Formula/n/node.rb</span>
 <span class="line"><span class="line-number" aria-hidden="true">3</span></span>
 <span class="line"><span class="line-number" aria-hidden="true">4</span><span class="pl-c"># install with the downloaded formula</span></span>
 <span class="line"><span class="line-number" aria-hidden="true">5</span>brew install node.rb</span>
@@ -467,7 +469,7 @@ The above codeblock gets rendered as:
 
 ![Syntax Highlighting codeblock with wrapped lines](./samples/codeblock-with-wrapped-lines.png)
 
-When you set `wrap="true"`, the plugin attaches a `[data-pre-wrap]` attribute on the `pre` element. You can use CSS to set `white-space: pre-wrap` on the `code` element to enable wrapping. See [`index.css`](./src/index.css#L68).
+When you set the `wrap` property, the plugin attaches a `[data-line-wrapped]` attribute on the matching line elements. You can use CSS to set `white-space: pre-wrap` on them to enable wrapping. See [`index.css`](./src/index.css#L78).
 
 ### Example: Codeblock with highlighted lines
 
@@ -521,45 +523,48 @@ See the documentation of [`fenceparser`](https://github.com/Microflash/fencepars
 
 You can render code diffs using `ins` and `del` properties on the codeblock followed by a range of line numbers.
 
-	```svg del{2..7} ins{8..10}
-	<svg width="800px" height="800px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#000" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-	  <path d="M52.4172 129.945C154.767 124.431 299.051 80.9206 362.913 182.602C369.254 192.695 372.11 221.082 363.911 231.283C340.825 260.002 85.1022 258.994 38.4434 258.994"/>
-	  <path d="M371.656 279.262C260.686 278.71 142.19 286.441 33.0469 281.78"/>
-	  <path d="M264.29 133.538C247.656 199.764 297.805 187.344 346.025 180.575"/>
-	  <path d="M240.21 132.188C251.965 213.876 84.6787 176.294 29 190.197"/>
-	  <path d="M171.274 140.283C166.221 155.378 170.086 170.931 170.086 186.15"/>
-	  <path d="M96.7925 144.33C93.1231 154.511 95.5446 187.149 95.6053 187.499"/>
-	  <path d="M52.417 129.945c102.35-5.514 246.634-49.024 310.496 52.657 6.341 10.093 9.197 38.48.998 48.681-23.086 28.719-278.809 27.711-325.468 27.711m333.213 20.268c-110.97-.552-229.466 7.179-338.61 2.518"/>
-	  <path d="M264.29 133.538c-16.634 66.226 33.515 53.806 81.735 47.037M240.21 132.188C251.965 213.876 84.679 176.294 29 190.197"/>
-	  <path d="M171.274 140.283c-5.053 15.095-1.188 30.648-1.188 45.867m-73.293-41.82c-3.67 10.181-1.248 42.819-1.188 43.169"/>
-	</svg>
+	```js title="Pool options in Vitest 2.0" del{4..6} ins{7..9}
+	export default defineConfig({
+	  test: {
+	    poolOptions: {
+	      threads: {
+	        singleThread: true,
+	      },
+	      forks: {
+	        singleFork: true,
+	      },
+	    }
+	  }
+	});
 	```
 
 The above codeblock gets rendered as:
 
 ```html
-<div class="hl hl-svg">
+<div class="hl hl-js">
   <div class="hl-header">
-    <div class="hl-language">svg</div>
+    <div class="hl-language">js</div>
+    <div class="hl-title">Pool options in Vitest 2.0</div>
   </div>
-<pre id="MC4xOTg0NzY4" style="--hl-line-number-gutter-factor: 2; --hl-line-marker-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>&lt;<span class="pl-ent">svg</span> <span class="pl-e">width</span>=<span class="pl-s"><span class="pl-pds">"</span>800px<span class="pl-pds">"</span></span> <span class="pl-e">height</span>=<span class="pl-s"><span class="pl-pds">"</span>800px<span class="pl-pds">"</span></span> <span class="pl-e">viewBox</span>=<span class="pl-s"><span class="pl-pds">"</span>0 0 400 400<span class="pl-pds">"</span></span> <span class="pl-e">xmlns</span>=<span class="pl-s"><span class="pl-pds">"</span>http://www.w3.org/2000/svg<span class="pl-pds">"</span></span> <span class="pl-e">fill</span>=<span class="pl-s"><span class="pl-pds">"</span>none<span class="pl-pds">"</span></span> <span class="pl-e">stroke</span>=<span class="pl-s"><span class="pl-pds">"</span>#000<span class="pl-pds">"</span></span> <span class="pl-e">stroke-width</span>=<span class="pl-s"><span class="pl-pds">"</span>8<span class="pl-pds">"</span></span> <span class="pl-e">stroke-linecap</span>=<span class="pl-s"><span class="pl-pds">"</span>round<span class="pl-pds">"</span></span> <span class="pl-e">stroke-linejoin</span>=<span class="pl-s"><span class="pl-pds">"</span>round<span class="pl-pds">"</span></span>&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">2</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">52.4172</span> <span class="pl-c1">129.945</span><span class="pl-k">C</span><span class="pl-c1">154.767</span> <span class="pl-c1">124.431</span> <span class="pl-c1">299.051</span> <span class="pl-c1">80.9206</span> <span class="pl-c1">362.913</span> <span class="pl-c1">182.602</span><span class="pl-k">C</span><span class="pl-c1">369.254</span> <span class="pl-c1">192.695</span> <span class="pl-c1">372.11</span> <span class="pl-c1">221.082</span> <span class="pl-c1">363.911</span> <span class="pl-c1">231.283</span><span class="pl-k">C</span><span class="pl-c1">340.825</span> <span class="pl-c1">260.002</span> <span class="pl-c1">85.1022</span> <span class="pl-c1">258.994</span> <span class="pl-c1">38.4434</span> <span class="pl-c1">258.994</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">3</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">371.656</span> <span class="pl-c1">279.262</span><span class="pl-k">C</span><span class="pl-c1">260.686</span> <span class="pl-c1">278.71</span> <span class="pl-c1">142.19</span> <span class="pl-c1">286.441</span> <span class="pl-c1">33.0469</span> <span class="pl-c1">281.78</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">4</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">264.29</span> <span class="pl-c1">133.538</span><span class="pl-k">C</span><span class="pl-c1">247.656</span> <span class="pl-c1">199.764</span> <span class="pl-c1">297.805</span> <span class="pl-c1">187.344</span> <span class="pl-c1">346.025</span> <span class="pl-c1">180.575</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">5</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">240.21</span> <span class="pl-c1">132.188</span><span class="pl-k">C</span><span class="pl-c1">251.965</span> <span class="pl-c1">213.876</span> <span class="pl-c1">84.6787</span> <span class="pl-c1">176.294</span> <span class="pl-c1">29</span> <span class="pl-c1">190.197</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">6</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">171.274</span> <span class="pl-c1">140.283</span><span class="pl-k">C</span><span class="pl-c1">166.221</span> <span class="pl-c1">155.378</span> <span class="pl-c1">170.086</span> <span class="pl-c1">170.931</span> <span class="pl-c1">170.086</span> <span class="pl-c1">186.15</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">7</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">96.7925</span> <span class="pl-c1">144.33</span><span class="pl-k">C</span><span class="pl-c1">93.1231</span> <span class="pl-c1">154.511</span> <span class="pl-c1">95.5446</span> <span class="pl-c1">187.149</span> <span class="pl-c1">95.6053</span> <span class="pl-c1">187.499</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">8</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">52.417</span> <span class="pl-c1">129.945</span><span class="pl-k">c</span><span class="pl-c1">102.35-5.514</span> <span class="pl-c1">246.634-49.024</span> <span class="pl-c1">310.496</span> <span class="pl-c1">52.657</span> <span class="pl-c1">6.341</span> <span class="pl-c1">10.093</span> <span class="pl-c1">9.197</span> <span class="pl-c1">38.48.998</span> <span class="pl-c1">48.681-23.086</span> <span class="pl-c1">28.719-278.809</span> <span class="pl-c1">27.711-325.468</span> <span class="pl-c1">27.711</span><span class="pl-k">m</span><span class="pl-c1">333.213</span> <span class="pl-c1">20.268</span><span class="pl-k">c</span><span class="pl-c1">-110.97-.552-229.466</span> <span class="pl-c1">7.179-338.61</span> <span class="pl-c1">2.518</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">9</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">264.29</span> <span class="pl-c1">133.538</span><span class="pl-k">c</span><span class="pl-c1">-16.634</span> <span class="pl-c1">66.226</span> <span class="pl-c1">33.515</span> <span class="pl-c1">53.806</span> <span class="pl-c1">81.735</span> <span class="pl-c1">47.037</span><span class="pl-k">M</span><span class="pl-c1">240.21</span> <span class="pl-c1">132.188</span><span class="pl-k">C</span><span class="pl-c1">251.965</span> <span class="pl-c1">213.876</span> <span class="pl-c1">84.679</span> <span class="pl-c1">176.294</span> <span class="pl-c1">29</span> <span class="pl-c1">190.197</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">10</span>	&lt;<span class="pl-ent">path</span> <span class="pl-e">d</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-k">M</span><span class="pl-c1">171.274</span> <span class="pl-c1">140.283</span><span class="pl-k">c</span><span class="pl-c1">-5.053</span> <span class="pl-c1">15.095-1.188</span> <span class="pl-c1">30.648-1.188</span> <span class="pl-c1">45.867</span><span class="pl-k">m</span><span class="pl-c1">-73.293-41.82</span><span class="pl-k">c</span><span class="pl-c1">-3.67</span> <span class="pl-c1">10.181-1.248</span> <span class="pl-c1">42.819-1.188</span> <span class="pl-c1">43.169</span><span class="pl-pds">"</span></span>/&gt;</span>
-<span class="line"><span class="line-number" aria-hidden="true">11</span>&lt;/<span class="pl-ent">svg</span>&gt;</span>
+<pre id="MC45ODE0NDE0" style="--hl-line-number-gutter-factor: 2; --hl-line-marker-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-k">export</span> <span class="pl-c1">default</span> <span class="pl-smi">defineConfig</span>({</span>
+<span class="line"><span class="line-number" aria-hidden="true">2</span>	test<span class="pl-k">:</span> {</span>
+<span class="line"><span class="line-number" aria-hidden="true">3</span>		poolOptions<span class="pl-k">:</span> {</span>
+<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">4</span>			threads<span class="pl-k">:</span> {</span>
+<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">5</span>				singleThread<span class="pl-k">:</span> <span class="pl-c1">true</span>,</span>
+<span class="line" data-line-removed=""><span class="line-number" aria-hidden="true">6</span>			},</span>
+<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">7</span>			forks<span class="pl-k">:</span> {</span>
+<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">8</span>				singleFork<span class="pl-k">:</span> <span class="pl-c1">true</span>,</span>
+<span class="line" data-line-added=""><span class="line-number" aria-hidden="true">9</span>			},</span>
+<span class="line"><span class="line-number" aria-hidden="true">10</span>		}</span>
+<span class="line"><span class="line-number" aria-hidden="true">11</span>	}</span>
+<span class="line"><span class="line-number" aria-hidden="true">12</span>});</span>
 </code></pre>
 </div>
 ```
 
 ![Codeblock with added and removed lines](./samples/codeblock-with-diffed-lines.png)
 
-The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` element when you specify the codeblock line addition or removal annotations. You can use this property to pad the line numbers and align the icons. See [`index.css#L94`](./src/index.css#L94) and [`index.css#L120`](./src/index.css#L120).
+The plugin attaches `--hl-line-marker-gutter-factor` CSS property on the `pre` element when you specify the codeblock line addition or removal annotations. You can use this property to pad the line numbers and align the icons. See [`index.css`](./src/index.css#L69).
 
 See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range for `ins` and `del` properties.
 

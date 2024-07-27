@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0] - 2024-07-27
+
+### Added
+
+- Plugin to soft wrap lines with `wrap` property
+
+### Removed
+
+- **Breaking** `wrap` option to soft wrap the entire codeblock by setting it to `true`
+
 ## [5.0.0] - 2024-07-07
 
 ### Added
@@ -129,6 +139,7 @@ Syntax highlight plugin with support for following additional features
 - support for prompt
 - captions and language information
 
+[6.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v4.1.0...v5.0.0
 [4.1.0]: https://github.com/Microflash/rehype-starry-night/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v3.6.0...v4.0.0
