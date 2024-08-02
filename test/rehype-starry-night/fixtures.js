@@ -100,14 +100,6 @@ Hello, Anya!
 `,
 	},
 	{
-		title: "codeblock with wrapped lines",
-		input: `
-\`\`\`sh wrap="true"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-\`\`\`
-`
-	},
-	{
 		title: "codeblock with highlighted lines",
 		input: `
 \`\`\`sh {4..7} prompt{1}

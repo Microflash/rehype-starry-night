@@ -117,12 +117,6 @@ export default function rehypeStarryNight(userOptions = {}) {
 				preProps["style"] += `; --hl-line-marker-gutter-factor: ${globalOptions.lineMarkerGutterFactor}`;
 			}
 
-			// add `data-pre-wrap` property to indicate if the codeblock should be wrapped
-			const { wrap = "" } = globalOptions?.metadata;
-			if (wrap.trim() === "true") {
-				preProps["data-pre-wrap"] = "";
-			}
-
 			// prepare codeblock nodes
 			const preChildren = [];
 			for (const [lineNumber, line] of lines) {

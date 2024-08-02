@@ -23,7 +23,6 @@
 	- [Example: Codeblock with title](#example-codeblock-with-title)
 	- [Example: Codeblock with prompts](#example-codeblock-with-prompts)
 	- [Example: Codeblock with command and its output](#example-codeblock-with-command-and-its-output)
-	- [Example: Codeblock with wrapped lines](#example-codeblock-with-wrapped-lines)
 	- [Example: Codeblock with highlighted lines](#example-codeblock-with-highlighted-lines)
 	- [Example: Codeblock with added and removed lines](#example-codeblock-with-added-and-removed-lines)
 	- [Example: Codeblock with unknown language](#example-codeblock-with-unknown-language)
@@ -50,7 +49,6 @@ The following additonal features are also available out of box:
 - line numbers
 - line highlights
 - annotations for added and removed lines
-- conditionally wrapping lines
 - prompt character
 - title and language information
 - highlighting inline `code` elements
@@ -436,38 +434,6 @@ The above codeblock gets rendered as:
 ```
 
 The plugin marks the output lines with `[data-unselectable]` attribute. You can set `user-select: none` for such elements using CSS. See [`index.css`](./src/index.css#L139).
-
-### Example: Codeblock with wrapped lines
-
-Sometimes you may want to avoid scrolling a long line containing important information at the very end. In such cases, you can wrap the codeblock with `wrap="true"` property.
-
-	```sh wrap="true"
-	# download the formula for node@20.5.1
-	curl -o node.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/442f9cc511ce6dfe75b96b2c83749d90dde914d2/Formula/n/node.rb
-
-	# install with the downloaded formula
-	brew install node.rb
-	```
-
-The above codeblock gets rendered as:
-
-```html
-<div class="hl hl-sh">
-  <div class="hl-header">
-    <div class="hl-language">sh</div>
-  </div>
-<pre id="MC41OTIxMDEz" style="--hl-line-number-gutter-factor: 1" data-pre-wrap=""><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-c"># download the formula for node@20.5.1</span></span>
-<span class="line"><span class="line-number" aria-hidden="true">2</span>curl -o node.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/442f9cc511ce6dfe75b96b2c83749d90dde914d2/Formula/n/node.rb</span>
-<span class="line"><span class="line-number" aria-hidden="true">3</span></span>
-<span class="line"><span class="line-number" aria-hidden="true">4</span><span class="pl-c"># install with the downloaded formula</span></span>
-<span class="line"><span class="line-number" aria-hidden="true">5</span>brew install node.rb</span>
-</code></pre>
-</div>
-```
-
-![Syntax Highlighting codeblock with wrapped lines](./samples/codeblock-with-wrapped-lines.png)
-
-When you set `wrap="true"`, the plugin attaches a `[data-pre-wrap]` attribute on the `pre` element. You can use CSS to set `white-space: pre-wrap` on the `code` element to enable wrapping. See [`index.css`](./src/index.css#L68).
 
 ### Example: Codeblock with highlighted lines
 
