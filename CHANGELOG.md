@@ -168,7 +168,7 @@ Syntax highlight plugin with support for following additional features
 - support for prompt
 - captions and language information
 
-[7.1.0]: https://github.com/Microflash/rehype-starry-night/compare/v7.1.0...v7.1.1
+[7.1.1]: https://github.com/Microflash/rehype-starry-night/compare/v7.1.0...v7.1.1
 [7.1.0]: https://github.com/Microflash/rehype-starry-night/compare/v7.0.0...v7.1.0
 [7.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v6.1.0...v7.0.0
 [6.1.0]: https://github.com/Microflash/rehype-starry-night/compare/v6.0.0...v6.1.0
