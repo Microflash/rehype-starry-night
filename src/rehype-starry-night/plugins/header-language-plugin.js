@@ -14,7 +14,7 @@ function plugin(globalOptions, nodes) {
 	} = pluginOptions(globalOptions);
 	if (language) {
 		nodes.push(
-			h(`div.${classNamePrefix}-language`, language)
+			h(`div.${classNamePrefix}-language`, [h("span", language)])
 		);
 	}
 }

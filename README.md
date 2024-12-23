@@ -118,7 +118,7 @@ Running that with `node example.js` yields:
 ```html
 <div class="hl hl-css">
   <div class="hl-header">
-    <div class="hl-language">css</div>
+    <div class="hl-language"><span>css</span></div>
   </div>
 <pre id="MC4wNTYxMTQ4" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">html</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;</span>
@@ -309,7 +309,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
-    <div class="hl-language">sh</div>
+    <div class="hl-language"><span>sh</span></div>
   </div>
 <pre id="MC4wNjE2ODk0"><code tabindex="0"><span class="line">docker ps -a</span>
 </code></pre>
@@ -333,7 +333,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-css">
   <div class="hl-header">
-    <div class="hl-language">css</div>
+    <div class="hl-language"><span>css</span></div>
   </div>
 <pre id="MC4xNzU3MDU0" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-ent">*</span> {</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>  <span class="pl-c1">display</span>: <span class="pl-c1">revert</span>;</span>
@@ -360,7 +360,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-zsh">
   <div class="hl-header">
-    <div class="hl-language">zsh</div>
+    <div class="hl-language"><span>zsh</span></div>
     <div class="hl-title">Switching off homebrew telemetry</div>
   </div>
 <pre id="MC4xOTE1OTM1" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-c"># turns off homebrew telemetry</span></span>
@@ -389,7 +389,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
-    <div class="hl-language">sh</div>
+    <div class="hl-language"><span>sh</span></div>
   </div>
 <pre id="MC43MTQzMTQx" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>curl localhost:8080/actuator/health</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>{<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>UP<span class="pl-pds">"</span></span>}</span>
@@ -421,7 +421,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
-    <div class="hl-language">sh</div>
+    <div class="hl-language"><span>sh</span></div>
   </div>
 <pre id="MC45NTIyNzEx" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>mvn -version</span>
 <span class="line" data-line-output="" data-unselectable=""><span class="line-number" aria-hidden="true">2</span>Apache Maven 3.9.8</span>
@@ -460,7 +460,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-sh">
   <div class="hl-header">
-    <div class="hl-language">sh</div>
+    <div class="hl-language"><span>sh</span></div>
   </div>
 <pre id="MC4wNTg1MTA5" style="--hl-line-number-gutter-factor: 2"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="line-prompt" aria-hidden="true"></span>aws --endpoint-url http://localhost:4566 s3api list-buckets</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>{</span>
@@ -507,7 +507,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-js">
   <div class="hl-header">
-    <div class="hl-language">js</div>
+    <div class="hl-language"><span>js</span></div>
     <div class="hl-title">Pool options in Vitest 2.0</div>
   </div>
 <pre id="MC45ODE0NDE0" style="--hl-line-number-gutter-factor: 2; --hl-line-marker-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-k">export</span> <span class="pl-c1">default</span> <span class="pl-smi">defineConfig</span>({</span>
@@ -547,7 +547,7 @@ The above codeblock gets rendered as:
 ```html
 <div class="hl hl-nux">
   <div class="hl-header">
-    <div class="hl-language">nux</div>
+    <div class="hl-language"><span>nux</span></div>
   </div>
 <pre id="MC42MzYyNTcw" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span>let-env NU_LIB_DIRS = [</span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span>	($nu.config-path | path dirname | path join 'scripts')</span>
@@ -602,7 +602,7 @@ Running that with `node example.js` yields:
 ```html
 <div class="hl hl-toml">
   <div class="hl-header">
-    <div class="hl-language">xjm</div>
+    <div class="hl-language"><span>xjm</span></div>
   </div>
 <pre id="MC40NDMwMTAw" style="--hl-line-number-gutter-factor: 1"><code tabindex="0"><span class="line"><span class="line-number" aria-hidden="true">1</span><span class="pl-smi">language</span> = <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span></span>
 <span class="line"><span class="line-number" aria-hidden="true">2</span><span class="pl-smi">customization</span> = <span class="pl-c1">false</span></span>
@@ -739,7 +739,7 @@ Running that with `node example.js` yields:
 ```html
 <div class="hl hl-rust">
   <div class="hl-header">
-    <div class="hl-language">rust</div>
+    <div class="hl-language"><span>rust</span></div>
     <div class="hl-title">hello.rs</div>
     <button class="hl-copy" style="margin-left: auto">Copy to clipboard</button>
   </div>
