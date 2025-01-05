@@ -12,8 +12,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       '@wooorm/starry-night':
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^3.6.0
+        version: 3.6.0
       defu:
         specifier: ^6.1.4
         version: 6.1.4
@@ -373,8 +373,8 @@ packages:
   '@vitest/utils@2.1.8':
     resolution: {integrity: sha512-dwSoui6djdwbfFmIgbIjX2ZhIoG7Ex/+xpxyiEgIGzjliY8xGkcpITKTlp6B4MgtGkF2ilvm97cPM96XZaAgcA==}
 
-  '@wooorm/starry-night@3.5.0':
-    resolution: {integrity: sha512-nYnfdeWS0ApqIFqr4ezLjr6pyYuqiG5Ywc2aJ4u1EY3qzf2oCTfLv7sMjEQSuSzPWUIH+a39eVbGUiRrFKZElA==}
+  '@wooorm/starry-night@3.6.0':
+    resolution: {integrity: sha512-AoDrqWZCZVymY48BClDaSuLgOe5vnl99S4hrqqg5OJ44x9NHo4s5LzOypKC3e6jGIUqHDfaDMvou8pelkq3dCw==}
 
   assertion-error@2.0.1:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
@@ -855,8 +855,8 @@ packages:
   vscode-oniguruma@2.0.1:
     resolution: {integrity: sha512-poJU8iHIWnC3vgphJnrLZyI3YdqRlR27xzqDmpPXYzA93R4Gk8z7T6oqDzDoHjoikA2aS82crdXFkjELCdJsjQ==}
 
-  vscode-textmate@9.1.0:
-    resolution: {integrity: sha512-lxKSVp2DkFOx9RDAvpiYUrB9/KT1fAfi1aE8CBGstP8N7rLF+Seifj8kDA198X0mYj1CjQUC+81+nQf8CO0nVA==}
+  vscode-textmate@9.2.0:
+    resolution: {integrity: sha512-rkvG4SraZQaPSN/5XjwKswdU0OP9MF28QjrYzUBbhb8QyG3ljB1Ky996m++jiI7KdiAP2CkBiQZd9pqEDTClqA==}
 
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
@@ -1104,12 +1104,12 @@ snapshots:
       loupe: 3.1.2
       tinyrainbow: 1.2.0
 
-  '@wooorm/starry-night@3.5.0':
+  '@wooorm/starry-night@3.6.0':
     dependencies:
       '@types/hast': 3.0.4
       import-meta-resolve: 4.1.0
       vscode-oniguruma: 2.0.1
-      vscode-textmate: 9.1.0
+      vscode-textmate: 9.2.0
 
   assertion-error@2.0.1: {}
 
@@ -1799,7 +1799,7 @@ snapshots:
 
   vscode-oniguruma@2.0.1: {}
 
-  vscode-textmate@9.1.0: {}
+  vscode-textmate@9.2.0: {}
 
   whatwg-encoding@3.1.1:
     dependencies:
