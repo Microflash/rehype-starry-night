@@ -1,9 +1,9 @@
-import path from "path";
+import path from "node:path";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
-import { expect, it } from "vitest";
+import { describe, it } from "node:test";
 import remarkInlineCodeLang from "../../src/remark-inline-code-lang/index.js";
 
 const scenarios = [
@@ -31,7 +31,6 @@ const scenarios = [
 		}
 	}
 ];
-const scenario = scenarios.map(s => s.title);
 
 async function parse(markdown, options = {}) {
 	const file = await unified()
@@ -43,20 +42,16 @@ async function parse(markdown, options = {}) {
 	return String(file);
 }
 
-const currentDirectory = process.cwd();
-const testDirectory = "test";
-const pluginDirectory = "remark-inline-code-lang";
-const snapshotsDirectory = "snapshots";
+function snapshotPath(t) {
+	return path.resolve(process.cwd(), "test", "remark-inline-code-lang", "snapshots", `${t.replaceAll(" ", "_")}.snap.html`);
+}
 
-it.each(scenario)(`Test: %s`, async (rule) => {
-	const { input, options = {} } = scenarios.find(s => s.title === rule);
-	const result = await parse(input, options);
-	const snapshot = path.resolve(
-		currentDirectory,
-		testDirectory,
-		pluginDirectory,
-		snapshotsDirectory,
-		`${rule.replaceAll(" ", "_")}.html`
-	);
-	await expect(result).toMatchFileSnapshot(snapshot);
+describe("<remark-inline-code-lang>", () => {
+	for (const rule of scenarios) {
+		const { title, input, options = {} } = rule;
+		it(`Test: ${title}`, async (t) => {
+			const result = await parse(input, options);
+			t.assert.fileSnapshot(result, snapshotPath(title));
+		});
+	}
 });
