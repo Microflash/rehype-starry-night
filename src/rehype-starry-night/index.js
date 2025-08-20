@@ -33,7 +33,11 @@ export default function rehypeStarryNight(userOptions = {}) {
 		aliases = {},
 		grammars = all,
 		plugins = defaultPluginPack,
-		classNamePrefix
+		classNamePrefix,
+        skipUnknownLanguages = false,
+        disableWarnings = false,
+        languageOverrides = {},
+        defaultLanguage = "txt"
 	} = defu(userOptions, defaults);
 	const starryNightPromise = createStarryNight(grammars);
 
@@ -49,15 +53,26 @@ export default function rehypeStarryNight(userOptions = {}) {
 
 			const classes = head.properties.className;
 
+            let overrideValue;
 			let languageFragment;
 			let languageId;
 			if (classes) {
 				const languageClass = classes.find(d => typeof d === "string" && d.startsWith(prefix));
 				languageFragment = languageClass.slice(prefix.length);
 				languageId = aliases[languageFragment] || languageFragment;
+                if(aliases[languageFragment] !== undefined) {
+                    overrideValue = languageOverrides[aliases[languageFragment]];
+                }
 			} else {
-				languageId = "txt";
+                if(defaultLanguage === null) return;
+				languageId = defaultLanguage;
 			}
+
+            if (languageOverrides[languageId] !== undefined || overrideValue !== undefined) {
+                overrideValue = (languageOverrides[languageId] ?? true) && (overrideValue ?? true);
+            }
+
+            if(overrideValue === false) return;
 
 			const code = toString(head);
 			const scope = starryNight.flagToScope(languageId);
@@ -67,7 +82,9 @@ export default function rehypeStarryNight(userOptions = {}) {
 				const fragment = starryNight.highlight(code, scope);
 				children = fragment.children;
 			} else {
-				console.warn(`[rehype-starry-night]: Skipping syntax highlighting for code in unknown language '${languageId}'`);
+                if(skipUnknownLanguages && overrideValue !== true) return;
+                if(!disableWarnings)
+				    console.warn(`[rehype-starry-night]: Skipping syntax highlighting for code in unknown language '${languageId}'`);
 				children = head.children;
 			}
 
