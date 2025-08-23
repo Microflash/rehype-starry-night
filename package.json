@@ -1,7 +1,7 @@
 {
 	"name": "@microflash/rehype-starry-night",
 	"version": "7.3.2",
-	"description": "rehype plugin to highlight codeblocks with Starry Night",
+	"description": "fork of @microflash/rehype-starry-night to add more options (pr opened)",
 	"license": "MIT",
 	"keywords": [
 		"unified",
