@@ -1,5 +1,5 @@
 {
-	"name": "@siriusmart/rehype-starry-night",
+	"name": "rehype-starry-night-with-more-options",
 	"version": "7.3.2",
 	"description": "fork of @microflash/rehype-starry-night to add more options (pr opened)",
 	"license": "MIT",
