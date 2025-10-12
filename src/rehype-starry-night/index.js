@@ -2,7 +2,7 @@ import defu from "defu";
 import { createStarryNight, all } from "@wooorm/starry-night";
 import { visit } from "unist-util-visit";
 import { toString } from "hast-util-to-string";
-import FenceParser from "@microflash/fenceparser";
+import parse from "@microflash/fenceparser";
 import { h } from "hastscript";
 import headerLanguagePlugin from "./plugins/header-language-plugin.js";
 import headerTitlePlugin from "./plugins/header-title-plugin.js";
@@ -12,7 +12,6 @@ import lineOutputPlugin from "./plugins/line-output-plugin.js";
 import lineInsPlugin from "./plugins/line-ins-plugin.js";
 import lineDelPlugin from "./plugins/line-del-plugin.js";
 
-const fenceparser = new FenceParser();
 const prefix = "language-";
 const search = /\r?\n|\r/g;
 const defaults = {
@@ -143,12 +142,16 @@ export default function rehypeStarryNight(userOptions = {}) {
 	};
 }
 
+const fenceparserOptions = {
+	rangeKey: "highlight"
+}
+
 function extractMetadata(node) {
 	let metadata;
 
 	try {
 		const { meta } = node.data || {};
-		metadata = fenceparser.parse(meta);
+		metadata = parse(meta, fenceparserOptions);
 	} catch (e) { }
 
 	return metadata || {};
