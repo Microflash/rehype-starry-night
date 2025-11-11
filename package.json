@@ -1,6 +1,6 @@
 {
 	"name": "@microflash/rehype-starry-night",
-	"version": "7.4.0",
+	"version": "8.0.0",
 	"description": "rehype plugin to highlight codeblocks with Starry Night",
 	"license": "MIT",
 	"keywords": [
@@ -71,5 +71,5 @@
 		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5"
 	},
-	"packageManager": "pnpm@10.18.2"
+	"packageManager": "pnpm@10.21.0"
 }
