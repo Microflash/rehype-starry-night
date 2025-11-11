@@ -5,7 +5,7 @@ import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import { describe, it } from "node:test";
 import * as cheerio from "cheerio";
-import rehypeStarryNight from "../../src/rehype-starry-night/index.js";
+import rehypeStarryNight from "../src/index.js";
 import scenarios from "./fixtures.js";
 
 async function parse(markdown, options = {}) {
@@ -19,7 +19,7 @@ async function parse(markdown, options = {}) {
 }
 
 function snapshotPath(t) {
-	return path.resolve(process.cwd(), "test", "rehype-starry-night", "snapshots", `${t.replaceAll(" ", "_")}.snap.html`);
+	return path.resolve(process.cwd(), "test", "snapshots", `${t.replaceAll(" ", "_")}.snap.html`);
 }
 
 describe("<rehype-starry-night>", () => {

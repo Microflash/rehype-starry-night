@@ -1,6 +1,6 @@
 import { common } from "@wooorm/starry-night";
 import { h } from "hastscript";
-import { defaultPluginPack } from "../../src/rehype-starry-night/index.js";
+import { defaultPluginPack } from "../src/index.js";
 
 const headerClipboardCopyBtnPlugin = {
 	type: "header",
