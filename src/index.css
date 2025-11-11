@@ -169,13 +169,3 @@
 	min-width: var(--hlLinePromptSize);
 	min-height: var(--hlLinePromptSize);
 }
-
-code.hl-inline {
-	--hlBgInline: var(--hl-background-color-inline, hsl(208, 21%, 14%));
-	font-family: var(--hl-font-mono);
-	background-color: var(--hlBgInline);
-	padding-left: 0.5ch;
-	padding-right: 0.5ch;
-	font-size: 0.95em;
-	border-radius: 0.5ch;
-}
