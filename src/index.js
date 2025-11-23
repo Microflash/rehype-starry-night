@@ -1,224 +1,256 @@
 import defu from "defu";
-import { createStarryNight, all } from "@wooorm/starry-night";
-import { visit } from "unist-util-visit";
+import { createStarryNight, common } from "@wooorm/starry-night";
 import { toString } from "hast-util-to-string";
-import parse from "@microflash/fenceparser";
+import { SKIP, visit } from "unist-util-visit";
 import { h } from "hastscript";
-import headerLanguagePlugin from "./plugins/header-language-plugin.js";
-import headerTitlePlugin from "./plugins/header-title-plugin.js";
-import lineMarkPlugin from "./plugins/line-mark-plugin.js";
-import linePromptPlugin from "./plugins/line-prompt-plugin.js";
-import lineOutputPlugin from "./plugins/line-output-plugin.js";
-import lineInsPlugin from "./plugins/line-ins-plugin.js";
-import lineDelPlugin from "./plugins/line-del-plugin.js";
+import parse from "@microflash/fenceparser";
 
+const listFormatUnit = new Intl.ListFormat("en", { type: "unit" });
+const newLineRegex = /\r?\n|\r/g;
 const prefix = "language-";
-const search = /\r?\n|\r/g;
-const defaults = {
-	classNamePrefix: "hl"
+const promptNode = h("span", { "class": "prompt", ariaHidden: "true" });
+export const defaultHeaderPlugin = {
+	type: "header",
+	opts: meta => ({ title: meta?.title }),
+	apply: (opts, node) => {
+		if (opts.title) node.push(h(`div.${opts.namespace}-title`, opts.title));
+	}
 };
-export const defaultPluginPack = [
-	headerLanguagePlugin,
-	headerTitlePlugin,
-	lineMarkPlugin,
-	linePromptPlugin,
-	lineOutputPlugin,
-	lineInsPlugin,
-	lineDelPlugin
+export const defaultFooterPlugin = {
+	type: "footer",
+	apply: (opts, node) => {
+		if (opts.language) node.push(h(`div.${opts.namespace}-language`, opts.language));
+	}
+};
+export const defaultLinePlugin = {
+	type: "line",
+	opts: meta => ({
+		marked: new Set(meta["*"]),
+		inserted: new Set(meta["ins"]),
+		deleted: new Set(meta["del"]),
+		output: new Set(meta["output"]),
+		prompt: new Set(meta["prompt"])
+	}),
+	apply: (opts, node) => {
+		const lineNumber = node.properties.dataLineNumber;
+		if (opts.marked.has(lineNumber)) node.properties["dataLineMarked"] = true;
+		if (opts.inserted.has(lineNumber)) node.properties["dataLineInserted"] = true;
+		if (opts.deleted.has(lineNumber)) node.properties["dataLineDeleted"] = true;
+		if (opts.output.has(lineNumber)) node.properties["dataLineOutput"] = true;
+		if (opts.prompt.has(lineNumber)) node.children = [promptNode, ...node.children];
+	}
+};
+export const defaultPlugins = [
+	defaultHeaderPlugin,
+	defaultLinePlugin,
+	defaultFooterPlugin
 ];
+const defaults = {
+	namespace: "hl",
+	aliases: {},
+	plainText: []
+};
+const isLinePlugin = plugin => plugin.type === "line" && typeof plugin.apply === "function";
+const isHeaderPlugin = plugin => plugin.type === "header" && typeof plugin.apply === "function";
+const isFooterPlugin = plugin => plugin.type === "footer" && typeof plugin.apply === "function";
 
-export default function rehypeStarryNight(userOptions = {}) {
+export default function rehypeStarryNight(options = {}) {
 	const {
-		aliases = {},
-		grammars = all,
-		plugins = defaultPluginPack,
-		classNamePrefix
-	} = defu(userOptions, defaults);
-	const starryNightPromise = createStarryNight(grammars);
+		namespace,
+		grammars = common,
+		aliases,
+		plainText,
+		plugins = defaultPlugins,
+		allowMissingScopes
+	} = defu(options, defaults);
 
-	return async function(tree) {
+	const starryNightPromise = createStarryNight(grammars);
+	let checked = false;
+
+	return async (tree, file) => {
 		const starryNight = await starryNightPromise;
 
-		visit(tree, "element", (node, index, parent) => {
-			if (!parent || index === null || node.tagName !== "pre") return;
+		if (!allowMissingScopes && !checked) {
+			const missingScopes = starryNight.missingScopes();
 
-			const [ head ] = node.children;
+			if (missingScopes.length > 0) {
+				file.message(
+					"Unexpected missing scope" +
+					(missingScopes.length === 1 ? "" : "s") +
+					" likely needed for highlighting to work: " +
+					listFormatUnit.format(missingScopes.map(d => "`" + d + "`")),
+					{
+						ancestors: [tree],
+						place: tree.position,
+						ruleId: "missing-scopes",
+						source: "@microflash/rehype-starry-night"
+					}
+				);
+			}
 
-			if (!head || head.type !== "element" || head.tagName !== "code" || !head.properties) return;
+			checked = true;
+		}
 
-			const classes = head.properties.className;
+		visit(tree, "element", (container, index, parent) => {
+			if (!parent || index === null || container.tagName !== "pre") return;
 
-			let languageFragment;
-			let languageId;
-			if (classes) {
+			const [node] = container.children;
+
+			if (!node || node.type !== "element" || node.tagName !== "code") return;
+
+			const classes = node.properties.className;
+
+			if (Array.isArray(classes)) {
 				const languageClass = classes.find(d => typeof d === "string" && d.startsWith(prefix));
-				languageFragment = languageClass.slice(prefix.length);
-				languageId = aliases[languageFragment] || languageFragment;
-			} else {
-				languageId = "txt";
-			}
 
-			const code = toString(head);
-			const scope = starryNight.flagToScope(languageId);
+				if (languageClass) {
+					const language = languageClass.slice(prefix.length);
+					const resolvedLanguage = aliases[language] || language;
+					const scope = starryNight.flagToScope(resolvedLanguage);
 
-			let children;
-			if (scope) {
-				const fragment = starryNight.highlight(code, scope);
-				children = fragment.children;
-			} else {
-				console.warn(`[rehype-starry-night]: Skipping syntax highlighting for code in unknown language '${languageId}'`);
-				children = head.children;
-			}
+					if (plainText.includes(language)) {
+						// Empty.
+					} else if (scope) {
+						const fragment = starryNight.highlight(toString(node), scope);
+						const meta = parseMeta(node);
 
-			const globalOptions = {
-				id: btoa(Math.random()).replace(/=/g, "").substring(0, 12),
-				metadata: extractMetadata(head),
-				language: languageFragment,
-				classNamePrefix
-			};
+						const blockNodes = [];
+						const id = btoa(Math.random()).replace(/=/g, "").substring(0, 12);
+						const sectionOpts = { namespace, id, language };
+						const addHeader = plugins && plugins.some(isHeaderPlugin);
+						// Apply header
+						if (addHeader) {
+							const headerPlugins = plugins?.filter(isHeaderPlugin);
+							const headerNodes = mapSection(headerPlugins, sectionOpts, meta);
+							if (headerNodes?.length > 0) blockNodes.push(h(`div.${namespace}-header`, headerNodes));
+						}
 
-			const codeParent = h(`div.${classNamePrefix}.${classNamePrefix}-${languageId}`);
+						const decorateLines = plugins && plugins.some(isLinePlugin);
+						// Apply line decorations
+						if (decorateLines) {
+							const linePlugins = plugins?.filter(isLinePlugin);
+							const lineOpts = Object.assign(
+								{}, ...linePlugins?.filter(plugin => !!plugin.opts).map(plugin => plugin.opts(meta))
+							);
+							mapLines(fragment, (children, lineNumber) => {
+								const line = h("span", { dataLineNumber: lineNumber }, children);
+								for (const plugin of linePlugins) {
+									plugin?.apply(lineOpts, line);
+								}
+								return line;
+							});
+						}
 
-			// apply header plugins
-			if (plugins) {
-				const headerPlugins = plugins.filter(p => p.type === "header");
-				if (headerPlugins) {
-					const headerNodes = [];
-					headerPlugins.forEach(p => p.plugin(globalOptions, headerNodes));
-					if (headerNodes.length > 0) {
-						const header = h(`div.${classNamePrefix}-header`, headerNodes);
-						codeParent.children = [
-							header,
-							...codeParent.children || []
-						];
+						node.properties["id"] = id;
+						node.children = fragment.children;
+						blockNodes.push(container);
+
+						const addFooter = plugins && plugins.some(isFooterPlugin);
+						// Apply footer
+						if (addFooter) {
+							const footerPlugins = plugins?.filter(isFooterPlugin);
+							const footerNodes = mapSection(footerPlugins, sectionOpts, meta);
+							if (footerNodes?.length > 0) blockNodes.push(h(`div.${namespace}-footer`, footerNodes));
+						}
+
+						const codeblock = h(`div.${namespace}`, blockNodes);
+						parent.children.splice(index, 1, codeblock);
+					} else {
+						let reason =
+							"Unexpected unknown language `" + language +
+							"` defined with `" + prefix + "` class, expected a known name";
+
+						file.message(reason, {
+							ancestors: [parent, container, node],
+							place: node.position,
+							ruleId: "missing-language",
+							source: "@microflash/rehype-starry-night"
+						});
 					}
 				}
 			}
 
-			// apply line plugins
-			const lines = linesByLineNumber(children);
-			if (plugins) {
-				const linePlugins = plugins.filter(p => p.type === "line");
-				if (linePlugins) {
-					linePlugins.forEach(p => p.plugin(globalOptions, lines));
-				}
-			}
-
-			const preProps = {};
-
-			// add line number gutter width for codeblock with multiple lines
-			const lineNumberGutterFactor = `${lines.size}`.length;
-			if (lines.size > 1) {
-				preProps["style"] = `--hl-line-number-gutter-factor: ${lineNumberGutterFactor}`;
-			}
-
-			if (globalOptions.lineMarkerGutterFactor) {
-				preProps["style"] += `; --hl-line-marker-gutter-factor: ${globalOptions.lineMarkerGutterFactor}`;
-			}
-
-			// prepare codeblock nodes
-			const preChildren = [];
-			for (const [lineNumber, line] of lines) {
-				const { "data-line-number": dataLineNumber, ...lineProps } = line.properties;
-				const lineNodes = dataLineNumber ?
-					[
-						h("span.line-number", { "aria-hidden": "true" }, `${lineNumber}`),
-						...line.children
-					] : line.children;
-				preChildren.push(h("span.line", { ...lineProps }, lineNodes));
-				if (line.eol) {
-					preChildren.push(line.eol);
-				}
-			}
-
-			codeParent.children.push(
-				h(`pre#${globalOptions.id}`, preProps,
-					h("code", { tabindex: 0 }, preChildren)
-				)
-			);
-
-			parent.children.splice(index, 1, codeParent);
+			return SKIP;
 		});
+
+		return tree;
 	};
 }
 
-const fenceparserOptions = {
-	rangeKey: "highlight"
-}
-
-function extractMetadata(node) {
-	let metadata;
-
+function parseMeta(node) {
 	try {
-		const { meta } = node.data || {};
-		metadata = parse(meta, fenceparserOptions);
-	} catch (e) { }
-
-	return metadata || {};
+		const meta = node?.data?.meta;
+		return meta ? parse(meta) : {};
+	} catch (e) {
+		return {};
+	}
 }
 
-function linesByLineNumber(nodes) {
+function mapSection(plugins, opts, meta) {
+	const pluginOpts = Object.assign(
+		{ ...opts },
+		...plugins?.filter(plugin => !!plugin.opts).map(plugin => plugin.opts(meta))
+	);
+	const nodes = [];
+	for (const plugin of plugins) {
+		plugin?.apply(pluginOpts, nodes);
+	}
+	return nodes;
+}
+
+function mapLines(tree, createLine) {
+	const replacement = [];
 	let index = -1;
 	let start = 0;
-	let lineNumber = 0;
 	let startTextRemainder = "";
+	let lineNumber = 0;
 
-	const lines = new Map();
+	while (++index < tree.children.length) {
+		const child = tree.children[index];
 
-	while (++index < nodes.length) {
-		const node = nodes[index];
-
-		if (node.type === "text") {
+		if (child.type === "text") {
 			let textStart = 0;
-			let match = search.exec(node.value);
+			let match = newLineRegex.exec(child.value);
 
 			while (match) {
-				// nodes in this line
-				const line = nodes.slice(start, index);
+				// Nodes in this line.
+				const line = tree.children.slice(start, index);
 
-				// prepend text from a partial matched earlier text
+				// Prepend text from a partial matched earlier text.
 				if (startTextRemainder) {
 					line.unshift({ type: "text", value: startTextRemainder });
 					startTextRemainder = "";
 				}
 
-				// append text from this text
+				// Append text from this text.
 				if (match.index > textStart) {
 					line.push({
 						type: "text",
-						value: node.value.slice(textStart, match.index)
+						value: child.value.slice(textStart, match.index)
 					});
 				}
 
-				// add a line, and the eol
+				// Add a line, and the eol.
 				lineNumber += 1;
-				lines.set(
-					lineNumber,
-					{
-						children: line,
-						properties: {
-							"data-line-number": lineNumber
-						},
-						eol: {
-							type: "text",
-							value: match[0]
-						}
-					}
-				);
+				replacement.push(createLine(line, lineNumber), {
+					type: "text",
+					value: match[0]
+				});
+
 				start = index + 1;
 				textStart = match.index + match[0].length;
-				match = search.exec(node.value);
+				match = newLineRegex.exec(child.value);
 			}
 
-			// if we matched, make sure to not drop the text after the last line ending
+			// If we matched, make sure to not drop the text after the last line ending.
 			if (start === index + 1) {
-				startTextRemainder = node.value.slice(textStart);
+				startTextRemainder = child.value.slice(textStart);
 			}
 		}
 	}
 
-	const line = nodes.slice(start);
-	// prepend text from a partial matched earlier text
+	const line = tree.children.slice(start);
+	// Prepend text from a partial matched earlier text.
 	if (startTextRemainder) {
 		line.unshift({ type: "text", value: startTextRemainder });
 		startTextRemainder = "";
@@ -226,20 +258,9 @@ function linesByLineNumber(nodes) {
 
 	if (line.length > 0) {
 		lineNumber += 1;
-		lines.set(
-			lineNumber,
-			{
-				children: line,
-				properties: {
-					"data-line-number": lineNumber
-				}
-			}
-		);
+		replacement.push(createLine(line, lineNumber));
 	}
 
-	if (lines.size === 1) {
-		delete lines.get(1).properties["data-line-number"];
-	}
-
-	return lines;
+	// Replace children with new array.
+	tree.children = replacement;
 }
