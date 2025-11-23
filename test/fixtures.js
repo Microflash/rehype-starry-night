@@ -104,7 +104,7 @@ aws --endpoint-url http://localhost:4566 s3api list-buckets
 	{
 		title: "codeblock with inserted lines",
 		input: `
-\`\`\`nu ins{1,4}
+\`\`\`sh ins{1,4}
 $env.PNPM_HOME = "~/Library/pnpm"
 let paths = [
 	"/opt/homebrew/bin",
@@ -116,11 +116,17 @@ let paths = [
 	{
 		title: "codeblock with deleted lines",
 		input: `
-\`\`\`sql del{1}
-drop table users;
-# ERROR:  cannot drop table users because other objects depend on it
-# DETAIL:  constraint orders_user_id_fkey on table orders depends on table users
-# HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+\`\`\`java del{1..5,10}
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class Main {
+	void main() throws IOException {
+		var path = Path.of("example.txt");
+		Files.readAllLines(path).forEach(IO::println);
+	}
+}
 \`\`\`
 `,
 	},

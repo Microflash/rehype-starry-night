@@ -9,6 +9,9 @@ const listFormatUnit = new Intl.ListFormat("en", { type: "unit" });
 const newLineRegex = /\r?\n|\r/g;
 const prefix = "language-";
 const promptNode = h("span", { "class": "prompt", ariaHidden: "true" });
+const emptyDiffNode = h("span.diff", " ");
+const insDiffNode = h("span.diff", "+");
+const delDiffNode = h("span.diff", "-");
 export const defaultHeaderPlugin = {
 	type: "header",
 	opts: meta => ({ title: meta?.title }),
@@ -24,20 +27,41 @@ export const defaultFooterPlugin = {
 };
 export const defaultLinePlugin = {
 	type: "line",
-	opts: meta => ({
-		marked: new Set(meta["*"]),
-		inserted: new Set(meta["ins"]),
-		deleted: new Set(meta["del"]),
-		output: new Set(meta["output"]),
-		prompt: new Set(meta["prompt"])
-	}),
+	opts: meta => {
+		const marked = new Set(meta["*"]);
+		const inserted = new Set(meta["ins"]);
+		const deleted = new Set(meta["del"]);
+		const output = new Set(meta["output"]);
+		const prompt = new Set(meta["prompt"]);
+
+		return {
+			marked,
+			inserted,
+			deleted,
+			output,
+			prompt,
+			diff: inserted.size > 0 || deleted.size > 0
+		}
+	},
 	apply: (opts, node) => {
 		const lineNumber = node.properties.dataLineNumber;
-		if (opts.marked.has(lineNumber)) node.properties["dataLineMarked"] = true;
-		if (opts.inserted.has(lineNumber)) node.properties["dataLineInserted"] = true;
-		if (opts.deleted.has(lineNumber)) node.properties["dataLineDeleted"] = true;
 		if (opts.output.has(lineNumber)) node.properties["dataLineOutput"] = true;
 		if (opts.prompt.has(lineNumber)) node.children = [promptNode, ...node.children];
+		if (opts.marked.has(lineNumber)) node.properties["dataLineMarked"] = true;
+		let diffMarked = false;
+		if (opts.inserted.has(lineNumber)) {
+			node.properties["dataLineInserted"] = true;
+			node.children = [insDiffNode, ...node.children];
+			diffMarked = true;
+		}
+		if (opts.deleted.has(lineNumber)) {
+			node.properties["dataLineDeleted"] = true;
+			node.children = [delDiffNode, ...node.children];
+			diffMarked = true;
+		}
+		if (opts.diff && !diffMarked) {
+			node.children = [emptyDiffNode, ...node.children];
+		}
 	}
 };
 export const defaultPlugins = [
