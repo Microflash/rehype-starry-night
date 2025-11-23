@@ -22,27 +22,13 @@
 	"main": "src/index.js",
 	"exports": {
 		".": "./src/index.js",
-		"./plugins/header-language-plugin": "./src/plugins/header-language-plugin.js",
-		"./plugins/header-title-plugin": "./src/plugins/header-title-plugin.js",
-		"./plugins/line-del-plugin": "./src/plugins/line-del-plugin.js",
-		"./plugins/line-ins-plugin": "./src/plugins/line-ins-plugin.js",
-		"./plugins/line-mark-plugin": "./src/plugins/line-mark-plugin.js",
-		"./plugins/line-prompt-plugin": "./src/plugins/line-prompt-plugin.js",
-		"./plugins/line-output-plugin": "./src/plugins/line-output-plugin.js",
 		"./css": "./src/index.css",
 		"./props": "./src/props.css"
 	},
 	"files": [
 		"src/index.css",
 		"src/props.css",
-		"src/index.js",
-		"src/plugins/header-title-plugin.js",
-		"src/plugins/header-language-plugin.js",
-		"src/plugins/line-del-plugin.js",
-		"src/plugins/line-ins-plugin.js",
-		"src/plugins/line-mark-plugin.js",
-		"src/plugins/line-prompt-plugin.js",
-		"src/plugins/line-output-plugin.js"
+		"src/index.js"
 	],
 	"scripts": {
 		"snapshot": "node --test-update-snapshots ./test/plugin.test.js",
