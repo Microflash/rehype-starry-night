@@ -9,9 +9,9 @@ const listFormatUnit = new Intl.ListFormat("en", { type: "unit" });
 const newLineRegex = /\r?\n|\r/g;
 const prefix = "language-";
 const promptNode = h("span", { "class": "prompt", ariaHidden: "true" });
-const emptyDiffNode = h("span.diff", " ");
-const insDiffNode = h("span.diff", "+");
-const delDiffNode = h("span.diff", "-");
+const emptyDiffNode = h("span.diff", "\t");
+const insDiffNode = h("span.diff", "+\t");
+const delDiffNode = h("span.diff", "-\t");
 export const defaultHeaderPlugin = {
 	type: "header",
 	opts: meta => ({ title: meta?.title }),
@@ -165,7 +165,11 @@ export default function rehypeStarryNight(options = {}) {
 							});
 						}
 
-						node.properties["id"] = id;
+						node.properties = {
+							id,
+							tabindex: 0,
+							...node.properties,
+						};
 						node.children = fragment.children;
 						blockNodes.push(container);
 
