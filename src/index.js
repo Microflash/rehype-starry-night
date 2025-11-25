@@ -149,6 +149,11 @@ export default function rehypeStarryNight(options = {}) {
 							if (headerNodes?.length > 0) blockNodes.push(h(`div.${namespace}-header`, headerNodes));
 						}
 
+						node.properties = {
+							id,
+							tabindex: 0,
+							...node.properties,
+						};
 						const decorateLines = plugins && plugins.some(isLinePlugin);
 						// Apply line decorations
 						if (decorateLines) {
@@ -156,20 +161,17 @@ export default function rehypeStarryNight(options = {}) {
 							const lineOpts = Object.assign(
 								{}, ...linePlugins?.filter(plugin => !!plugin.opts).map(plugin => plugin.opts(meta))
 							);
-							mapLines(fragment, (children, lineNumber) => {
+							const totalLines = mapLines(fragment, (children, lineNumber) => {
 								const line = h("span", { dataLineNumber: lineNumber }, children);
 								for (const plugin of linePlugins) {
 									plugin?.apply(lineOpts, line);
 								}
 								return line;
 							});
+							const gutter = `${totalLines}`.length;
+							node.properties["style"] = `--hl-line-gutter: ${gutter}`;
 						}
 
-						node.properties = {
-							id,
-							tabindex: 0,
-							...node.properties,
-						};
 						node.children = fragment.children;
 						blockNodes.push(container);
 
@@ -291,4 +293,5 @@ function mapLines(tree, createLine) {
 
 	// Replace children with new array.
 	tree.children = replacement;
+	return lineNumber;
 }
