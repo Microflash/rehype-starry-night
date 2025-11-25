@@ -22,6 +22,14 @@ function snapshotPath(t) {
 	return path.resolve(process.cwd(), "test", "snapshots", `${t.replaceAll(" ", "_")}.snap.html`);
 }
 
+const snapshotOptions = {
+	serializers: [
+		(value) => {
+			if (typeof value === "string") return value;
+		}
+	]
+};
+
 describe("<@microflash/rehype-starry-night>", () => {
 	for (const rule of scenarios) {
 		const { title, input, options = {} } = rule;
@@ -29,7 +37,7 @@ describe("<@microflash/rehype-starry-night>", () => {
 			const result = await parse(input, options);
 			const $ = cheerio.load(result, null, false);
 			$("code").removeAttr("id");
-			t.assert.fileSnapshot($.html(), snapshotPath(title));
+			t.assert.fileSnapshot($.html(), snapshotPath(title), snapshotOptions);
 		});
 	}
 });
