@@ -22,13 +22,15 @@
 	"main": "src/index.js",
 	"exports": {
 		".": "./src/index.js",
+		"./plugins": "./src/plugins.js",
 		"./css": "./src/index.css",
 		"./props": "./src/props.css"
 	},
 	"files": [
 		"src/index.css",
 		"src/props.css",
-		"src/index.js"
+		"src/index.js",
+		"src/plugins.js"
 	],
 	"scripts": {
 		"snapshot": "node --test-update-snapshots ./test/plugin.test.js",
