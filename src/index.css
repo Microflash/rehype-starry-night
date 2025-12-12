@@ -1,171 +1,25 @@
 .hl {
-	--hlFontFamilyMono: ui-monospace, SFMono-Regular, "Roboto Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-	--hlFontFamilyCode: var(--hl-font-mono, var(--hlFontFamilyMono));
-	--hlBgColor: var(--hl-background-color, hsl(220, 23%, 97%));
+	--hlFontFamily: var(--hl-font-mono);
+	--hlBgColor: var(--hl-bg-color);
 	--hlBorderThickness: var(--hl-border-thickness, 1px);
-	--hlBorderColor: var(--hl-border-color, hsl(215, 15%, 85%));
-	--hlBorderRadius: var(--hl-border-radius, 12px);
-	--hlBorderRadiusSm: calc(var(--hlBorderRadius) / 2);
-	--hlOutlineThickness: var(--hl-outline-thickness, 5px);
-	--hlOutlineColor: var(--hl-outline-color, hsl(215, 15%, 85%));
-	--hlLineGap: var(--hl-line-gap, 1ex);
-	--hlLineBorderWidth: var(--hl-line-border-width, 2px);
-	--hlLineBorderColor: var(--hl-line-border-color, transparent);
-	--hlLineNumberColor: var(--hl-line-number-color, var(--color-prettylights-syntax-sublimelinter-gutter-mark));
-	--hlLineBgColor: transparent;
-	--hlLineActiveBgColor: var(--hl-line-active-background-color, hsl(220, 23%, 89%));
-	--hlLineHighlightBgColor: var(--hl-line-highlight-background-color, hsl(220, 23%, 92%));
-	--hlLineAddedBgColor: var(--hl-line-added-background-color, hsl(103, 96%, 73%, 0.5));
-	--hlLineRemovedBgColor: var(--hl-line-removed-background-color, hsl(4, 75%, 83%, 0.5));
-	--hlLineNumberAddedColor: var(--hl-line-number-added-color, hsl(106, 59%, 27%));
-	--hlLineNumberRemovedColor: var(--hl-line-number-removed-color, hsl(355, 67%, 41%));
-	--hlLinePromptColor: var(--hl-line-prompt-color, hsl(357, 63%, 58%));
-	--hlLinePromptSize: 1em;
-
+	--hlBorderColor: var(--hl-border-color);
+	--hlBorderRadius: var(--hl-border-radius, 8px);
+	--hlBorder: var(--hlBorderThickness) solid var(--hlBorderColor);
+	--hlOutlineColor: var(--hl-outline-color);
+	--hlOutlineThickness: var(--hl-outline-thickness, 3px);
+	--hlPadding: var(--hl-line-padding, 1ch);
 	background-color: var(--hlBgColor);
-	border: var(--hlBorderThickness) solid var(--hlBorderColor);
+	border: var(--hlBorder);
 	border-radius: var(--hlBorderRadius);
 }
 
-.hl-header {
-	display: flex;
-	align-items: center;
-	gap: 1ch;
-	padding: 0.75ch;
-	border-bottom: 1px solid var(--hlBorderColor);
-	font-size: 0.7em;
-}
-
-.hl-language {
-	font-family: var(--hlFontFamilyCode);
-	line-height: 1;
-	padding: 0.75ch 1ch;
-	border-radius: var(--hlBorderRadiusSm);
-	background-color: var(--hlLineHighlightBgColor);
-}
-
 .hl pre {
-	background-color: transparent;
-	border: none;
-	overflow-x: auto;
-	border-radius: inherit;
+	font-family: var(--hlFontFamily);
+	padding: var(--hlPadding);
 }
 
 .hl pre:focus-within {
 	outline-style: solid;
 	outline-color: var(--hlOutlineColor);
 	outline-width: var(--hlOutlineThickness);
-}
-
-.hl pre>code {
-	display: grid;
-	padding: var(--hlLineGap) 0;
-	cursor: auto;
-	touch-action: auto;
-	white-space: pre;
-}
-
-.hl .line {
-	--hlLinePaddingLeft: calc(var(--hl-line-marker-gutter-factor, 0) * 1.5ch + 1ch);
-	--hlLineMarkerOffset: calc((var(--hlLinePaddingLeft) * -1) + 0.5ch);
-	border-left: var(--hlLineBorderWidth) solid var(--hlLineBorderColor);
-	padding-left: var(--hlLinePaddingLeft);
-	padding-right: 1ch;
-	background-color: var(--hlLineBgColor);
-}
-
-.hl .line[data-highlighted] {
-	--hlLineNumberColor: var(--color-prettylights-syntax-comment);
-	--hlLineBgColor: var(--hlLineHighlightBgColor);
-	--hlLineBorderColor: var(--hlLineNumberColor);
-}
-
-.hl .line[data-line-added] {
-	--hlLineNumberColor: var(--hlLineNumberAddedColor);
-	--hlLineBgColor: var(--hlLineAddedBgColor);
-	position: relative;
-}
-
-.hl .line[data-line-added]::before {
-	content: "";
-	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' fill-rule='evenodd' clip-rule='evenodd' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12m-6-6v12'/%3E%3C/svg%3E");
-	mask-repeat: no-repeat;
-	mask-position: top center;
-	mask-size: contain;
-	display: inline-block;
-	position: absolute;
-	margin-left: var(--hlLineMarkerOffset);
-	top: 0.5ch;
-	text-decoration: none;
-	user-select: none;
-	background-color: var(--hlLineNumberColor);
-	width: var(--hlLinePromptSize);
-	height: var(--hlLinePromptSize);
-	min-width: var(--hlLinePromptSize);
-	min-height: var(--hlLinePromptSize);
-}
-
-.hl .line[data-line-removed] {
-	--hlLineNumberColor: var(--hlLineNumberRemovedColor);
-	--hlLineBgColor: var(--hlLineRemovedBgColor);
-	position: relative;
-}
-
-.hl .line[data-line-removed]::before {
-	content: "";
-	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' fill-rule='evenodd' clip-rule='evenodd' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12h12'/%3E%3C/svg%3E");
-	mask-repeat: no-repeat;
-	mask-position: top center;
-	mask-size: contain;
-	display: inline-block;
-	position: absolute;
-	margin-left: var(--hlLineMarkerOffset);
-	top: 0.5ch;
-	text-decoration: none;
-	user-select: none;
-	background-color: var(--hlLineNumberColor);
-	width: var(--hlLinePromptSize);
-	height: var(--hlLinePromptSize);
-	min-width: var(--hlLinePromptSize);
-	min-height: var(--hlLinePromptSize);
-}
-
-.hl .line[data-unselectable] {
-	user-select: none;
-}
-
-.hl .line:focus:not(:focus-visible),
-.hl .line:hover {
-	--hlLineNumberColor: var(--color-prettylights-syntax-comment);
-	--hlLineBgColor: var(--hlLineActiveBgColor);
-}
-
-.hl .line-number {
-	--hlLineNumberWidth: calc(var(--hl-line-number-gutter-factor) * 1ch);
-	display: inline-block;
-	user-select: none;
-	margin-right: 1em;
-	text-align: right;
-	color: var(--hlLineNumberColor);
-	width: var(--hlLineNumberWidth);
-}
-
-.hl .line-prompt::before {
-	content: "";
-	mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' fill-rule='evenodd' clip-rule='evenodd' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17.744 7.111a3.67 3.67 0 0 0-3.3-2.444H9.556a3.684 3.684 0 0 0-3.667 3.666A3.684 3.684 0 0 0 9.556 12h4.888a3.684 3.684 0 0 1 3.667 3.667 3.684 3.684 0 0 1-3.667 3.666H9.556a3.67 3.67 0 0 1-3.3-2.444M13 1l-2 22'/%3E%3C/svg%3E");
-	mask-repeat: no-repeat;
-	mask-position: top center;
-	mask-size: contain;
-	display: inline-block;
-	margin-right: 0.5ch;
-	margin-bottom: 0.3ex;
-	vertical-align: middle;
-	text-decoration: none;
-	user-select: none;
-	background-color: currentColor;
-	color: var(--hlLinePromptColor);
-	width: var(--hlLinePromptSize);
-	height: var(--hlLinePromptSize);
-	min-width: var(--hlLinePromptSize);
-	min-height: var(--hlLinePromptSize);
 }
