@@ -52,5 +52,5 @@
 		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5"
 	},
-	"packageManager": "pnpm@10.21.0"
+	"packageManager": "pnpm@10.25.0"
 }

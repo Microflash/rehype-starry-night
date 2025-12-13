@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0] - 2025-12-14
+
+### Added
+
+- Option API: `plainText` option which accepts an array of language names for which syntax highlighting is skipped
+- Option API: `allowMissingScopes` allows you to show warnings when scopes are missing when set to `true`.
+
+### Removed
+
+- **Breaking** Support for inline code highlighting
+
+### Changed
+
+- **Breaking** Plugin API: Earlier plugin API was not very extensible and limited to what shipped out of box. New Plugin API allows you to parse your own metadata and use it to transform codeblock nodes, opening flexible customization possibilities with better performance, while still allowing previous behavior (if needed).
+- **Breaking** Option API: Most important change in options is that plugins are now opt-in (instead of opt-out earlier). Additionally, instead of using all `starry-night` grammars, only common grammars are used by default (for performance improvement). You can always import all grammars, if needed.
+- **Breaking** Option API: `classNamePrefix` is renamed as `namespace`.
+
+### Patched
+
 ## [7.4.0] - 2025-10-12
 
 ### Patched
@@ -216,6 +235,7 @@ Syntax highlight plugin with support for following additional features
 - support for prompt
 - captions and language information
 
+[8.0.0]: https://github.com/Microflash/rehype-starry-night/compare/v7.4.0...v8.0.0
 [7.4.0]: https://github.com/Microflash/rehype-starry-night/compare/v7.3.2...v7.4.0
 [7.3.2]: https://github.com/Microflash/rehype-starry-night/compare/v7.3.1...v7.3.2
 [7.3.1]: https://github.com/Microflash/rehype-starry-night/compare/v7.3.0...v7.3.1

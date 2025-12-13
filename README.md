@@ -1,8 +1,8 @@
 # rehype-starry-night
 
-<!-- [![npm](https://img.shields.io/npm/v/@microflash/rehype-starry-night)](https://www.npmjs.com/package/@microflash/rehype-starry-night)
+[![npm](https://img.shields.io/npm/v/@microflash/rehype-starry-night)](https://www.npmjs.com/package/@microflash/rehype-starry-night)
 [![regression](https://github.com/Microflash/rehype-starry-night/actions/workflows/regression.yml/badge.svg)](https://github.com/Microflash/rehype-starry-night/actions/workflows/regression.yml)
-[![license](https://img.shields.io/npm/l/@microflash/rehype-starry-night)](./LICENSE.md) -->
+[![license](https://img.shields.io/npm/l/@microflash/rehype-starry-night)](./LICENSE.md)
 
 [rehype](https://github.com/rehypejs/rehype) plugin to highlight code with [`starry-night`](https://github.com/wooorm/starry-night)
 
