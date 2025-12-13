@@ -24,6 +24,7 @@
 	- [Example: show a prompt before a line](#example-show-a-prompt-before-a-line)
 	- [Example: show highlighted, inserted and deleted lines](#example-show-highlighted-inserted-and-deleted-lines)
 	- [Example: show line numbers](#example-show-line-numbers)
+	- [Example: customize with your own plugin](#example-customize-with-your-own-plugin)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -710,6 +711,68 @@ When you import the `lineAnnotation` plugin (as seen in [previous](#example-show
 For single line codeblocks, the numbers won't show up.
 
 ![Single line codeblock without line number](./etc/codeblock-without-line-number.png)
+
+### Example: customize with your own plugin
+
+Suppose you want to add a copy to clipboard button in the footer. You can do so by adding a custom footer plugin.
+
+Say you have the following file `index.md`:
+
+	```html
+	<mark>highlighted</mark>
+	```
+
+You can pass a custom footer plugin as follows with `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { languageIndicatorPlugin } from "@microflash/rehype-starry-night/plugins";
+import { h } from "hastscript";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			plugins: [
+				languageIndicatorPlugin,
+				{
+					type: "footer",
+					apply: (opts, node) => {
+						if (opts.id) node.push(h(`button.${opts.namespace}-copy`, "Copy to clipboard"));
+					}
+				}
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC44MjIxMjIz" tabindex="0" class="language-html">&lt;<span class="pl-ent">mark</span>&gt;highlighted&lt;/<span class="pl-ent">mark</span>&gt;
+</code></pre>
+	<div class="hl-footer">
+		<div class="hl-language">html</div>
+		<button class="hl-copy">Copy to clipboard</button>
+	</div>
+</div>
+```
+
+![Codeblock with custom footer plugin](./etc/codeblock-with-custom-footer-plugin.png)
 
 ### Example: customize classname prefix
 
