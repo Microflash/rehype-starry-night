@@ -19,6 +19,8 @@
 	- [Example: using all `starry-night` grammars](#example-using-all-starry-night-grammars)
 	- [Example: using custom `starry-night` grammar](#example-using-custom-starry-night-grammar)
 	- [Example: skip highlighting a specific language](#example-skip-highlighting-a-specific-language)
+	- [Example: show codeblock title](#example-show-codeblock-title)
+	- [Example: show codeblock language](#example-show-codeblock-language)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -494,6 +496,62 @@ Running this with `node index.js` yields:
 ```
 
 ![Codeblock with title](./etc/codeblock-with-title.png)
+
+### Example: show codeblock language
+
+Say, you have the following file `index.md`:
+
+	```rust
+	fn main() {
+	    println!("Hello, world!");
+	}
+	```
+
+To display the language associated with this codeblock, import `languageIndicator` plugin in the `index.js` as follows:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { languageIndicatorPlugin } from "@microflash/rehype-starry-night/plugins";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			plugins: [
+				languageIndicatorPlugin
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC4yMTUwNTAx" tabindex="0" class="language-rust"><span class="pl-k">fn</span> <span class="pl-en">main</span>() {
+    <span class="pl-en">println!</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);
+}
+</code></pre>
+	<div class="hl-footer">
+		<div class="hl-language">rust</div>
+	</div>
+</div>
+```
+
+![Codeblock with language indicator](./etc/codeblock-with-language-indicator.png)
 
 ### Example: customize classname prefix
 
