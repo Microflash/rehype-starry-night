@@ -22,6 +22,7 @@
 	- [Example: show codeblock title](#example-show-codeblock-title)
 	- [Example: show codeblock language](#example-show-codeblock-language)
 	- [Example: show a prompt before a line](#example-show-a-prompt-before-a-line)
+	- [Example: show highlighted, inserted and deleted lines](#example-show-highlighted-inserted-and-deleted-lines)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -150,9 +151,9 @@ export const myPlugin = {
 
 - [add title to your codeblock](#example-show-codeblock-title)
 - [show language of the codeblock](#example-show-codeblock-language)
-- show [highlighted], [inserted], and [deleted] lines
-- [show a prompt before a line] to indicate a command line prompt
-- [mark lines as command output] (so they are not copied alongwith command)
+- show [highlighted, inserted, and deleted](#example-show-highlighted-inserted-and-deleted-lines) lines
+- [show a prompt before a line](#example-show-a-prompt-before-a-line) to indicate a command line prompt
+- [mark lines as command output](#example-show-a-prompt-before-a-line) (so they are not copied alongwith command)
 
 These plugins are opt-in and you'll have to manually import them.
 
@@ -609,6 +610,93 @@ Running this with `node index.js` yields:
 
 > [!NOTE]
 > The selection of prompt character should be disabled so that when people copy the command, the prompt is not copied. This behavior is implemented in [`index.css`](./src/index.css) with `user-select: none`. Similarly, the output is also disabled for user selection because you usually want people to just copy the command and not the output.
+
+### Example: show highlighted, inserted and deleted lines
+
+You can highlight lines by specifying the line numbers (or even, range of line numbers) between curly braces in the codeblock metadata.
+
+	```sh {3,5..12} prompt{1}
+	curl http://localhost:12434/engines/llama.cpp/v1/chat/completions \
+		--json '{
+			"model": "ai/smollm2",
+			"messages": [
+				{
+					"role": "system",
+					"content": "You are a helpful assistant."
+				},
+				{
+					"role": "user",
+					"content": "Write 500 words about the fall of Rome."
+				}
+			]
+		}'
+	```
+
+Import `lineAnnotation` plugin (described [in the previous example](#example-show-a-prompt-before-a-line)) and run `node index.js` which yields:
+
+```html
+<div class="hl">
+<pre><code id="MC43MzU2Njkz" tabindex="0" class="language-sh" style="--hl-line-gutter: 2"><span data-line-number="1"><span class="prompt" aria-hidden="true"></span>curl http://localhost:12434/engines/llama.cpp/v1/chat/completions \</span>
+<span data-line-number="2">	--json <span class="pl-s"><span class="pl-pds">'</span>{</span></span>
+<span data-line-number="3" data-line-marked=""><span class="pl-s">		"model": "ai/smollm2",</span></span>
+<span data-line-number="4"><span class="pl-s">		"messages": [</span></span>
+<span data-line-number="5" data-line-marked=""><span class="pl-s">			{</span></span>
+<span data-line-number="6" data-line-marked=""><span class="pl-s">				"role": "system",</span></span>
+<span data-line-number="7" data-line-marked=""><span class="pl-s">				"content": "You are a helpful assistant."</span></span>
+<span data-line-number="8" data-line-marked=""><span class="pl-s">			},</span></span>
+<span data-line-number="9" data-line-marked=""><span class="pl-s">			{</span></span>
+<span data-line-number="10" data-line-marked=""><span class="pl-s">				"role": "user",</span></span>
+<span data-line-number="11" data-line-marked=""><span class="pl-s">				"content": "Write 500 words about the fall of Rome."</span></span>
+<span data-line-number="12" data-line-marked=""><span class="pl-s">			}</span></span>
+<span data-line-number="13"><span class="pl-s">		]</span></span>
+<span data-line-number="14"><span class="pl-s">	}<span class="pl-pds">'</span></span></span>
+</code></pre>
+</div>
+```
+
+![Codeblock with highlighted lines](./etc/codeblock-with-highlighted-lines.png)
+
+Similarly, you can render inserted and deleted lines using `ins` and `del` properties on the codeblock followed by a range of line numbers.
+
+	```js title="Pool options in Vitest 2.0" del{4..6} ins{7..9}
+	export default defineConfig({
+	  test: {
+	    poolOptions: {
+	      threads: {
+	        singleThread: true,
+	      },
+	      forks: {
+	        singleFork: true,
+	      },
+	    }
+	  }
+	});
+	```
+
+The above codeblock gets rendered as:
+
+```html
+<div class="hl">
+<pre><code id="MC4wNDgyMzEx" tabindex="0" class="language-js" style="--hl-line-gutter: 2"><span data-line-number="1"><span class="diff">	</span><span class="pl-k">export</span> <span class="pl-c1">default</span> <span class="pl-smi">defineConfig</span>({</span>
+<span data-line-number="2"><span class="diff">	</span>	test<span class="pl-k">:</span> {</span>
+<span data-line-number="3"><span class="diff">	</span>		poolOptions<span class="pl-k">:</span> {</span>
+<span data-line-number="4" data-line-deleted=""><span class="diff">-	</span>			threads<span class="pl-k">:</span> {</span>
+<span data-line-number="5" data-line-deleted=""><span class="diff">-	</span>				singleThread<span class="pl-k">:</span> <span class="pl-c1">true</span>,</span>
+<span data-line-number="6" data-line-deleted=""><span class="diff">-	</span>			},</span>
+<span data-line-number="7" data-line-inserted=""><span class="diff">+	</span>			forks<span class="pl-k">:</span> {</span>
+<span data-line-number="8" data-line-inserted=""><span class="diff">+	</span>				singleFork<span class="pl-k">:</span> <span class="pl-c1">true</span>,</span>
+<span data-line-number="9" data-line-inserted=""><span class="diff">+	</span>			},</span>
+<span data-line-number="10"><span class="diff">	</span>		}</span>
+<span data-line-number="11"><span class="diff">	</span>	}</span>
+<span data-line-number="12"><span class="diff">	</span>});</span>
+</code></pre>
+</div>
+```
+
+![Codeblock with inserted and deleted lines](./etc/codeblock-with-inserted-and-deleted-lines.png)
+
+> [!NOTE]
+> See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range.
 
 ### Example: customize classname prefix
 
