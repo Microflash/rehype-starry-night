@@ -17,6 +17,7 @@
 - [Examples](#examples)
 	- [Example: using aliases](#example-using-aliases)
 	- [Example: using all `starry-night` grammars](#example-using-all-starry-night-grammars)
+	- [Example: using custom `starry-night` grammar](#example-using-custom-starry-night-grammar)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -318,6 +319,63 @@ Running this with `node index.js` yields:
 ```
 
 ![Using all `starry-night` grammars](./etc/using-all-grammars.png)
+
+### Example: using custom `starry-night` grammar
+
+If you want to highlight a language for which `starry-night` does not provide a grammar, you can convert a Text Mate grammar to `starry-night` compatible format and use it alongside other grammar definitions.
+
+Say, you have a custom grammar to highlight log files in `text.log.js` and you want to highlight the following file `index.md`:
+
+	```log
+	2025-05-18T23:08:48.269 INFO 10683 --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Starting...
+	2025-05-18T23:08:48.338 INFO 10683 --- [main] com.zaxxer.hikari.pool.HikariPool  : H2HikariPool - Added connection conn0: url=jdbc:h2:mem:sa user=SA
+	2025-05-18T23:08:48.338 INFO 10683 --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Start completed.
+	```
+
+You can import `text.log.js` alongside common grammars as follows in `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { common } from "@wooorm/starry-night";
+import logGrammar from "./text.log.js";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			grammars: [
+				logGrammar,
+				...common
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC41ODc0NjE2" tabindex="0" class="language-log"><span class="pl-c">2025-05-18T23:08:48.269</span> <span class="pl-mi1">INFO</span> <span class="pl-c1">10683</span> --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Starting...
+<span class="pl-c">2025-05-18T23:08:48.338</span> <span class="pl-mi1">INFO</span> <span class="pl-c1">10683</span> --- [main] com.zaxxer.hikari.pool.HikariPool  : H2HikariPool - Added connection conn0: url=jdbc:h2:mem:sa user=SA
+<span class="pl-c">2025-05-18T23:08:48.338</span> <span class="pl-mi1">INFO</span> <span class="pl-c1">10683</span> --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Start completed.
+</code></pre>
+</div>
+```
+
+![Using custom `starry-night` grammar](./etc/using-custom-grammar.png)
 
 ### Example: customize classname prefix
 
