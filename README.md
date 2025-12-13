@@ -18,6 +18,7 @@
 	- [Example: using aliases](#example-using-aliases)
 	- [Example: using all `starry-night` grammars](#example-using-all-starry-night-grammars)
 	- [Example: using custom `starry-night` grammar](#example-using-custom-starry-night-grammar)
+	- [Example: skip highlighting a specific language](#example-skip-highlighting-a-specific-language)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -28,7 +29,7 @@ This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](http
 
 ## When should I use this?
 
-This project is useful if you want to use the syntax highlighting powered by VS Code's syntax highlighter engine, and themes similar to GitHub. It is also useful if you want to build your own syntax highlighting themes based on [CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties). You can enable additional features through plugins using [Plugin API](#plugin-api); they are all opt-in based on your specific need.
+This project is useful if you want to use the syntax highlighting powered by VS Code's syntax highlighter engine, and themes similar to GitHub. It is also useful if you want to build your own syntax highlighting themes based on [CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties). You can enable additional features through plugins using [Plugin API](#plugin-api) based on your specific need; they are all opt-in.
 
 ## Install
 
@@ -172,7 +173,7 @@ const processor = await unified()
 	.use(rehypeStringify, { allowDangerousHtml: true });
 ```
 
-Plugins are applied in the order of they are in the options. In the above case, `titlePlugin` will be applied first followed by `languageIndicatorPlugin` and `lineAnnotationPlugin`.
+Plugins are applied in the order they are added in options. In the above case, `titlePlugin` will be applied first followed by `languageIndicatorPlugin` and `lineAnnotationPlugin`.
 
 ## Theming
 
@@ -265,7 +266,7 @@ Running this with `node index.js` yields:
 
 ### Example: using all `starry-night` grammars
 
-By default, this plugin uses the [common](https://github.com/wooorm/starry-night?tab=readme-ov-file#common) grammars provided by `starry-night`. You can import [all](https://github.com/wooorm/starry-night?tab=readme-ov-file#all) to highlight the code in languages not included in the common grammars.
+By default, this plugin uses the [common](https://github.com/wooorm/starry-night?tab=readme-ov-file#common) grammars provided by `starry-night`. You can import [all](https://github.com/wooorm/starry-night?tab=readme-ov-file#all) grammars to highlight the code in languages not included in the common grammars.
 
 Say, you have the following codeblock in `index.md`:
 
@@ -376,6 +377,65 @@ Running this with `node index.js` yields:
 ```
 
 ![Using custom `starry-night` grammar](./etc/using-custom-grammar.png)
+
+### Example: skip highlighting a specific language
+
+In some cases, you may want to process codeblocks of a specific language differently. Say you have the following file `index.md` where you want to render the Mermaid diagram instead of syntax highlighting:
+
+	```mermaid
+	flowchart TD
+		A[Christmas] -->|Get money| B(Go shopping)
+		B --> C{Let me think}
+		C -->|One| D[Laptop]
+		C -->|Two| E[iPhone]
+		C -->|Three| F[fa:fa-car Car]
+	```
+
+You can skip highlighting `mermaid` codeblock by listing it in `plainText` option as follows in the `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			plainText: [
+				"mermaid"
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<pre><code class="language-mermaid">flowchart TD
+	A[Christmas] --&gt;|Get money| B(Go shopping)
+	B --&gt; C{Let me think}
+	C --&gt;|One| D[Laptop]
+	C --&gt;|Two| E[iPhone]
+	C --&gt;|Three| F[fa:fa-car Car]
+</code></pre>
+```
+
+![Skipping a language](./etc/skipping-a-language.png)
+
+> [!NOTE]
+> Codeblocks with unknown languages (that is, languages for which there are no available `starry-night` grammars) or no language are always skipped by the plugin. 
 
 ### Example: customize classname prefix
 
