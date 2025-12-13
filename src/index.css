@@ -8,6 +8,8 @@
 	--hlOutlineColor: var(--hl-outline-color);
 	--hlOutlineThickness: var(--hl-outline-thickness, 3px);
 	--hlPadding: var(--hl-line-padding, 1ch);
+	--hlLineBorderWidth: var(--hl-line-border-width, 2px);
+	--hlLineBorderColor: var(--hl-line-border-color, transparent);
 	--hlPromptColor: var(--hl-prompt-color, var(--color-prettylights-syntax-markup-deleted-text));
 	background-color: var(--hlBgColor);
 	border: var(--hlBorder);
@@ -45,6 +47,42 @@
 
 .hl pre code {
 	padding: var(--hlPadding);
+}
+
+.hl pre code[style*="--hl-line-gutter"] {
+	display: grid;
+	padding-inline: 0;
+}
+
+.hl pre [data-line-number] {
+	border-left: var(--hlLineBorderWidth) solid var(--hlLineBorderColor);
+	background-color: var(--hlLineBgColor);
+	padding-inline: var(--hlPadding);
+}
+
+.hl pre [data-line-number]:focus:not(:focus-visible),
+.hl pre [data-line-number]:hover {
+	--hlLineBorderColor: currentColor;
+	--hlLineBgColor: var(--hl-line-active-bg-color);
+}
+
+.hl pre [data-line-number] .diff {
+	color: var(--hlLineBorderColor);
+}
+
+.hl pre [data-line-marked] {
+	--hlLineBorderColor: var(--color-prettylights-syntax-comment);
+	--hlLineBgColor: var(--hl-line-marked-bg-color);
+}
+
+.hl pre [data-line-inserted] {
+	--hlLineBorderColor: var(--hl-line-inserted-color);
+	--hlLineBgColor: var(--hl-line-inserted-bg-color);
+}
+
+.hl pre [data-line-deleted] {
+	--hlLineBorderColor: var(--hl-line-deleted-color);
+	--hlLineBgColor: var(--hl-line-deleted-bg-color);
 }
 
 .hl pre [data-line-output] {
