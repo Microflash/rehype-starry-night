@@ -15,6 +15,7 @@
 - [Theming](#theming)
 	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
+	- [Example: using aliases](#example-using-aliases)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -207,6 +208,58 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 > URL imports for external styles is not recommended. You should either self-host them or bundle them.
 
 ## Examples
+
+### Example: using aliases
+
+Say we have the following file `index.md`:
+
+	```xjm
+	language: "en"
+	customization: false
+	features: [ "io", "graphics", "compute" ]
+	```
+
+You can alias `xjm` to `yml` as follows with `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			aliases: {
+				xjm: "yml"
+			}
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC40OTU1Mzcz" tabindex="0" class="language-xjm"><span class="pl-ent">language</span>: <span class="pl-s"><span class="pl-pds">"</span>en<span class="pl-pds">"</span></span>
+<span class="pl-ent">customization</span>: <span class="pl-c1">false</span>
+<span class="pl-ent">features</span>: <span class="pl-s">[ "io", "graphics", "compute" ]</span>
+</code></pre>
+</div>
+```
+
+![Using aliases](./etc/using-aliases.png)
 
 ### Example: customize classname prefix
 
