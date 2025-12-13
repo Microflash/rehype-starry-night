@@ -20,6 +20,18 @@
 	border-bottom: var(--hlBorder);
 }
 
+.hl-footer {
+	font-size: 0.8em;
+	padding: calc(var(--hlPadding) / 2) var(--hlPadding);
+	border-top: var(--hlBorder);
+}
+
+.hl-language {
+	font-family: var(--hlFontFamily);
+	max-width: fit-content;
+	user-select: none;
+}
+
 .hl pre {
 	font-family: var(--hlFontFamily);
 }
