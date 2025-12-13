@@ -21,6 +21,7 @@
 	- [Example: skip highlighting a specific language](#example-skip-highlighting-a-specific-language)
 	- [Example: show codeblock title](#example-show-codeblock-title)
 	- [Example: show codeblock language](#example-show-codeblock-language)
+	- [Example: show a prompt before a line](#example-show-a-prompt-before-a-line)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -147,10 +148,10 @@ export const myPlugin = {
 
 `rehype-starry-night` ships a few plugins out of box, with which you can
 
-- [add title to your codeblock header]
-- [add language of the codeblock in the footer]
-- customize lines to show [highlights], [inserted lines], and [deleted lines]
-- [show a prompt character before a line] to indicate a command line prompt
+- [add title to your codeblock](#example-show-codeblock-title)
+- [show language of the codeblock](#example-show-codeblock-language)
+- show [highlighted], [inserted], and [deleted] lines
+- [show a prompt before a line] to indicate a command line prompt
 - [mark lines as command output] (so they are not copied alongwith command)
 
 These plugins are opt-in and you'll have to manually import them.
@@ -552,6 +553,62 @@ Running this with `node index.js` yields:
 ```
 
 ![Codeblock with language indicator](./etc/codeblock-with-language-indicator.png)
+
+### Example: show a prompt before a line
+
+Sometime you may want to display a command and its output. You can specify lines that are command-line instructions and lines that are output, as follows in `index.md`:
+
+	```sh prompt{1} output{2..4}
+	eza --version
+	eza - A modern ls replacement
+	v0.23.4 [+git]
+	```
+
+Import `lineAnnotation` plugin in the `index.js` as follows:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { lineAnnotationPlugin } from "@microflash/rehype-starry-night/plugins";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			plugins: [
+				lineAnnotationPlugin
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC4wMDU4OTIz" tabindex="0" class="language-sh" style="--hl-line-gutter: 1"><span data-line-number="1"><span class="prompt" aria-hidden="true"></span>eza --version</span>
+<span data-line-number="2" data-line-output="">eza - A modern ls replacement</span>
+<span data-line-number="3" data-line-output="">v0.23.4 [+git]</span>
+</code></pre>
+</div>
+```
+
+![Codeblock with prompt](./etc/codeblock-with-prompt.png)
+
+> [!NOTE]
+> The selection of prompt character should be disabled so that when people copy the command, the prompt is not copied. This behavior is implemented in [`index.css`](./src/index.css) with `user-select: none`. Similarly, the output is also disabled for user selection because you usually want people to just copy the command and not the output.
 
 ### Example: customize classname prefix
 
