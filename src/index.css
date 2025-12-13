@@ -8,6 +8,8 @@
 	--hlOutlineColor: var(--hl-outline-color);
 	--hlOutlineThickness: var(--hl-outline-thickness, 3px);
 	--hlPadding: var(--hl-line-padding, 1ch);
+	--hlLineColor: var(--color-prettylights-syntax-comment);
+	--hlLineBgColor: transparent;
 	--hlLineBorderWidth: var(--hl-line-border-width, 2px);
 	--hlLineBorderColor: var(--hl-line-border-color, transparent);
 	--hlPromptColor: var(--hl-prompt-color, var(--color-prettylights-syntax-markup-deleted-text));
@@ -62,6 +64,7 @@
 
 .hl pre [data-line-number]:focus:not(:focus-visible),
 .hl pre [data-line-number]:hover {
+	--hlLineColor: currentColor;
 	--hlLineBorderColor: currentColor;
 	--hlLineBgColor: var(--hl-line-active-bg-color);
 }
@@ -70,18 +73,30 @@
 	color: var(--hlLineBorderColor);
 }
 
+.hl pre [data-line-number]:not(:only-child)::before {
+	display: inline-block;
+	content: attr(data-line-number);
+	color: var(--hlLineColor);
+	inline-size: calc(var(--hl-line-gutter) * 1ch);
+	text-align: end;
+	margin-inline-end: 1ch;
+}
+
 .hl pre [data-line-marked] {
-	--hlLineBorderColor: var(--color-prettylights-syntax-comment);
+	--hlLineColor: var(--color-prettylights-syntax-comment);
+	--hlLineBorderColor: var(--hlLineColor);
 	--hlLineBgColor: var(--hl-line-marked-bg-color);
 }
 
 .hl pre [data-line-inserted] {
-	--hlLineBorderColor: var(--hl-line-inserted-color);
+	--hlLineColor: var(--hl-line-inserted-color);
+	--hlLineBorderColor: var(--hlLineColor);
 	--hlLineBgColor: var(--hl-line-inserted-bg-color);
 }
 
 .hl pre [data-line-deleted] {
-	--hlLineBorderColor: var(--hl-line-deleted-color);
+	--hlLineColor: var(--hl-line-deleted-color);
+	--hlLineBorderColor: var(--hlLineColor);
 	--hlLineBgColor: var(--hl-line-deleted-bg-color);
 }
 
