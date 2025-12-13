@@ -703,7 +703,7 @@ The above codeblock gets rendered as:
 
 When you import the `lineAnnotation` plugin (as seen in [previous](#example-show-highlighted-inserted-and-deleted-lines) example), it adds `data-line-number` attribute to every line. It also attaches `--hl-line-gutter` CSS custom property on the `code` element. Using these two details, you can use the following CSS to show line numbers.
 
-<https://github.com/Microflash/rehype-starry-night/blob/571ee8302f1f7ee421bdfba0fc0c188752432ed5/src/index.css#L76>
+<https://github.com/Microflash/rehype-starry-night/blob/48eaba19b35a0cc9ce21edeef7ecadfc400b825d/src/index.css#L76-L83>
 
 ![Codeblock with line numbers](./etc/codeblock-with-line-numbers.png)
 
