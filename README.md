@@ -15,6 +15,7 @@
 - [Theming](#theming)
 	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
+	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
 
@@ -52,7 +53,7 @@ In browsers, with [esm.sh](https://esm.sh/):
 
 ## Use
 
-Say we have the following file `example.md`:
+Say we have the following file `index.md`:
 
 	```css
 	html {
@@ -63,7 +64,7 @@ Say we have the following file `example.md`:
 	}
 	```
 
-And our module `example.js` looks as follows:
+And our module `index.js` looks as follows:
 
 ```js
 import { unified } from "unified";
@@ -88,16 +89,18 @@ async function main() {
 }
 ```
 
-Running that with `node example.js` yields:
+Running that with `node index.js` yields:
 
 ```html
-<div class="hl"><pre><code id="MC40OTU2MDAx" tabindex="0" class="language-css"><span class="pl-ent">html</span> {
+<div class="hl">
+<pre><code id="MC40OTU2MDAx" tabindex="0" class="language-css"><span class="pl-ent">html</span> {
 	<span class="pl-c1">box-sizing</span>: <span class="pl-c1">border-box</span>;
 	<span class="pl-c1">text-size-adjust</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;
 	<span class="pl-c">/* allow percentage based heights for the children */</span>
 	<span class="pl-c1">height</span>: <span class="pl-c1">100</span><span class="pl-k">%</span>;
 }
-</code></pre></div>
+</code></pre>
+</div>
 ```
 
 ![Syntax highlighting with Rehype Starry Night](./etc/general-usage.png)
@@ -166,6 +169,8 @@ const processor = await unified()
 	.use(rehypeStringify, { allowDangerousHtml: true });
 ```
 
+Plugins are applied in the order of they are in the options. In the above case, `titlePlugin` will be applied first followed by `languageIndicatorPlugin` and `lineAnnotationPlugin`.
+
 ## Theming
 
 Import [`props.css`](./src/props.css) and [`index.css`](./src/index.css) files in your project, or use them as a base for your own custom theme. For different color schemes for syntax highlighting, check the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
@@ -202,6 +207,50 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 > URL imports for external styles is not recommended. You should either self-host them or bundle them.
 
 ## Examples
+
+### Example: customize classname prefix
+
+Say we have the following file `index.md`:
+
+	```java
+	IO.println("Hello, world!");
+	```
+
+You can customize the classname prefix of codeblock element by setting the `namespace` option, as follows with `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			namespace: "highlight"
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running that with `node index.js` yields:
+
+```html
+<div class="highlight">
+<pre><code id="MC45MjYyOTEy" tabindex="0" class="language-java"><span class="pl-c1">IO</span><span class="pl-k">.</span>println(<span class="pl-s"><span class="pl-pds">"</span>Hello, world!<span class="pl-pds">"</span></span>);
+</code></pre>
+</div>
+```
 
 ## Related
 
