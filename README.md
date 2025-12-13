@@ -437,6 +437,64 @@ Running this with `node index.js` yields:
 > [!NOTE]
 > Codeblocks with unknown languages (that is, languages for which there are no available `starry-night` grammars) or no language are always skipped by the plugin. 
 
+### Example: show codeblock title
+
+You can add a title to a codeblock, like in the following file `index.md`:
+
+	```zsh title="Switching off homebrew telemetry"
+	# turns off homebrew telemetry
+	export HOMEBREW_NO_ANALYTICS=1
+	# turns off homebrew auto-update
+	export HOMEBREW_NO_AUTO_UPDATE=1
+	```
+
+To show this title, import `title` plugin in `index.js` as follows:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { titlePlugin } from "@microflash/rehype-starry-night/plugins";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			plugins: [
+				titlePlugin
+			]
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+	<div class="hl-header">
+		<div class="hl-title">Switching off homebrew telemetry</div>
+	</div>
+<pre><code id="MC41NTAxMDgw" tabindex="0" class="language-zsh"><span class="pl-c"># turns off homebrew telemetry</span>
+<span class="pl-k">export</span> HOMEBREW_NO_ANALYTICS=1
+<span class="pl-c"># turns off homebrew auto-update</span>
+<span class="pl-k">export</span> HOMEBREW_NO_AUTO_UPDATE=1
+</code></pre>
+</div>
+```
+
+![Codeblock with title](./etc/codeblock-with-title.png)
+
 ### Example: customize classname prefix
 
 Say you have the following file `index.md`:
