@@ -1,10 +1,11 @@
-import { all } from "@wooorm/starry-night";
+import { all, common } from "@wooorm/starry-night";
 import { h } from "hastscript";
 import {
 	titlePlugin,
 	languageIndicatorPlugin,
 	lineAnnotationPlugin
 } from "../src/plugins.js";
+import logGrammar from "./text.log.js";
 
 const clipboardCopyBtnPlugin = {
 	type: "footer",
@@ -83,6 +84,22 @@ public function main() {
 		input: `
 \`\`\`d2
 x -> y
+\`\`\`
+`
+	},
+	{
+		title: "codeblock with language highlighted by custom grammar",
+		options: {
+			grammars: [
+				logGrammar,
+				...common
+			]
+		},
+		input: `
+\`\`\`log
+2025-05-18T23:08:48.269 INFO 10683 --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Starting...
+2025-05-18T23:08:48.338 INFO 10683 --- [main] com.zaxxer.hikari.pool.HikariPool  : H2HikariPool - Added connection conn0: url=jdbc:h2:mem:sa user=SA
+2025-05-18T23:08:48.338 INFO 10683 --- [main] com.zaxxer.hikari.HikariDataSource : H2HikariPool - Start completed.
 \`\`\`
 `
 	},
