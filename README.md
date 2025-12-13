@@ -4,7 +4,7 @@
 [![regression](https://github.com/Microflash/rehype-starry-night/actions/workflows/regression.yml/badge.svg)](https://github.com/Microflash/rehype-starry-night/actions/workflows/regression.yml)
 [![license](https://img.shields.io/npm/l/@microflash/rehype-starry-night)](./LICENSE.md) -->
 
-[rehype](https://github.com/rehypejs/rehype) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night)
+[rehype](https://github.com/rehypejs/rehype) plugin to highlight code with [`starry-night`](https://github.com/wooorm/starry-night)
 
 - [What’s this?](#whats-this)
 - [When should I use this?](#when-should-i-use-this)
@@ -16,13 +16,14 @@
 	- [Supporting Light and Dark themes](#supporting-light-and-dark-themes)
 - [Examples](#examples)
 	- [Example: using aliases](#example-using-aliases)
+	- [Example: using all `starry-night` grammars](#example-using-all-starry-night-grammars)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
 
 ## What’s this?
 
-This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [Starry Night](https://github.com/wooorm/starry-night) in a markdown document. It mimics GitHub's syntax highlighting.
+This package is a [unified](https://github.com/unifiedjs/unified) ([rehype](https://github.com/rehypejs/rehype)) plugin to highlight code with [`starry-night`](https://github.com/wooorm/starry-night) in a markdown document. It mimics GitHub's syntax highlighting.
 
 ## When should I use this?
 
@@ -54,7 +55,7 @@ In browsers, with [esm.sh](https://esm.sh/):
 
 ## Use
 
-Say we have the following file `index.md`:
+Say you have the following file `index.md`:
 
 	```css
 	html {
@@ -111,7 +112,7 @@ Running that with `node index.js` yields:
 The default export is `rehypeStarryNight`. The following options are available. All of them are optional.
 
 - `namespace` (type: `string`, default: `hl`): class name of the highlighted codeblock
-- `grammars` (type: `Array<Grammar>`, default: `common`) - [Starry Night](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, common grammars provided by Starry Night are used.
+- `grammars` (type: `Array<Grammar>`, default: `common`) - [`starry-night`](https://github.com/wooorm/starry-night) compatible grammar definitions. By default, [common](https://github.com/wooorm/starry-night?tab=readme-ov-file#common) grammars provided by `starry-night` are used.
 - `aliases` (type: `Record<string, string>`, default: `{}`): aliases to force syntax highlighting. By default, unknown languages are not highlighted.
 - `plainText` (type: `Array<string>`, default: `[]`): array of languages not to highlight
 - `plugins` (type: `Array<Plugin>`, default: `[]`) - array of plugins to customize the  highlighted codeblock, using [Plugin API](#plugin-api)
@@ -174,7 +175,7 @@ Plugins are applied in the order of they are in the options. In the above case, 
 
 ## Theming
 
-Import [`props.css`](./src/props.css) and [`index.css`](./src/index.css) files in your project, or use them as a base for your own custom theme. For different color schemes for syntax highlighting, check the [available themes on Starry Night repository](https://github.com/wooorm/starry-night#css).
+Import [`props.css`](./src/props.css) and [`index.css`](./src/index.css) files in your project, or use them as a base for your own custom theme. For different color schemes for syntax highlighting, check the [available themes on `starry-night` repository](https://github.com/wooorm/starry-night#css).
 
 ### Supporting Light and Dark themes
 
@@ -197,7 +198,7 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 	}
 }
 
-/* import a Starry Night theme that supports both dark and light themes */
+/* import a `starry-night` theme that supports both dark and light themes */
 @import "https://raw.githubusercontent.com/wooorm/starry-night/main/style/both.css";
 
 /* import CSS specific to rehype-starry-night plugin */
@@ -211,7 +212,7 @@ Here's one way to support light and dark themes; the appropriate theme will get 
 
 ### Example: using aliases
 
-Say we have the following file `index.md`:
+Say you have the following file `index.md`:
 
 	```xjm
 	language: "en"
@@ -261,9 +262,66 @@ Running this with `node index.js` yields:
 
 ![Using aliases](./etc/using-aliases.png)
 
+### Example: using all `starry-night` grammars
+
+By default, this plugin uses the [common](https://github.com/wooorm/starry-night?tab=readme-ov-file#common) grammars provided by `starry-night`. You can import [all](https://github.com/wooorm/starry-night?tab=readme-ov-file#all) to highlight the code in languages not included in the common grammars.
+
+Say, you have the following codeblock in `index.md`:
+
+	```ballerina
+	import ballerina/io;
+
+	public function main() {
+		io:println("Hello, World!");
+	}
+	```
+
+Since, `ballerina` is not included in the common grammars, you'll have to import all grammars from the `starry-night` as follows in `index.js`:
+
+```js
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeStarryNight from "@microflash/rehype-starry-night";
+import { all } from "@woorm/starry-night";
+import { readFileSync } from "node:fs";
+
+main();
+
+async function main() {
+	const markdown = readFileSync("./index.md", "utf8");
+	const file = await unified()
+		.use(remarkParse)
+		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeStarryNight, {
+			grammars: all
+		})
+		.use(rehypeStringify, { allowDangerousHtml: true })
+		.process(markdown);
+
+	console.log(String(file));
+}
+```
+
+Running this with `node index.js` yields:
+
+```html
+<div class="hl">
+<pre><code id="MC42MjYzNjU1" tabindex="0" class="language-ballerina"><span class="pl-k">import</span> <span class="pl-smi">ballerina</span>/<span class="pl-smi">io</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">main</span>() {
+	<span class="pl-smi">io</span><span class="pl-k">:</span><span class="pl-en">println</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello, World!<span class="pl-pds">"</span></span>);
+}
+</code></pre>
+</div>
+```
+
+![Using all `starry-night` grammars](./etc/using-all-grammars.png)
+
 ### Example: customize classname prefix
 
-Say we have the following file `index.md`:
+Say you have the following file `index.md`:
 
 	```java
 	IO.println("Hello, world!");
@@ -296,7 +354,7 @@ async function main() {
 }
 ```
 
-Running that with `node index.js` yields:
+Running this with `node index.js` yields:
 
 ```html
 <div class="highlight">
