@@ -23,6 +23,7 @@
 	- [Example: show codeblock language](#example-show-codeblock-language)
 	- [Example: show a prompt before a line](#example-show-a-prompt-before-a-line)
 	- [Example: show highlighted, inserted and deleted lines](#example-show-highlighted-inserted-and-deleted-lines)
+	- [Example: show line numbers](#example-show-line-numbers)
 	- [Example: customize classname prefix](#example-customize-classname-prefix)
 - [Related](#related)
 - [License](#license)
@@ -697,6 +698,18 @@ The above codeblock gets rendered as:
 
 > [!NOTE]
 > See the documentation of [`fenceparser`](https://github.com/Microflash/fenceparser) to learn about the ways in which you can specify the line range.
+
+### Example: show line numbers
+
+When you import the `lineAnnotation` plugin (as seen in [previous](#example-show-highlighted-inserted-and-deleted-lines) example), it adds `data-line-number` attribute to every line. It also attaches `--hl-line-gutter` CSS custom property on the `code` element. Using these two details, you can use the following CSS to show line numbers.
+
+<https://github.com/Microflash/rehype-starry-night/blob/571ee8302f1f7ee421bdfba0fc0c188752432ed5/src/index.css#L76>
+
+![Codeblock with line numbers](./etc/codeblock-with-line-numbers.png)
+
+For single line codeblocks, the numbers won't show up.
+
+![Single line codeblock without line number](./etc/codeblock-without-line-number.png)
 
 ### Example: customize classname prefix
 
