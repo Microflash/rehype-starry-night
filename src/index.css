@@ -15,11 +15,14 @@
 
 .hl pre {
 	font-family: var(--hlFontFamily);
-	padding: var(--hlPadding);
 }
 
 .hl pre:focus-within {
 	outline-style: solid;
 	outline-color: var(--hlOutlineColor);
 	outline-width: var(--hlOutlineThickness);
+}
+
+.hl pre code {
+	padding: var(--hlPadding);
 }
