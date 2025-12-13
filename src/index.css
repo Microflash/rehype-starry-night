@@ -8,6 +8,7 @@
 	--hlOutlineColor: var(--hl-outline-color);
 	--hlOutlineThickness: var(--hl-outline-thickness, 3px);
 	--hlPadding: var(--hl-line-padding, 1ch);
+	--hlPromptColor: var(--hl-prompt-color, var(--color-prettylights-syntax-markup-deleted-text));
 	background-color: var(--hlBgColor);
 	border: var(--hlBorder);
 	border-radius: var(--hlBorderRadius);
@@ -44,4 +45,25 @@
 
 .hl pre code {
 	padding: var(--hlPadding);
+}
+
+.hl pre [data-line-output] {
+	user-select: none;
+}
+
+.hl .prompt::before {
+	content: "";
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 20l6.5-9m6.5 9C13 20 13 4 7 4'/%3E%3C/svg%3E");
+	mask-repeat: no-repeat;
+	mask-position: center center;
+	mask-size: contain;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	background-color: currentColor;
+	color: var(--hlPromptColor);
+	text-decoration: none;
+	user-select: none;
+	vertical-align: middle;
+	margin-right: 0.5ch;
 }
