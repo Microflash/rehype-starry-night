@@ -1,6 +1,6 @@
 {
 	"name": "@microflash/rehype-starry-night",
-	"version": "8.0.0",
+	"version": "8.0.1",
 	"description": "rehype plugin to highlight codeblocks with Starry Night",
 	"license": "MIT",
 	"keywords": [
@@ -38,11 +38,11 @@
 	},
 	"dependencies": {
 		"@microflash/fenceparser": "^4.0.0",
-		"@wooorm/starry-night": "^3.8.0",
+		"@wooorm/starry-night": "^3.9.0",
 		"defu": "^6.1.4",
 		"hast-util-to-string": "^3.0.1",
 		"hastscript": "^9.0.1",
-		"unist-util-visit": "^5.0.0"
+		"unist-util-visit": "^5.1.0"
 	},
 	"devDependencies": {
 		"cheerio": "1.1.2",
@@ -52,5 +52,5 @@
 		"remark-rehype": "^11.1.2",
 		"unified": "^11.0.5"
 	},
-	"packageManager": "pnpm@10.25.0"
+	"packageManager": "pnpm@10.28.1"
 }
